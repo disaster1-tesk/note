@@ -1,1 +1,113 @@
-site_name: My Docs
+# Project information
+site_name: Disaster的提升之路
+site_url: https://disaster1-tesk.github.io/note/
+site_author: Disaster
+site_description: 记录个人的成长历程
+
+# Repository
+repo_name: disaster1-tesk/note
+repo_url: https://github.com/disaster1-tesk/note
+edit_uri: https://github.com/disaster1-tesk/note/tree/main/docs
+
+# Copyright
+copyright: Copyright &copy; 2023 Disaster
+
+# Configuration
+theme:
+  name: material
+  custom_dir: material/.overrides
+  language: zh
+  features:
+    # - announce.dismiss
+    - content.action.edit
+    # - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.indexes
+    - navigation.instant
+    # - navigation.prune
+    # - navigation.sections
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+    - scheme: default
+      primary: white
+      # accent: indigo
+      toggle:
+        icon: material/theme-light-dark
+        name: Switch to dark mode
+    - scheme: slate
+      primary: grey
+      # accent: indigo
+      toggle:
+        icon: material/theme-light-dark
+        name: Switch to light mode
+  font:
+    text: Noto Sans SC
+    code: Fira Code
+  favicon: assets/images/logo.png
+  logo: assets/images/logo.png
+  icon:
+    logo: logo
+    repo: fontawesome/brands/github
+    edit: material/file-edit-outline
+
+# [Navigtion]
+nav:
+  - 学习资源:
+      - REDISSION:
+        - redisson的中文文档: note/redission/redission-文档.md
+      - MYSQL:
+        - 基础篇:
+          - 第00章_写在前面: note/mysql/基础篇/第00章_写在前面.md
+          - 第01章_数据库概述: note/mysql/基础篇/第01章_数据库概述.md
+          - 第02章_MySQL环境搭建: note/mysql/基础篇/第02章_MySQL环境搭建.md
+          - 第03章_基本的SELECT语句: note/mysql/基础篇/第03章_基本的SELECT语句.md
+          - 第04章_运算符: note/mysql/基础篇/第04章_运算符.md
+          - 第05章_排序与分页: note/mysql/基础篇/第05章_排序与分页.md
+          - 第06章_多表查询: note/mysql/基础篇/第06章_多表查询.md
+          - 第07章_单行函数: note/mysql/基础篇/第07章_单行函数.md
+          - 第08章_聚合函数: note/mysql/基础篇/第08章_聚合函数.md
+          - 第09章_子查询: note/mysql/基础篇/第09章_子查询.md
+          - 第10章_创建和管理表: note/mysql/基础篇/第10章_创建和管理表.md
+          - 第11章_数据处理之增删改: note/mysql/基础篇/第11章_数据处理之增删改.md
+          - 第12章_MySQL数据类型精讲: note/mysql/基础篇/第12章_MySQL数据类型精讲.md
+          - 第13章_约束: note/mysql/基础篇/第13章_约束.md
+          - 第14章_视图: note/mysql/基础篇/第14章_视图.md
+          - 第15章_存储过程与函数: note/mysql/基础篇/第15章_存储过程与函数.md
+          - 第16章_变量、流程控制与游标: note/mysql/基础篇/第16章_变量、流程控制与游标.md
+          - 第17章_触发器: note/mysql/基础篇/第17章_触发器.md
+          - 第18章_MySQL8其它新特性: note/mysql/基础篇/第18章_MySQL8其它新特性.md
+        - 高级篇:
+          - 第01章 Linux下MySQL的安装与使用: note/mysql/高级篇/第01章 Linux下MySQL的安装与使用.md
+          - 第02章 MySQL的数据目录: note/mysql/高级篇/第02章 MySQL的数据目录.md
+          - 第03章 用户与权限管理: note/mysql/高级篇/第03章 用户与权限管理.md
+          - 第04章 逻辑架构: note/mysql/高级篇/第04章 逻辑架构.md
+          - 第05章 存储引擎: note/mysql/高级篇/第05章 存储引擎.md
+          - 第06章 索引的数据结构: note/mysql/高级篇/第06章 索引的数据结构.md
+          - 第07章 InnoDB数据存储结构: note/mysql/高级篇/第07章 InnoDB数据存储结构.md
+          - 第08章 索引的创建与设计原则: note/mysql/高级篇/第08章 索引的创建与设计原则.md
+          - 第09章 性能分析工具的使用: note/mysql/高级篇/第09章 性能分析工具的使用.md
+          - 第10章 索引优化与查询优化: note/mysql/高级篇/第10章 索引优化与查询优化.md
+          - 第11章 数据库的设计规范: note/mysql/高级篇/第11章 数据库的设计规范.md
+          - 第12章 数据库其它调优策略: note/mysql/高级篇/第12章 数据库其它调优策略.md
+          - 第13章 事务基础知识: note/mysql/高级篇/第13章 事务基础知识.md
+          - 第14章 MySQL事务日志: note/mysql/高级篇/第14章 MySQL事务日志.md
+          - 第15章 锁: note/mysql/高级篇/第15章 锁.md
+          - 第16章 多版本并发控制: note/mysql/高级篇/第16章 多版本并发控制.md
+          - 第17章 其它数据库日志: note/mysql/高级篇/第17章 其它数据库日志.md
+          - 第18章 主从复制: note/mysql/高级篇/第18章 主从复制.md
+          - 第19章 数据库备份与恢复: note/mysql/高级篇/第19章 数据库备份与恢复.md
+
