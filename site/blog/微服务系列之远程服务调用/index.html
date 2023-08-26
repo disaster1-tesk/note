@@ -1816,8 +1816,7 @@
   <h1>微服务系列之远程服务调用</h1>
 
 <h3 id="_1">随笔</h3>
-<p>对自己不满是任何有才能的人的根本特征</p>
-<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/6ed0f518bedc4adc81de3e7ccbc2220c.png" /></p>
+<p>Dissatisfaction with oneself is the fundamental characteristic of any talented person</p>
 <p>参考书籍：
 1. “凤凰架构”
 2. “微服务架构设计模式”</p>
@@ -1910,7 +1909,7 @@ kill -9 pid
 <p>远程服务调用是指位于互不重合的内存地址空间中的两个程序，在语言层面上，以同步的方式使用带宽有限的信道来传输程序控制信息。
 —— Bruce Jay Nelson，<a href="http://www.bitsavers.org/pdf/xerox/parc/techReports/CSL-81-9_Remote_Procedure_Call.pdf">Remote Procedure Call</a>，Xerox PARC，1981</p>
 </blockquote>
-<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/b7da0f54054546918200e4b2c3268c13.png" /></p>
+<p><img src="images/chapter7/img.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
 <p>在 20 世纪 80 年代初期，传奇的施乐 Palo Alto 研究中心发布了基于 Cedar 语言的 RPC 框架 Lupine，并实现了世界上第一个基于 RPC 的商业应用 Courier，而上述RPC的概念也是施乐所提出。</p>
 <p>而现在RPC框架满天飞，熟知的有RMI（Sun/Oracle）、Thrift（Facebook/Apache）、Dubbo（阿里巴巴/Apache）、gRPC（Google）、Motan1/2（新浪）、Finagle（Twitter）、brpc（百度/Apache）、.NET Remoting（微软）、Arvo（Hadoop）、JSON-RPC 2.0（公开规范，JSON-RPC 工作组）等。</p>
 <p>至于目前的RPC为何如此之多，是因为目前的RPC框架所采用的RPC协议都没有很好的解决“RPC过程中的三个问题”，而且每个框架的侧重点不同，如（引用自《凤凰架构》）：</p>
