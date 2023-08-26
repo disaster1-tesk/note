@@ -1,0 +1,3052 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="记录个人的成长历程">
+      
+      
+        <meta name="author" content="Disaster">
+      
+      
+        <link rel="canonical" href="https://disaster1-tesk.github.io/note/blog/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E6%9C%8D%E5%8A%A1%E5%AE%B9%E9%94%99/">
+      
+      
+        <link rel="prev" href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1/">
+      
+      
+        <link rel="next" href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/">
+      
+      
+      <link rel="icon" href="../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+    
+    
+      
+        <title>微服务之服务容错 - Disaster的提升之路</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0e669242.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../assets/stylesheets/custom.css">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#informal-essay-by-english" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  For updates follow <strong>@Disaster</strong> on
+<!--  <a rel="me" href="https://fosstodon.org/@squidfunk">-->
+<!--    <span class="twemoji mastodon">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M433 179.11c0-97.2-63.71-125.7-63.71-125.7-62.52-28.7-228.56-28.4-290.48 0 0 0-63.72 28.5-63.72 125.7 0 115.7-6.6 259.4 105.63 289.1 40.51 10.7 75.32 13 103.33 11.4 50.81-2.8 79.32-18.1 79.32-18.1l-1.7-36.9s-36.31 11.4-77.12 10.1c-40.41-1.4-83-4.4-89.63-54a102.54 102.54 0 0 1-.9-13.9c85.63 20.9 158.65 9.1 178.75 6.7 56.12-6.7 105-41.3 111.23-72.9 9.8-49.8 9-121.5 9-121.5zm-75.12 125.2h-46.63v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.33V197c0-58.5-64-56.6-64-6.9v114.2H90.19c0-122.1-5.2-147.9 18.41-175 25.9-28.9 79.82-30.8 103.83 6.1l11.6 19.5 11.6-19.5c24.11-37.1 78.12-34.8 103.83-6.1 23.71 27.3 18.4 53 18.4 175z"/></svg>-->
+<!--    </span>-->
+<!--    <strong>Fosstodon</strong>-->
+<!--  </a>-->
+<!--  and-->
+  <a href="https://twitter.com/DisasterWang">
+    <span class="twemoji twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </span>
+    <strong>Twitter</strong>
+  </a>
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Disaster的提升之路" class="md-header__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Disaster的提升之路
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              微服务之服务容错
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07 19.07 3.5m-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13.51 1.67m-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87.4 1.31M19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35-2.53-2.2m4.33-2.7 1.15-2.77 2.2 2.54-3.35.23m1.15-4.96-1.14-2.78 3.34.24-2.2 2.54M9.63 18.93l2.77 1.15-2.53 2.19-.24-3.34Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07 19.07 3.5m-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13.51 1.67m-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87.4 1.31M19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35-2.53-2.2m4.33-2.7 1.15-2.77 2.2 2.54-3.35.23m1.15-4.96-1.14-2.78 3.34.24-2.2 2.54M9.63 18.93l2.77 1.15-2.53 2.19-.24-3.34Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesk/note
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Disaster的提升之路" class="md-nav__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Disaster的提升之路
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesk/note
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    百宝箱
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            百宝箱
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_1" >
+        
+          <label class="md-nav__link" for="__nav_1_1" id="__nav_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    REDISSION
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            REDISSION
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    redisson的中文文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" >
+        
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    基础篇
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            基础篇
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC00%E7%AB%A0_%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第00章_写在前面
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC01%E7%AB%A0_%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第01章_数据库概述
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC02%E7%AB%A0_MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第02章_MySQL环境搭建
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC03%E7%AB%A0_%E5%9F%BA%E6%9C%AC%E7%9A%84SELECT%E8%AF%AD%E5%8F%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第03章_基本的SELECT语句
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC04%E7%AB%A0_%E8%BF%90%E7%AE%97%E7%AC%A6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第04章_运算符
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC05%E7%AB%A0_%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E9%A1%B5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第05章_排序与分页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC06%E7%AB%A0_%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第06章_多表查询
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC07%E7%AB%A0_%E5%8D%95%E8%A1%8C%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第07章_单行函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC08%E7%AB%A0_%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第08章_聚合函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC09%E7%AB%A0_%E5%AD%90%E6%9F%A5%E8%AF%A2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第09章_子查询
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC10%E7%AB%A0_%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86%E8%A1%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第10章_创建和管理表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC11%E7%AB%A0_%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B9%8B%E5%A2%9E%E5%88%A0%E6%94%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第11章_数据处理之增删改
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC12%E7%AB%A0_MySQL%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%B2%BE%E8%AE%B2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第12章_MySQL数据类型精讲
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC13%E7%AB%A0_%E7%BA%A6%E6%9D%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第13章_约束
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC14%E7%AB%A0_%E8%A7%86%E5%9B%BE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第14章_视图
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC15%E7%AB%A0_%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%8E%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第15章_存储过程与函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC16%E7%AB%A0_%E5%8F%98%E9%87%8F%E3%80%81%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%B8%B8%E6%A0%87/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第16章_变量、流程控制与游标
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC17%E7%AB%A0_%E8%A7%A6%E5%8F%91%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第17章_触发器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC18%E7%AB%A0_MySQL8%E5%85%B6%E5%AE%83%E6%96%B0%E7%89%B9%E6%80%A7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第18章_MySQL8其它新特性
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_2" >
+        
+          <label class="md-nav__link" for="__nav_1_2_2" id="__nav_1_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            高级篇
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC01%E7%AB%A0%20Linux%E4%B8%8BMySQL%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第01章 Linux下MySQL的安装与使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC02%E7%AB%A0%20MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第02章 MySQL的数据目录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC03%E7%AB%A0%20%E7%94%A8%E6%88%B7%E4%B8%8E%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第03章 用户与权限管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC04%E7%AB%A0%20%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第04章 逻辑架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC05%E7%AB%A0%20%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第05章 存储引擎
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC06%E7%AB%A0%20%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第06章 索引的数据结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC07%E7%AB%A0%20InnoDB%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第07章 InnoDB数据存储结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC08%E7%AB%A0%20%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第08章 索引的创建与设计原则
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC09%E7%AB%A0%20%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第09章 性能分析工具的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC10%E7%AB%A0%20%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96%E4%B8%8E%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第10章 索引优化与查询优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC11%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第11章 数据库的设计规范
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC12%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E5%BA%93%E5%85%B6%E5%AE%83%E8%B0%83%E4%BC%98%E7%AD%96%E7%95%A5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第12章 数据库其它调优策略
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC13%E7%AB%A0%20%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第13章 事务基础知识
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC14%E7%AB%A0%20MySQL%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第14章 MySQL事务日志
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC15%E7%AB%A0%20%E9%94%81/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第15章 锁
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC16%E7%AB%A0%20%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第16章 多版本并发控制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC17%E7%AB%A0%20%E5%85%B6%E5%AE%83%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第17章 其它数据库日志
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC18%E7%AB%A0%20%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第18章 主从复制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../note/mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC19%E7%AB%A0%20%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第19章 数据库备份与恢复
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resume/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E7%AE%80%E5%8E%86%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简历
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    博客
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            博客
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    架构
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            架构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务系列之单体架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%88%9D%E6%8E%A2%E2%80%9C%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E2%80%9D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务系列之初探“微服务架构”
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务系列之微服务架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务系列之远程服务调用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务之异步消息通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    微服务之服务容错
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    微服务之服务容错
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informal-essay-by-english" class="md-nav__link">
+    Informal Essay By English
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    引言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    容错策略
+  </a>
+  
+    <nav class="md-nav" aria-label="容错策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#failover" class="md-nav__link">
+    故障转移（Failover）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failfast" class="md-nav__link">
+    快速失败（Failfast）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsafe" class="md-nav__link">
+    安全失败（Failsafe）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsilent" class="md-nav__link">
+    沉默失败（Failsilent）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failback" class="md-nav__link">
+    故障恢复（Failback）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forking" class="md-nav__link">
+    并行调用（Forking）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broadcast" class="md-nav__link">
+    广播调用（Broadcast）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    容错设计模式
+  </a>
+  
+    <nav class="md-nav" aria-label="容错设计模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wiki" class="md-nav__link">
+    断路器模式（wiki）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulkhead-isolation" class="md-nav__link">
+    舱壁隔离模式（Bulkhead Isolation）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    重试模式
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    微服务之流量控制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#informal-essay-by-english" class="md-nav__link">
+    Informal Essay By English
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    引言
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    容错策略
+  </a>
+  
+    <nav class="md-nav" aria-label="容错策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#failover" class="md-nav__link">
+    故障转移（Failover）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failfast" class="md-nav__link">
+    快速失败（Failfast）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsafe" class="md-nav__link">
+    安全失败（Failsafe）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failsilent" class="md-nav__link">
+    沉默失败（Failsilent）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failback" class="md-nav__link">
+    故障恢复（Failback）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forking" class="md-nav__link">
+    并行调用（Forking）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broadcast" class="md-nav__link">
+    广播调用（Broadcast）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    容错设计模式
+  </a>
+  
+    <nav class="md-nav" aria-label="容错设计模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wiki" class="md-nav__link">
+    断路器模式（wiki）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulkhead-isolation" class="md-nav__link">
+    舱壁隔离模式（Bulkhead Isolation）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    重试模式
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/disaster1-tesk/note/tree/main/docs/blog/微服务之服务容错.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>微服务之服务容错</h1>
+
+<h3 id="informal-essay-by-english">Informal Essay By English</h3>
+<p>Share a sentence that I think is very reasonable, as long as you can know the underlying logic of anything, you can hold it without fear</p>
+<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/0dcc6dc575fc4fb188aa4f906f1a5138.png" /></p>
+<p>参考书籍：</p>
+<p>“凤凰架构”</p>
+<h3 id="_1">引言</h3>
+<p>在 Martin Fowler 与 James Lewis合写的文章《<a href="https://martinfowler.com/articles/microservices.html">Microservices: A Definition of This New Architectural Term</a>》中列举了微服务的九个核心的业务与技术特征，其中对于容错性设计（Design for Failure）的解释如下：</p>
+<blockquote>
+<p>将服务用作组件的结果是，应用程序需要设计为能够容忍服务失败。由于供应商不可用，任何服务调用都可能失败，客户必须尽可能优雅地对此做出响应。与单片设计相比，这是一个缺点，因为它引入了额外的复杂性来处理它。结果是微服务团队不断反思服务故障如何影响用户体验。Netflix 的Simian Army 在工作日期间引发服务甚至数据中心的故障，以测试应用程序的弹性和监控。这种生产中的自动化测试足以让大多数运营团队在下班前通常会感到不寒而栗。这并不是说单一的架构风格不能进行复杂的监控设置——它只是在我们的经验中不太常见。由于服务随时可能失败，因此能够快速检测到故障并在可能的情况下自动恢复服务非常重要。微服务应用程序非常重视应用程序的实时监控，检查架构元素（数据库每秒收到多少请求）和业务相关指标（例如每分钟收到多少订单）。语义监控可以提供出现问题的早期预警系统，触发开发团队跟进和调查。这对于微服务架构尤为重要，因为微服务对编排和事件协作的偏好 会导致紧急行为。虽然许多权威人士称赞意外出现的价值，但事实是，突发行为有时可能是一件坏事。监控对于快速发现不良的紧急行为至关重要，以便可以修复它。Monoliths 可以构建得像微服务一样透明——事实上，它们应该如此。不同之处在于，您绝对需要知道在不同进程中运行的服务何时断开连接。对于同一流程中的图书馆，这种透明度不太可能有用。微服务团队希望看到针对每个单独服务的复杂监控和日志记录设置，例如显示上/下状态的仪表板以及各种操作和业务相关指标。有关断路器状态、当前吞吐量和延迟的详细信息是我们在野外经常遇到的其他示例。</p>
+</blockquote>
+<p>简而言之就是：在微服务架构中不再虚幻地追求服务永远稳定，而是接受服务总会出错的现实，要求在微服务的设计中，有自动的机制对其依赖的服务能够进行快速故障检测，在持续出错的时候进行隔离，在服务恢复的时候重新联通</p>
+<p>上方只是对容错性设计的一个定义/解释，如何根据此原则进行微服务架构项目的落地实现我们还必须了解一些常用的容错策略和容错设计模式，作为具体设计与编码实践的指导。</p>
+<h3 id="_2">容错策略</h3>
+<blockquote>
+<p>“面对故障，我们该做些什么”</p>
+</blockquote>
+<p>常见的容错策略故障转移（Failover）、快速失败（Failfast）、安全失败（Failsafe）、沉默失败（Failsilent）、故障恢复（Failback）、并行调用（Forking）、广播调用（Broadcast）</p>
+<h4 id="failover">故障转移（Failover）</h4>
+<p>高可用的服务集群中，多数的服务——尤其是那些经常被其他服务所依赖的关键路径上的服务，均会部署有多个副本。这些副本可能部署在不同的节点（避免节点宕机）、不同的网络交换机（避免网络分区）甚至是不同的可用区（避免整个地区发生灾害或电力、骨干网故障）中。故障转移是指如果调用的服务器出现故障，系统不会立即向调用者返回失败结果，而是自动切换到其他服务副本，尝试其他副本能否返回成功调用的结果，从而保证了整体的高可用性。
+ 故障转移的容错策略应该有一定的调用次数限制，譬如允许最多重试三个服务，如果都发生报错，那还是会返回调用失败。原因不仅是因为重试是有执行成本的，更是因为过度的重试反而可能让系统处于更加不利的状况。譬如有以下调用链：</p>
+<blockquote>
+<p>Service A → Service B → Service C</p>
+</blockquote>
+<p>假设 A 的超时阈值为 100 毫秒，而 B 调用 C 花费 60 毫秒，然后不幸失败了，这时候做故障转移其实已经没有太大意义了，因为即时下一次调用能够返回正确结果，也很可能同样需要耗费 60 毫秒时间，时间总和就已经触及 A 服务的超时阈值，所以在这种情况下故障转移反而对系统是不利的。</p>
+<p>🔥 <a href="http://en.wikipedia.org/wiki/Failover">了解更多</a></p>
+<p>下面我们来看看dubbo在服务调用时故障转移的处理逻辑，先贴上代码：</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * {@link FailoverClusterInvoker}
+ *
+ */
+public class FailoverCluster implements Cluster {
+
+    public final static String NAME = &quot;failover&quot;;
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+        //FailoverClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new FailoverClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.Version;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.utils.NetUtils;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+import com.alibaba.dubbo.rpc.support.RpcUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * When invoke fails, log the initial error and retry other invokers (retry n times, which means at most n different invokers will be invoked)
+ * Note that retry causes latency.
+ * &lt;p&gt;
+ * &lt;a href=&quot;http://en.wikipedia.org/wiki/Failover&quot;&gt;Failover&lt;/a&gt;
+ *
+ */
+public class FailoverClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+
+    private static final Logger logger = LoggerFactory.getLogger(FailoverClusterInvoker.class);
+
+    public FailoverClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    @Override
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;rawtypes&quot;})
+    public Result doInvoke(Invocation invocation, final List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        //很多的check states 逻辑
+        List&lt;Invoker&lt;T&gt;&gt; copyinvokers = invokers;
+        checkInvokers(copyinvokers, invocation);
+        String methodName = RpcUtils.getMethodName(invocation);
+        int len = getUrl().getMethodParameter(methodName, Constants.RETRIES_KEY, Constants.DEFAULT_RETRIES) + 1;
+        if (len &lt;= 0) {
+            len = 1;
+        }
+        // retry loop.
+        RpcException le = null; // last exception.
+        List&lt;Invoker&lt;T&gt;&gt; invoked = new ArrayList&lt;Invoker&lt;T&gt;&gt;(copyinvokers.size()); // invoked invokers.
+        Set&lt;String&gt; providers = new HashSet&lt;String&gt;(len);
+        //当调用失败时，记录初始错误并重试其他调用程序(重试n次，这意味着最多将调用n个不同的调用程序)。注意，重试会导致延迟
+        for (int i = 0; i &lt; len; i++) {
+            //Reselect before retry to avoid a change of candidate `invokers`.
+            //NOTE: if `invokers` changed, then `invoked` also lose accuracy.
+            if (i &gt; 0) {
+                checkWhetherDestroyed();
+                copyinvokers = list(invocation);
+                // check again
+                checkInvokers(copyinvokers, invocation);
+            }
+            //loadbalance入口
+            Invoker&lt;T&gt; invoker = select(loadbalance, invocation, copyinvokers, invoked);
+            invoked.add(invoker);
+            RpcContext.getContext().setInvokers((List) invoked);
+            try {
+                Result result = invoker.invoke(invocation);
+                if (le != null &amp;&amp; logger.isWarnEnabled()) {
+                    logger.warn(&quot;Although retry the method &quot; + methodName
+                            + &quot; in the service &quot; + getInterface().getName()
+                            + &quot; was successful by the provider &quot; + invoker.getUrl().getAddress()
+                            + &quot;, but there have been failed providers &quot; + providers
+                            + &quot; (&quot; + providers.size() + &quot;/&quot; + copyinvokers.size()
+                            + &quot;) from the registry &quot; + directory.getUrl().getAddress()
+                            + &quot; on the consumer &quot; + NetUtils.getLocalHost()
+                            + &quot; using the dubbo version &quot; + Version.getVersion() + &quot;. Last error is: &quot;
+                            + le.getMessage(), le);
+                }
+                return result;
+            } catch (RpcException e) {
+                if (e.isBiz()) { // biz exception.
+                    throw e;
+                }
+                le = e;
+            } catch (Throwable e) {
+                le = new RpcException(e.getMessage(), e);
+            } finally {
+                providers.add(invoker.getUrl().getAddress());
+            }
+        }
+        throw new RpcException(le != null ? le.getCode() : 0, &quot;Failed to invoke the method &quot;
+                + methodName + &quot; in the service &quot; + getInterface().getName()
+                + &quot;. Tried &quot; + len + &quot; times of the providers &quot; + providers
+                + &quot; (&quot; + providers.size() + &quot;/&quot; + copyinvokers.size()
+                + &quot;) from the registry &quot; + directory.getUrl().getAddress()
+                + &quot; on the consumer &quot; + NetUtils.getLocalHost() + &quot; using the dubbo version &quot;
+                + Version.getVersion() + &quot;. Last error is: &quot;
+                + (le != null ? le.getMessage() : &quot;&quot;), le != null &amp;&amp; le.getCause() != null ? le.getCause() : le);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/**
+     * Select a invoker using loadbalance policy.&lt;/br&gt;
+     * a)Firstly, select an invoker using loadbalance. If this invoker is in previously selected list, or, 
+     * if this invoker is unavailable, then continue step b (reselect), otherwise return the first selected invoker&lt;/br&gt;
+     * b)Reslection, the validation rule for reselection: selected &gt; available. This rule guarantees that
+     * the selected invoker has the minimum chance to be one in the previously selected list, and also 
+     * guarantees this invoker is available.
+     *
+     * @param loadbalance load balance policy
+     * @param invocation
+     * @param invokers invoker candidates
+     * @param selected  exclude selected invokers or not
+     * @return
+     * @throws RpcException
+     */
+    protected Invoker&lt;T&gt; select(LoadBalance loadbalance, Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, List&lt;Invoker&lt;T&gt;&gt; selected) throws RpcException {
+        //还是很多的check states
+        if (invokers == null || invokers.isEmpty())
+            return null;
+        String methodName = invocation == null ? &quot;&quot; : invocation.getMethodName();
+
+        boolean sticky = invokers.get(0).getUrl().getMethodParameter(methodName, Constants.CLUSTER_STICKY_KEY, Constants.DEFAULT_CLUSTER_STICKY);
+        {
+            //ignore overloaded method
+            if (stickyInvoker != null &amp;&amp; !invokers.contains(stickyInvoker)) {
+                stickyInvoker = null;
+            }
+            //ignore concurrency problem
+            if (sticky &amp;&amp; stickyInvoker != null &amp;&amp; (selected == null || !selected.contains(stickyInvoker))) {
+                if (availablecheck &amp;&amp; stickyInvoker.isAvailable()) {
+                    return stickyInvoker;
+                }
+            }
+        }
+        //loadbalance逻辑入口
+        Invoker&lt;T&gt; invoker = doSelect(loadbalance, invocation, invokers, selected);
+
+        if (sticky) {
+            stickyInvoker = invoker;
+        }
+        return invoker;
+    }
+
+    //选择使用负载平衡策略的调用程序。
+    //首先，选择一个使用loadbalance的调用程序。如果这个调用程序在之前选择的列表中，或者这个调用程序不可用，那么继续步骤b(重新选择)，
+    //否则返回第一个选择的调用程序 selection，重新选择的验证规则:selected &gt;可用。
+    //该规则保证所选调用程序在先前选择的列表中出现的可能性最小，并且还保证该调用程序是可用的
+    private Invoker&lt;T&gt; doSelect(LoadBalance loadbalance, Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, List&lt;Invoker&lt;T&gt;&gt; selected) throws RpcException {
+        if (invokers == null || invokers.isEmpty())
+            return null;
+        if (invokers.size() == 1)
+            return invokers.get(0);
+        if (loadbalance == null) {
+            loadbalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(Constants.DEFAULT_LOADBALANCE);
+        }
+        Invoker&lt;T&gt; invoker = loadbalance.select(invokers, getUrl(), invocation);
+
+        //如果'调用器'在' selected '中或调用器不可用&amp;&amp; availablecheck为true，则重新选择。
+        if ((selected != null &amp;&amp; selected.contains(invoker))
+                || (!invoker.isAvailable() &amp;&amp; getUrl() != null &amp;&amp; availablecheck)) {
+            try {
+                Invoker&lt;T&gt; rinvoker = reselect(loadbalance, invocation, invokers, selected, availablecheck);
+                if (rinvoker != null) {
+                    invoker = rinvoker;
+                } else {
+                    //Check the index of current selected invoker, if it's not the last one, choose the one at index+1.
+                    int index = invokers.indexOf(invoker);
+                    try {
+                        //Avoid collision
+                        invoker = index &lt; invokers.size() - 1 ? invokers.get(index + 1) : invokers.get(0);
+                    } catch (Exception e) {
+                        logger.warn(e.getMessage() + &quot; may because invokers list dynamic change, ignore.&quot;, e);
+                    }
+                }
+            } catch (Throwable t) {
+                logger.error(&quot;cluster reselect fail reason is :&quot; + t.getMessage() + &quot; if can not solve, you can set cluster.availablecheck=false in url&quot;, t);
+            }
+        }
+        return invoker;
+    }
+</code></pre>
+<h4 id="failfast">快速失败（Failfast）</h4>
+<p>在一个调用链路中的服务通常也有主路和旁路之分，并不见得其中每个服务都是不可或缺的，有部分服务失败了也不影响核心业务的正确性。譬如开发基于 Spring 管理的应用程序时，通过扩展点、事件或者 AOP 注入的逻辑往往就属于旁路逻辑，典型的有审计、日志、调试信息，等等。属于旁路逻辑的另一个显著特征是后续处理不会依赖其返回值，或者它的返回值是什么都不会影响后续处理的结果，譬如只是将返回值记录到数据库，并不使用它参与最终结果的运算。对这类逻辑，一种理想的容错策略是即使旁路逻辑调用实际失败了，也当作正确来返回，如果需要返回值的话，系统就自动返回一个符合要求的数据类型的对应零值，然后自动记录一条服务调用出错的日志备查即可，这种策略被称为安全失败</p>
+<p>🔥<a href="http://en.wikipedia.org/wiki/Fail-fast">了解更多</a></p>
+<p>下面我们来看看dubbo在服务调用时快速失败的处理逻辑，先贴上代码：</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * {@link FailfastClusterInvoker}
+ *
+ */
+public class FailfastCluster implements Cluster {
+
+    public final static String NAME = &quot;failfast&quot;;
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+    //FailfastClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new FailfastClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.Version;
+import com.alibaba.dubbo.common.utils.NetUtils;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+
+import java.util.List;
+
+/**
+ * Execute exactly once, which means this policy will throw an exception immediately in case of an invocation error.
+ * Usually used for non-idempotent write operations
+ *
+ * &lt;a href=&quot;http://en.wikipedia.org/wiki/Fail-fast&quot;&gt;Fail-fast&lt;/a&gt;
+ *
+ */
+public class FailfastClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+
+    public FailfastClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    @Override
+    public Result doInvoke(Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        checkInvokers(invokers, invocation);
+        Invoker&lt;T&gt; invoker = select(loadbalance, invocation, invokers, null);
+        try {
+            return invoker.invoke(invocation);
+        } catch (Throwable e) {
+            if (e instanceof RpcException &amp;&amp; ((RpcException) e).isBiz()) { // biz exception.
+                throw (RpcException) e;
+            }
+            throw new RpcException(e instanceof RpcException ? ((RpcException) e).getCode() : 0, &quot;Failfast invoke providers &quot; + invoker.getUrl() + &quot; &quot; + loadbalance.getClass().getSimpleName() + &quot; select from all providers &quot; + invokers + &quot; for service &quot; + getInterface().getName() + &quot; method &quot; + invocation.getMethodName() + &quot; on consumer &quot; + NetUtils.getLocalHost() + &quot; use dubbo version &quot; + Version.getVersion() + &quot;, but no luck to perform the invocation. Last error is: &quot; + e.getMessage(), e.getCause() != null ? e.getCause() : e);
+        }
+    }
+}
+
+</code></pre>
+<p>源码看到这里其实就够了，其他的执行逻辑与上面的Failover的一致，但是相比较FailLover的执行，这里少了一个for循环也就是说invoke只执行一次，这意味着如果发生调用错误，此策略将立即抛出异常。通常用于非幂等写操作</p>
+<h4 id="failsafe">安全失败（Failsafe）</h4>
+<p>在一个调用链路中的服务通常也有主路和旁路之分，并不见得其中每个服务都是不可或缺的，有部分服务失败了也不影响核心业务的正确性。譬如开发基于 Spring 管理的应用程序时，通过扩展点、事件或者 AOP 注入的逻辑往往就属于旁路逻辑，典型的有审计、日志、调试信息，等等。属于旁路逻辑的另一个显著特征是后续处理不会依赖其返回值，或者它的返回值是什么都不会影响后续处理的结果，譬如只是将返回值记录到数据库，并不使用它参与最终结果的运算。对这类逻辑，一种理想的容错策略是即使旁路逻辑调用实际失败了，也当作正确来返回，如果需要返回值的话，系统就自动返回一个符合要求的数据类型的对应零值，然后自动记录一条服务调用出错的日志备查即可，这种策略被称为安全失败。</p>
+<p>🔥<a href="https://en.wikipedia.org/wiki/Fail-safe">了解更多</a></p>
+<p>还是一样用dubbo做案例：</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * {@link FailsafeClusterInvoker}
+ *
+ */
+public class FailsafeCluster implements Cluster {
+
+    public final static String NAME = &quot;failsafe&quot;;
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+        //FailsafeClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new FailsafeClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.RpcResult;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+
+import java.util.List;
+
+/**
+ * When invoke fails, log the error message and ignore this error by returning an empty RpcResult.
+ * Usually used to write audit logs and other operations
+ *
+ * &lt;a href=&quot;http://en.wikipedia.org/wiki/Fail-safe&quot;&gt;Fail-safe&lt;/a&gt;
+ *
+ */
+public class FailsafeClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+    private static final Logger logger = LoggerFactory.getLogger(FailsafeClusterInvoker.class);
+
+    public FailsafeClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    @Override
+    public Result doInvoke(Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        try {
+            checkInvokers(invokers, invocation);
+            Invoker&lt;T&gt; invoker = select(loadbalance, invocation, invokers, null);
+            return invoker.invoke(invocation);
+        } catch (Throwable e) {
+        //当调用失败时，记录错误消息，并通过返回空RpcResult来忽略此错误。通常用于编写审计日志和其他操作
+            logger.error(&quot;Failsafe ignore exception: &quot; + e.getMessage(), e);
+            return new RpcResult(); // ignore
+        }
+    }
+}
+
+</code></pre>
+<h4 id="failsilent">沉默失败（Failsilent）</h4>
+<p>如果大量的请求需要等到超时（或者长时间处理后）才宣告失败，很容易由于某个远程服务的请求堆积而消耗大量的线程、内存、网络等资源，进而影响到整个系统的稳定。面对这种情况，一种合理的失败策略是当请求失败后，就默认服务提供者一定时间内无法再对外提供服务，不再向它分配请求流量，将错误隔离开来，避免对系统其他部分产生影响，此即为沉默失败策略。</p>
+<p>这种策略dubbo是没有相应的实现的，但是我们可以自己去基于dubbo的SPI机制去实现，这里博主提供一个思路：在具体的invoker中增加一个Failsilent的boolean字段去标记是否属于沉默失败的invoker，如果Failsilent为true则不做调用，如果为false则正常调用，当然这里还涉及到这个沉默失败的时间怎么定义，这里也提供一个思路，常规的就是系统变量 -&gt; java环境变量 -&gt; 配置文件 进行动态的设置 </p>
+<h4 id="failback">故障恢复（Failback）</h4>
+<p>故障恢复一般不单独存在，而是作为其他容错策略的补充措施，一般在微服务管理框架中，如果设置容错策略为故障恢复的话，通常默认会采用快速失败加上故障恢复的策略组合。它是指当服务调用出错了以后，将该次调用失败的信息存入一个消息队列中，然后由系统自动开始异步重试调用。
+故障恢复策略一方面是尽力促使失败的调用最终能够被正常执行，另一方面也可以为服务注册中心和负载均衡器及时提供服务恢复的通知信息。故障恢复显然也是要求服务必须具备幂等性的，由于它的重试是后台异步进行，即使最后调用成功了，原来的请求也早已经响应完毕，所以故障恢复策略一般用于对实时性要求不高的主路逻辑，同时也适合处理那些不需要返回值的旁路逻辑。为了避免在内存中异步调用任务堆积，故障恢复与故障转移一样，应该有最大重试次数的限制。</p>
+<p>案例：</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * {@link FailbackClusterInvoker}
+ *
+ */
+public class FailbackCluster implements Cluster {
+
+    public final static String NAME = &quot;failback&quot;;
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+    ////FailbackClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new FailbackClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.common.threadlocal.NamedInternalThreadFactory;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.RpcResult;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * When fails, record failure requests and schedule for retry on a regular interval.
+ * Especially useful for services of notification.
+ *
+ * &lt;a href=&quot;http://en.wikipedia.org/wiki/Failback&quot;&gt;Failback&lt;/a&gt;
+ *
+ */
+public class FailbackClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+
+    private static final Logger logger = LoggerFactory.getLogger(FailbackClusterInvoker.class);
+    //重试时间
+    private static final long RETRY_FAILED_PERIOD = 5 * 1000;
+
+    /**
+     * Use {@link NamedInternalThreadFactory} to produce {@link com.alibaba.dubbo.common.threadlocal.InternalThread}
+     * which with the use of {@link com.alibaba.dubbo.common.threadlocal.InternalThreadLocal} in {@link RpcContext}.
+     */
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2,
+            new NamedInternalThreadFactory(&quot;failback-cluster-timer&quot;, true));
+
+    private final ConcurrentMap&lt;Invocation, AbstractClusterInvoker&lt;?&gt;&gt; failed = new ConcurrentHashMap&lt;Invocation, AbstractClusterInvoker&lt;?&gt;&gt;();
+    private volatile ScheduledFuture&lt;?&gt; retryFuture;
+
+    public FailbackClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    private void addFailed(Invocation invocation, AbstractClusterInvoker&lt;?&gt; router) {
+        if (retryFuture == null) {
+            synchronized (this) {
+                if (retryFuture == null) {
+                    retryFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            // collect retry statistics
+                            try {
+                                retryFailed();
+                            } catch (Throwable t) { // Defensive fault tolerance
+                                logger.error(&quot;Unexpected error occur at collect statistic&quot;, t);
+                            }
+                        }
+                    }, RETRY_FAILED_PERIOD, RETRY_FAILED_PERIOD, TimeUnit.MILLISECONDS);
+                }
+            }
+        }
+        failed.put(invocation, router);
+    }
+
+    void retryFailed() {
+        if (failed.size() == 0) {
+            return;
+        }
+        for (Map.Entry&lt;Invocation, AbstractClusterInvoker&lt;?&gt;&gt; entry : new HashMap&lt;Invocation, AbstractClusterInvoker&lt;?&gt;&gt;(
+                failed).entrySet()) {
+            Invocation invocation = entry.getKey();
+            Invoker&lt;?&gt; invoker = entry.getValue();
+            try {
+                invoker.invoke(invocation);
+                failed.remove(invocation);
+            } catch (Throwable e) {
+                logger.error(&quot;Failed retry to invoke method &quot; + invocation.getMethodName() + &quot;, waiting again.&quot;, e);
+            }
+        }
+    }
+
+    @Override
+    protected Result doInvoke(Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        try {
+            checkInvokers(invokers, invocation);
+            Invoker&lt;T&gt; invoker = select(loadbalance, invocation, invokers, null);
+            return invoker.invoke(invocation);
+        } catch (Throwable e) {
+            logger.error(&quot;Failback to invoke method &quot; + invocation.getMethodName() + &quot;, wait for retry in background. Ignored exception: &quot;
+                    + e.getMessage() + &quot;, &quot;, e);
+            //当失败时，记录失败请求并定期安排重试。
+            //特别适用于通知服务，重试时间在RETRY_FAILED_PERIOD静态变量中指定：5 * 1000 ms
+            addFailed(invocation, this);
+            return new RpcResult(); // ignore
+        }
+    }
+
+}
+
+</code></pre>
+<h4 id="forking">并行调用（Forking）</h4>
+<p>上面五种以“Fail”开头的策略是针对调用失败时如何进行弥补的，以下这两种策略则是在调用之前就开始考虑如何获得最大的成功概率。并行调用策略很符合人们日常对一些重要环节进行的“双重保险”或者“多重保险”的处理思路，它是指一开始就同时向多个服务副本发起调用，只要有其中任何一个返回成功，那调用便宣告成功，这是一种在关键场景中使用更高的执行成本换取执行时间和成功概率的策略</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * {@link ForkingClusterInvoker}
+ *
+ */
+public class ForkingCluster implements Cluster {
+
+    public final static String NAME = &quot;forking&quot;;
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+    //ForkingClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new ForkingClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.Constants;
+import com.alibaba.dubbo.common.threadlocal.NamedInternalThreadFactory;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Invoke a specific number of invokers concurrently, usually used for demanding real-time operations, but need to waste more service resources.
+ *
+ * &lt;a href=&quot;http://en.wikipedia.org/wiki/Fork_(topology)&quot;&gt;Fork&lt;/a&gt;
+ *
+ */
+public class ForkingClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+
+    /**
+     * Use {@link NamedInternalThreadFactory} to produce {@link com.alibaba.dubbo.common.threadlocal.InternalThread}
+     * which with the use of {@link com.alibaba.dubbo.common.threadlocal.InternalThreadLocal} in {@link RpcContext}.
+     */
+    private final ExecutorService executor = Executors.newCachedThreadPool(
+            new NamedInternalThreadFactory(&quot;forking-cluster-timer&quot;, true));
+
+    public ForkingClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    @Override
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;rawtypes&quot;})
+    public Result doInvoke(final Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        try {
+            checkInvokers(invokers, invocation);
+            final List&lt;Invoker&lt;T&gt;&gt; selected;
+            final int forks = getUrl().getParameter(Constants.FORKS_KEY, Constants.DEFAULT_FORKS);
+            final int timeout = getUrl().getParameter(Constants.TIMEOUT_KEY, Constants.DEFAULT_TIMEOUT);
+            if (forks &lt;= 0 || forks &gt;= invokers.size()) {
+                selected = invokers;
+            } else {
+                selected = new ArrayList&lt;Invoker&lt;T&gt;&gt;();
+                for (int i = 0; i &lt; forks; i++) {
+                    // TODO. Add some comment here, refer chinese version for more details.
+                    Invoker&lt;T&gt; invoker = select(loadbalance, invocation, invokers, selected);
+                    if (!selected.contains(invoker)) {//Avoid add the same invoker several times.
+                        selected.add(invoker);
+                    }
+                }
+            }
+            RpcContext.getContext().setInvokers((List) selected);
+            final AtomicInteger count = new AtomicInteger();
+            final BlockingQueue&lt;Object&gt; ref = new LinkedBlockingQueue&lt;Object&gt;();
+            for (final Invoker&lt;T&gt; invoker : selected) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Result result = invoker.invoke(invocation);
+                            ref.offer(result);
+                        } catch (Throwable e) {
+                            int value = count.incrementAndGet();
+                            if (value &gt;= selected.size()) {
+                                ref.offer(e);
+                            }
+                        }
+                    }
+                });
+            }
+            try {
+                Object ret = ref.poll(timeout, TimeUnit.MILLISECONDS);
+                if (ret instanceof Throwable) {
+                    Throwable e = (Throwable) ret;
+                    throw new RpcException(e instanceof RpcException ? ((RpcException) e).getCode() : 0, &quot;Failed to forking invoke provider &quot; + selected + &quot;, but no luck to perform the invocation. Last error is: &quot; + e.getMessage(), e.getCause() != null ? e.getCause() : e);
+                }
+                return (Result) ret;
+            } catch (InterruptedException e) {
+                throw new RpcException(&quot;Failed to forking invoke provider &quot; + selected + &quot;, but no luck to perform the invocation. Last error is: &quot; + e.getMessage(), e);
+            }
+        } finally {
+            // clear attachments which is binding to current thread.
+            RpcContext.getContext().clearAttachments();
+        }
+    }
+}
+
+</code></pre>
+<p>dubbo的Forking策略实现其实就是在一个循环中通过队列➕线程池实现，其中队列是用于存放返回信息，线程池执行具体invoke逻辑，具体逻辑可自行看源码，是比较好懂的</p>
+<h4 id="broadcast">广播调用（Broadcast）</h4>
+<p>广播调用与并行调用是相对应的，都是同时发起多个调用，但并行调用是任何一个调用结果返回成功便宣告成功，广播调用则是要求所有的请求全部都成功，这次调用才算是成功，任何一个服务提供者出现异常都算调用失败，广播调用通常会被用于实现“刷新分布式缓存”这类的操作。</p>
+<p>🔥<a href="https://en.wikipedia.org/wiki/Broadcasting">了解更多</a></p>
+<p>案例:</p>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Cluster;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+
+/**
+ * BroadcastCluster
+ *
+ */
+public class BroadcastCluster implements Cluster {
+
+    @Override
+    public &lt;T&gt; Invoker&lt;T&gt; join(Directory&lt;T&gt; directory) throws RpcException {
+       //BroadcastClusterInvoker的创建，在构建方法中会进行服务的availablecheck
+        return new BroadcastClusterInvoker&lt;T&gt;(directory);
+    }
+
+}
+
+</code></pre>
+<pre><code class="language-java">/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the &quot;License&quot;); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.dubbo.rpc.cluster.support;
+
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.dubbo.rpc.Invocation;
+import com.alibaba.dubbo.rpc.Invoker;
+import com.alibaba.dubbo.rpc.Result;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.RpcException;
+import com.alibaba.dubbo.rpc.cluster.Directory;
+import com.alibaba.dubbo.rpc.cluster.LoadBalance;
+
+import java.util.List;
+
+/**
+ * BroadcastClusterInvoker
+ *
+ */
+public class BroadcastClusterInvoker&lt;T&gt; extends AbstractClusterInvoker&lt;T&gt; {
+
+    private static final Logger logger = LoggerFactory.getLogger(BroadcastClusterInvoker.class);
+
+    public BroadcastClusterInvoker(Directory&lt;T&gt; directory) {
+        super(directory);
+    }
+
+    @Override
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;rawtypes&quot;})
+    public Result doInvoke(final Invocation invocation, List&lt;Invoker&lt;T&gt;&gt; invokers, LoadBalance loadbalance) throws RpcException {
+        checkInvokers(invokers, invocation);
+        RpcContext.getContext().setInvokers((List) invokers);
+        RpcException exception = null;
+        Result result = null;
+        //所谓广播调用其实就是调用所有的invoker的invoke方法
+        for (Invoker&lt;T&gt; invoker : invokers) {
+            try {
+                result = invoker.invoke(invocation);
+            } catch (RpcException e) {
+                exception = e;
+                logger.warn(e.getMessage(), e);
+            } catch (Throwable e) {
+                exception = new RpcException(e.getMessage(), e);
+                logger.warn(e.getMessage(), e);
+            }
+        }
+        if (exception != null) {
+            throw exception;
+        }
+        return result;
+    }
+
+}
+
+</code></pre>
+<p>到此几种常见的容错策略我们已经介绍完了，其实dubbo中内置还有Available、Mergeable两种容错策略，感兴趣的可以去看看dubbo源码，由于篇幅问题，这里就不过多介绍了，贴上代码连接：</p>
+<ul>
+<li><a href="https://github.com/apache/dubbo/blob/3.2/dubbo-cluster/src/main/java/org/apache/dubbo/rpc/cluster/support/MergeableClusterInvoker.java">Mergeable</a></li>
+<li><a href="https://github.com/apache/dubbo/blob/3.2/dubbo-cluster/src/main/java/org/apache/dubbo/rpc/cluster/support/AvailableClusterInvoker.java">Available</a></li>
+</ul>
+<p>最后再总结一下几种常见容错策略优缺点及应用场景对比：</p>
+<table>
+<thead>
+<tr>
+<th>容错策略</th>
+<th>优点</th>
+<th>缺点</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>故障转移</td>
+<td>系统自动处理，调用者对失败的信息不可见</td>
+<td>增加调用时间，额外的资源开销</td>
+<td>调用幂等服务对调用时间不敏感的场景</td>
+</tr>
+<tr>
+<td>快速失败</td>
+<td>调用者有对失败的处理完全控制权不依赖服务的幂等性</td>
+<td>调用者必须正确处理失败逻辑，如果一味只是对外抛异常，容易引起雪崩</td>
+<td>调用非幂等的服务超时阈值较低的场景</td>
+</tr>
+<tr>
+<td>安全失败</td>
+<td>不影响主路逻辑</td>
+<td>只适用于旁路调用</td>
+<td>调用链中的旁路服务</td>
+</tr>
+<tr>
+<td>沉默失败</td>
+<td>控制错误不影响全局</td>
+<td>出错的地方将在一段时间内不可用</td>
+<td>频繁超时的服务</td>
+</tr>
+<tr>
+<td>故障恢复</td>
+<td>调用失败后自动重试，也不影响主路逻辑</td>
+<td>重试任务可能产生堆积，重试仍然可能失败</td>
+<td>调用链中的旁路服务对实时性要求不高的主路逻辑也可以使用</td>
+</tr>
+<tr>
+<td>并行调用</td>
+<td>尽可能在最短时间内获得最高的成功率</td>
+<td>额外消耗机器资源，大部分调用可能都是无用功</td>
+<td>资源充足且对失败容忍度低的场景</td>
+</tr>
+<tr>
+<td>广播调用</td>
+<td>支持同时对批量的服务提供者发起调用</td>
+<td>资源消耗大，失败概率高</td>
+<td>只适用于批量操作的场景</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_3">容错设计模式</h3>
+<blockquote>
+<p>容错策略的最佳实现（类比于java与23种设计模式关系）</p>
+</blockquote>
+<p>为了实现各种各样的容错策略，开发人员总结出了一些被实践证明是有效的服务容错设计模式，譬如微服务中常见的断路器模式、舱壁隔离模式，重试模式，等等</p>
+<h4 id="wiki">断路器模式（<a href="https://en.wikipedia.org/wiki/Circuit_breaker">wiki</a>）</h4>
+<blockquote>
+<p>断路器是一个现代软件开发的设计模式。用以侦测错误，并避免不断地触发相同的错误（如维护时服务不可用、暂时性的系统问题或是未知的系统错误） -- 百度百科</p>
+</blockquote>
+<p>这个设计模式最早由技术作家 Michael Nygard 在《Release It!》一书中提出的，后又因 Martin Fowler 的《<a href="https://martinfowler.com/bliki/CircuitBreaker.html">Circuit Breaker</a>》一文而广为人知。这里引用凤凰架构对断路器模式的一个解释：</p>
+<p>断路器的基本思路是很简单的，就是通过代理（断路器对象）来一对一地（一个远程服务对应一个断路器对象）接管服务调用者的远程请求。断路器会持续监控并统计服务返回的成功、失败、超时、拒绝等各种结果，当出现故障（失败、超时、拒绝）的次数达到断路器的阈值时，它状态就自动变为“OPEN”，后续此断路器代理的远程访问都将直接返回调用失败，而不会发出真正的远程服务请求。通过断路器对远程服务的熔断，避免因持续的失败或拒绝而消耗资源，因持续的超时而堆积请求，最终的目的就是避免雪崩效应的出现。由此可见，断路器本质是一种快速失败策略的实现方式</p>
+<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/acec02cd9d724db98cb79c177af69806.png" /></p>
+<p>从调用序列来看，断路器就是一种有限状态机，断路器模式就是根据自身状态变化自动调整代理请求策略的过程。一般要设置以下三种断路器的状态</p>
+<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/678f64728bf641a8aaf8e81fc3f4fe52.png" /></p>
+<ul>
+<li>CLOSED：表示断路器关闭，此时的远程请求会真正发送给服务提供者。断路器刚刚建立时默认处于这种状态，此后将持续监视远程请求的数量和执行结果，决定是否要进入 OPEN 状态</li>
+<li>OPEN：表示断路器开启，此时不会进行远程请求，直接给服务调用者返回调用失败的信息，以实现快速失败策略。</li>
+<li>HALF OPEN：这是一种中间状态。断路器必须带有自动的故障恢复能力，当进入 OPEN 状态一段时间以后，将“自动”（一般是由下一次请求而不是计时器触发的，所以这里自动带引号）切换到 HALF OPEN 状态。该状态下，会放行一次远程调用，然后根据这次调用的结果成功与否，转换为 CLOSED 或者 OPEN 状态，以实现断路器的弹性恢复。</li>
+</ul>
+<h4 id="bulkhead-isolation">舱壁隔离模式（Bulkhead Isolation）</h4>
+<blockquote>
+<p>隔离了每个工作负载或服务的关键资源，如连接池、内存和 CPU。使用舱壁避免了单个工作负载（或服务）消耗掉所有资源，从而导致其他服务出现故障的场景。这种模式主要是通过防止由一个服务引起的级联故障来增加系统的弹性</p>
+</blockquote>
+<p>Hystrix使用该模式实现线程池的隔离。通过将每个依赖服务分配独立的线程池进行资源隔离，从而避免服务雪崩。</p>
+<p>Hystrix会为每一个Hystrix命令（@HystrixCommand来将某个函数包装成了Hystrix命令，Hystrix框架就会自动的为这个函数实现调用的隔离）创建一个独立的线程池，这样就算某个在Hystrix命令包装下的依赖服务出现延迟过高的情况，也只是对该依赖服务的调用产生影响，而不会拖慢其他的服务</p>
+<p>我们来看一个更具体的场景，当分布式系统所依赖的某个服务，譬如下图中的“服务 I”发生了超时，那在高流量的访问下——或者更具体点，假设平均 1 秒钟内对该服务的调用会发生 50 次，这就意味着该服务如果长时间不结束的话，每秒会有 50 条用户线程被阻塞。如果这样的访问量一直持续，我们按 Tomcat 默认的 HTTP 超时时间 20 秒来计算，20 秒内将会阻塞掉 1000 条用户线程，此后才陆续会有用户线程因超时被释放出来，回归 Tomcat 的全局线程池中。一般 Java 应用的线程池最大只会设置到 200 至 400 之间，这意味着此时系统在外部将表现为所有服务的全面瘫痪，而不仅仅是只有涉及到“服务 I”的功能不可用，因为 Tomcat 已经没有任何空余的线程来为其他请求提供服务了</p>
+<p><img alt="在这里插入图片描述" src="https://img-blog.csdnimg.cn/3ed4229eea4846fa93cc56efef2f9f91.png" /></p>
+<p>对于这类情况，一种可行的解决办法是为每个服务单独设立线程池，这些线程池默认不预置活动线程，只用来控制单个服务的最大连接数。譬如，对出问题的“服务 I”设置了一个最大线程数为 5 的线程池，这时候它的超时故障就只会最多阻塞 5 条用户线程，而不至于影响全局。</p>
+<h4 id="_4">重试模式</h4>
+<blockquote>
+<p>通过透明地重试失败的操作，让应用程序可以在尝试连接到服务或网络资源时处理出现的瞬态故障。这可以提高应用程序的稳定性</p>
+</blockquote>
+<p>重试模式顾名思义就是不断去重试，这个概念是比较好理解的，因此在此不对概念做过多介绍，稍微需要注意的是在什么情况下适合使用重试模式。如果你在应用程序与远程服务交互或访问远程资源时可能会遇到瞬态故障时，那么请使用此模式。 这些故障持续时间不长，并且重复先前失败的请求可能会在以后的尝试中成功。但是此模式不适合在如下场景下去使用：</p>
+<ul>
+<li>故障比较持久，可能会影响应用程序的响应。重复尝试可能失败的请求，对于应用程序来说是浪费时间和资源。</li>
+<li>用于处理非瞬态故障导致的失败，例如由应用程序的业务逻辑中的错误引起的内部异常</li>
+<li>作为解决系统中可扩展性问题的替代方法。如果应用程序遇到频繁的忙碌故障，这表明应当垂直扩展正在访问的服务或资源。</li>
+</ul>
+<p>在一开始介绍容错设计模式的时候就提出了它与容错策略的关系，对于类似这种模式的学习，我们只需要关注于它的核心思想是什么样其实就行，也不一定要按照它的要求去做，就像我们在开发java程序的时候，开发人员也可以不照搬23中设计模式去编码也能优雅地实现功能，四个字总结就是：“核心思想！！”</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 微服务之异步消息通信" rel="prev">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                微服务之异步消息通信
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%B9%8B%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/" class="md-footer__link md-footer__link--next" aria-label="下一页: 微服务之流量控制" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                微服务之流量控制
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Disaster
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "navigation.indexes", "navigation.instant", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+  
+      <script src="../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      
+    
+  <script src="../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>
