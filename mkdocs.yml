@@ -64,6 +64,9 @@ theme:
     repo: fontawesome/brands/github
     edit: material/file-edit-outline
 
+
+comments: true
+
 # [Navigtion]
 nav:
   - 百宝箱:
@@ -123,12 +126,12 @@ nav:
         - 微服务之服务容错: blog/微服务之服务容错.md
         - 微服务之流量控制: blog/微服务之流量控制.md
 
-#extra_javascript:
-#  - javascripts/mathjax.js
-#  - https://polyfill.io/v3/polyfill.min.js?features=es6
-#  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-#extra_css:
-#  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+extra_css:
+  - stylesheets/extra.css
 
 # Extensions
 markdown_extensions:
@@ -166,9 +169,3 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-
-
-#plugins:
-#  - search
-#  - social
-#  - tags
