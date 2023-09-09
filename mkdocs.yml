@@ -65,7 +65,7 @@ theme:
     edit: material/file-edit-outline
 
 
-comments: true
+
 
 # [Navigtion]
 nav:
@@ -117,14 +117,16 @@ nav:
       - 简历: resume/Java程序员简历模板.md
   - 博客:
       - 架构:
-        - 微服务系列之单体架构: blog/微服务系列之单体架构.md
-        - 微服务系列之初探“微服务架构”: blog/微服务系列之初探“微服务架构”.md
-        - 微服务系列之微服务架构: blog/微服务系列之微服务架构.md
-        - 微服务系列之远程服务调用: blog/微服务系列之远程服务调用.md
-        - 微服务之异步消息通信: blog/微服务之异步消息通信.md
-        - 微服务之事务处理: blog/微服务之事务处理.md
-        - 微服务之服务容错: blog/微服务之服务容错.md
-        - 微服务之流量控制: blog/微服务之流量控制.md
+        - 微服务系列之单体架构: blog/microservice/微服务系列之单体架构.md
+        - 微服务系列之初探“微服务架构”: blog/microservice/微服务系列之初探“微服务架构”.md
+        - 微服务系列之微服务架构: blog/microservice/微服务系列之微服务架构.md
+        - 微服务系列之远程服务调用: blog/microservice/微服务系列之远程服务调用.md
+        - 微服务之异步消息通信: blog/microservice/微服务之异步消息通信.md
+        - 微服务之事务处理: blog/microservice/微服务之事务处理.md
+        - 微服务之服务容错: blog/microservice/微服务之服务容错.md
+        - 微服务之流量控制: blog/microservice/微服务之流量控制.md
+  - 个人杂谈:
+      - 面试总结: note/whisper/chapter1.md
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -169,3 +171,6 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+
+#plugins:
+#  - meta
