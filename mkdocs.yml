@@ -132,6 +132,16 @@ nav:
         - 听力篇: lelts/part-1/3-listening.md
         - 阅读篇: lelts/part-1/4-reading.md
         - 口语篇: lelts/part-1/5-speaking.md
+      - everyone-can-use-english:
+        - 第一章：起点: lelts/everyone-can-us-english/chapter1.md
+        - 第二章：口语: lelts/everyone-can-us-english/chapter2.md
+        - 第三章：语音: lelts/everyone-can-us-english/chapter3.md
+        - 第四章：朗读: lelts/everyone-can-us-english/chapter4.md
+        - 第五章：词典: lelts/everyone-can-us-english/chapter5.md
+        - 第六章：语法: lelts/everyone-can-us-english/chapter6.md
+        - 第七章：精读: lelts/everyone-can-us-english/chapter7.md
+        - 第八章：叮嘱: lelts/everyone-can-us-english/chapter8.md
+        - 后记: everyone-can-us-english/end.md
   - 个人杂谈:
       - 面试总结: note/whisper/chapter1.md
 

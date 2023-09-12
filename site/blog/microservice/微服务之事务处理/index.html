@@ -897,6 +897,8 @@
       
         
       
+        
+      
     
     
       
@@ -1168,7 +1170,7 @@
 <li>持久性（Durability）：事务应当保证所有成功被提交的数据修改都能够正确地被持久化，不丢失数据。</li>
 </ul>
 <p>而事务的几种属性的实现原理就需要追究到<a href="https://en.wikipedia.org/wiki/Algorithms_for_Recovery_and_Isolation_Exploiting_Semantics">ARIES</a> 理论，感兴趣的小伙伴可以去看看，大致内容如下图：</p>
-<p><img src="../images/chapter1/img.png" alt="img" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img.png" /></p>
 <p>如果是比较了解mysql数据库的小伙伴应该能一眼看到几个关键字像Redo log、Undo log、 WAL（先写日志）这篇文章里面都有相应的解释，推荐大家去看看原文</p>
 <h5 id="_3">原子性和持久性<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h5>
 <p>原子性和持久性是关联密切相关的两个属性，特此放到一起说明。原子性保证了事务的多个操作要么都生效要么都不生效，不会存在中间状态；持久性保证了一旦事务生效，就不会再因为任何原因而导致其修改的内容被撤销或丢失。</p>
@@ -1183,7 +1185,7 @@
 <p>Commit Logging 保障数据持久性、原子性的原理并不难理解：首先，日志一旦成功写入 Commit Record，那整个事务就是成功的，即使真正修改数据时崩溃了，重启后根据已经写入磁盘的日志信息恢复现场、继续修改数据即可，这保证了持久性；其次，如果日志没有成功写入 Commit Record 就发生崩溃，那整个事务就是失败的，系统重启后会看到一部分没有 Commit Record 的日志，那将这部分日志标记为回滚状态即可，整个事务就像完全没好有发生过一样，这保证了原子性。</p>
 <p>虽然Commit Loggin机制可以保证在事务过程中保证其原子性和持久性，但是Commit Logging 存在一个巨大的先天缺陷：所有对数据的真实修改都必须发生在事务提交以后，即日志写入了 Commit Record 之后。在此之前，即使磁盘 I/O 有足够空闲、即使某个事务修改的数据量非常庞大，占用了大量的内存缓冲区，无论有何种理由，都决不允许在事务提交之前就修改磁盘上的数据，这一点是 Commit Logging 成立的前提，却对提升数据库的性能十分不利。</p>
 <p>那么如何去提升这个性能成为了我们需要重点关注的内容，其实到这里大家也可以猜到是如何去解决的了，引言中我们提到的ARIES就开始闪亮登场，ARIES 提出了“Write-Ahead Logging”的日志改进方案，所谓“提前写入”（Write-Ahead），就是允许在事务提交之前，提前写入变动数据的意思</p>
-<p><img src="../images/chapter1/img_1.png" alt="img_1" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img1.png" /></p>
 <p>论文中对于WAL这种机制的描述如上图，翻译成中文，其大概的内容就是：</p>
 <p>在计算机科学中，预写日志记录( WAL ) 是在数据库系统中提供原子性和持久性（ ACID属性中的两个）的一系列技术。它可以看作是“事件溯源”架构的实现，其中系统的状态是传入事件从初始状态演变而来的结果。预写日志是一种仅附加的辅助磁盘驻留结构，用于崩溃和事务恢复。更改首先记录在日志中，必须写入稳定存储，然后才能将更改写入数据库。</p>
 <p>预写日志的主要功能可以概括为：</p>
@@ -1210,11 +1212,11 @@
 <li>回滚阶段（Undo）：该阶段处理经过分析、重做阶段后剩余的恢复事务集合，此时剩下的都是需要回滚的事务，它们被称为 Loser，根据 Undo Log 中的信息，将已经提前写入磁盘的信息重新改写回去，以达到回滚这些 Loser 事务的目的。</li>
 </ul>
 <p>数据库按照是否允许 FORCE 和 STEAL 可以产生共计四种组合，从优化磁盘 I/O 的角度看，NO-FORCE 加 STEAL 组合的性能无疑是最高的；从算法实现与日志的角度看 NO-FORCE 加 STEAL 组合的复杂度无疑也是最高的。这四种组合与 Undo Log、Redo Log 之间的具体关系如下图所示：</p>
-<p><img src="../images/chapter1/img_2.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img2.png" /></p>
 <p>其实在论文里面还提到了一种通过<a href="https://en.wikipedia.org/wiki/Shadow_paging">Shadow page</a>(在计算机科学中，影子分页是一种在数据库系统中提供原子性和持久性的技术。此上下文中的页面指的是物理存储单元，通常为 1 到 64 KiB 的数量级。有点像java中的COW（CopyOnWriteArrayList）中复制读思路)</p>
 <blockquote>
 <p>Shadow Paging 的大体思路是对数据的变动会写到硬盘的数据中，但并不是直接就地修改原先的数据，而是先将数据复制一份副本，保留原数据，修改副本数据。在事务过程中，被修改的数据会同时存在两份，一份是修改前的数据，一份是修改后的数据，这也是“影子”（Shadow）这个名字的由来。当事务成功提交，所有数据的修改都成功持久化之后，最后一步是去修改数据的引用指针，将引用从原数据改为新复制出来修改后的副本，最后的“修改指针”这个操作将被认为是原子操作，现代磁盘的写操作可以认为在硬件上保证了不会出现“改了半个值”的现象。所以 Shadow Paging 也可以保证原子性和持久性。Shadow Paging 实现事务要比 Commit Logging 更加简单，但涉及隔离性与并发锁时，Shadow Paging 实现的事务并发能力就相对有限，因此在高性能的数据库中应用不多。</p>
-<p><img src="../images/chapter1/img_3.png" alt="img_3" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img3.png" /></p>
 </blockquote>
 <p>到此，我们就已经介绍完了数据库是如何保证原子性和持久性的，如果对这块的知识很感兴趣的小伙伴可以去看看原论文，下面我们再来介绍一下数据库是如何保证隔离性</p>
 <h4 id="_4">隔离性<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
@@ -1225,7 +1227,7 @@
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">UPDATE</span><span class="w"> </span><span class="n">accounts</span><span class="w"> </span><span class="n">SET</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">AA</span><span class="err">&#39;</span><span class="p">;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">UPDATE</span><span class="w"> </span><span class="n">accounts</span><span class="w"> </span><span class="n">SET</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">BB</span><span class="err">&#39;</span><span class="p">;</span>
 </code></pre></div>
-<img src="../images/chapter1/img_4.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<img alt="" src="../images/chapter1_img4.png" /></p>
 <p>我们从隔离性的定义上就能嗅出隔离性肯定与并发密切相关，因为如果没有并发，所有事务全都是串行的，那就不需要任何隔离，或者说这样的访问具备了天然的隔离性。但现实情况不可能没有并发，要在并发下实现串行的数据访问该怎样做？数据库提供了两种方案：第一种是通过加锁（很容易就想到）、第二种是通过MVCC</p>
 <h5 id="_5">加锁<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h5>
 <p>在数据库中，除传统的计算资源(如CPU、RAM、I/O等)的争用以外，数据也是一种供许多用户共享的资源。为保证数据的一致性，需要对并发操作进行控制，因此产生了锁 。同时锁机制也为实现MySQL 的各个隔离级别提供了保证。 锁冲突也是影响数据库并发访问性能的一个重要因素。所以锁对数据库而言显得尤其重要，也更加复杂。现代数据库均提供了以下三种锁：</p>
@@ -1264,14 +1266,14 @@
 <li>准备阶段：又叫作投票阶段，在这一阶段，协调者询问事务的所有参与者是否准备好提交，参与者如果已经准备好提交则回复 Prepared，否则回复 Non-Prepared。这里所说的准备操作跟人类语言中通常理解的准备并不相同，对于数据库来说，准备操作是在重做日志中记录全部事务提交操作所要做的内容，它与本地事务中真正提交的区别只是暂不写入最后一条 Commit Record 而已，这意味着在做完数据持久化后并不立即释放隔离性，即仍继续持有锁，维持数据对其他非事务内观察者的隔离状态。</li>
 <li>提交阶段：又叫作执行阶段，协调者如果在上一阶段收到所有事务参与者回复的 Prepared 消息，则先自己在本地持久化事务状态为 Commit，在此操作完成后向所有参与者发送 Commit 指令，所有参与者立即执行提交操作；否则，任意一个参与者回复了 Non-Prepared 消息，或任意一个参与者超时未回复，协调者将自己的事务状态持久化为 Abort 之后，向所有参与者发送 Abort 指令，参与者立即执行回滚操作。对于数据库来说，这个阶段的提交操作应是很轻量的，仅仅是持久化一条 Commit Record 而已，通常能够快速完成，只有收到 Abort 指令时，才需要根据回滚日志清理已提交的数据，这可能是相对重负载的操作。</li>
 </ul>
-<p><img src="../images/chapter1/img_5.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img5.png" /></p>
 <p>以上这两个过程被称为<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4">“两段式提交”</a>（2 Phase Commit，2PC）协议，而它能够成功保证一致性还需要一些其他前提条件：</p>
 <ul>
 <li>必须假设网络在提交阶段的短时间内是可靠的，即提交阶段不会丢失消息。同时也假设网络通信在全过程都不会出现误差，即可以丢失消息，但不会传递错误的消息，XA 的设计目标并不是解决诸如拜占庭将军一类的问题。两段式提交中投票阶段失败了可以补救（回滚），而提交阶段失败了无法补救（不再改变提交或回滚的结果，只能等崩溃的节点重新恢复），因而此阶段耗时应尽可能短，这也是为了尽量控制网络风险的考虑。</li>
 <li>必须假设因为网络分区、机器崩溃或者其他原因而导致失联的节点最终能够恢复，不会永久性地处于失联状态。由于在准备阶段已经写入了完整的重做日志，所以当失联机器一旦恢复，就能够从日志中找出已准备妥当但并未提交的事务数据，并向协调者查询该事务的状态，确定下一步应该进行提交还是回滚操作。</li>
 </ul>
 <p>上面所说的协调者、参与者都是可以由数据库自己来扮演的，不需要应用程序介入。协调者一般是在参与者之间选举产生的，而应用程序相对于数据库来说只扮演客户端的角色。两段式提交的交互时序如下图所示。</p>
-<p><img src="../images/chapter1/img_6.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img6.png" /></p>
 <p>两段式提交原理简单，并不难实现，但有几个非常显著的缺点</p>
 <ul>
 <li>单点问题：协调者在两段提交中具有举足轻重的作用，协调者等待参与者回复时可以有超时机制，允许参与者宕机，但参与者等待协调者指令时无法做超时处理。一旦宕机的不是其中某个参与者，而是协调者的话，所有参与者都会受到影响。如果协调者一直没有恢复，没有正常发送 Commit 或者 Rollback 的指令，那所有参与者都必须一直等待。</li>
@@ -1280,7 +1282,7 @@
 </ul>
 <p>为了缓解2PC的一部分缺陷，后续又提出了<a href="https://zh.wikipedia.org/wiki/%E4%B8%89%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4">3PC（三段式提交）</a>。三段式提交把原本的两段式提交的准备阶段再细分为两个阶段，分别称为 CanCommit、PreCommit，把提交阶段改称为 DoCommit 阶段。其中，新增的 CanCommit 是一个询问阶段，协调者让每个参与的数据库根据自身状态，评估该事务是否有可能顺利完成。将准备阶段一分为二的理由是这个阶段是重负载的操作，一旦协调者发出开始准备的消息，每个参与者都将马上开始写重做日志，它们所涉及的数据资源即被锁住，如果此时某一个参与者宣告无法完成提交，相当于大家都白做了一轮无用功。所以，增加一轮询问阶段，如果都得到了正面的响应，那事务能够成功提交的把握就比较大了，这也意味着因某个参与者提交时发生崩溃而导致大家全部回滚的风险相对变小。因此，在事务需要回滚的场景中，三段式的性能通常是要比两段式好很多的，但在事务能够正常提交的场景中，两者的性能都依然很差，甚至三段式因为多了一次询问，还要稍微更差一些</p>
 <p>同样也是由于事务失败回滚概率变小的原因，在三段式提交中，如果在 PreCommit 阶段之后发生了协调者宕机，即参与者没有能等到 DoCommit 的消息的话，默认的操作策略将是提交事务而不是回滚事务或者持续等待，这就相当于避免了协调者单点问题的风险。三段式提交的操作时序如下图所示。</p>
-<p><img src="../images/chapter1/img_7.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img7.png" /></p>
 <h4 id="_7">共享事务<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>共享事务（Share Transaction）是指多个服务共用同一个数据源</p>
@@ -1314,7 +1316,7 @@
 <li>Kitchenservice消费CreditCardAuthorized事件并将Ticket的状态更改为AWAITING_ACCEPTANCE.</li>
 <li>0rderservice接收CreditCardAuthorized事件，将Order的状态更改为APPROVED，并发布OrderApproved事件</li>
 </ol>
-<p><img src="../images/chapter1/img_8.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img8.png" /></p>
 <p>Create Order Saga还必须处理Saga参与方拒绝Order 并发布某种失败事件的场景。例如，消费者信用卡的授权可能会失败。Saga 必领执行补偿性事务来撤销已经完成的事务，其事件执行流程如下：</p>
 <ol>
 <li>order service创建一个处于APPROVAL_PENDING状态的order 并发布OrderCreated 事件</li>
@@ -1325,7 +1327,7 @@
 <li>Kitchenservice消费CreditCardAuthorizationFailed事件，然后把后厨工单Ticket的状态更改为REJECTED</li>
 <li>Orderservice消费creditCardauthorizationFailed事件，并将order的状态更改为REJECTED</li>
 </ol>
-<p><img src="../images/chapter1/img_9.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img9.png" /></p>
 <p>上面我们说的这个案例数据交互的完成依赖于消息中的发布/订阅模式，那我们就必须考虑一些与服务间通信相关的问题。</p>
 <p>第一个问题是确保Saga参与方将更新共本地数据库和发布事件作为数据库事务的一部分。基于协同的Saga的每一步都会更新数据库并发布一个事件。例如，在CreateorderSaga中,Kitchen Service接收consumerverified事件，创建Ticket，并发布Ticketcreated事件。数据库更新和事件发布必须是原子的。所以我们在发布事件消息是必须是选用事务性消息。</p>
 <p>第二个问题是确保Saga参与方必须能够将接收到的每个事件映射到自己的数据上。例如，当Orderservice收到CreditCardAuthorized事件时，它必领能够查找相应的order。解决方案是让Saga参与方发布包含相关性1D的事件，该相关性D使其他参与方能够执行数据的操作。例如，Create Order Saga的参与方可以使用orderId作为从一个参与方传递到下一个参与方的相关性ID。Accounting Service发布一个CreditcardAuthorized事件，其中包含Ticketcreated事件中的orderId。当Orderservice接收到Creditcard-Authorized事件时，它使用orderId来检素相应的Order。同样，Kitchen Service使用该事件的orderId来检素相应的Ticket</p>
@@ -1354,7 +1356,7 @@
 <li>Saga编排器向Kitchen Service发送Approve Ticket命令</li>
 <li>Saga编排器向Order Service发送Approve Order命令</li>
 </ol>
-<p><img src="../images/chapter1/img_10.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img10.png" /></p>
 <p>需要注意的是，在最后一步中，Saga编排器会向Order Service发送命令式消息，即使它是Order Service的一个组件。原则上，Create Order Saga可以通过直接更新order来批准订单。但为了保持一致性，Saga将order
 service视为另一个参与方。</p>
 <p>上述的流程描述的是一切正常情况下，但一个Saga可能有很多场景，例如，由于Consumer Service、KitchenService或AccountingService的失败，Saga可能会失败。</p>
@@ -1368,7 +1370,7 @@ service视为另一个参与方。</p>
 <li>Order Approved:最终状态，表示该Saga已成功完成。</li>
 <li>Order Rejected:最终状态，表示Order被其中一个参与方拒绝</li>
 </ul>
-<p><img src="../images/chapter1/img_11.png" alt="SQLisputonghua" style="zoom:67%;" /></p>
+<p><img alt="" src="../images/chapter1_img11.png" /></p>
 <p>状态机还定义了许多状态转换。例如，状态机从CreatingTicket状态转换为Authorizing Card或Rejected Order状态。当它收到成功回复Create Ticket命令时，它将转换到Authorizing Card状态。或者，如果Kitchen Service无法创建Ticket，则状态机将转换为Order Rejected状态。</p>
 <p>状态机的初始操作是将Verify Consumer命令发送到Consumer Service。Consumer Service的响应会触发下一次状态转型。如果消费者被成功验证，则Saga会创建Ticket并转换为Creating Ticket状态。但是，如果消费者验证失败，则Saga会拒绝Order并转换为OrderRejected状态。状态机经历了许多其他状态转换，由Saga参与方的响应驱动，直到达到最终状态为Order Approved或Order Rejected中的一种</p>
 <p>基于编排的Saga 有以下好处:</p>
