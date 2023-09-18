@@ -125,6 +125,9 @@ nav:
         - 微服务之事务处理: blog/microservice/微服务之事务处理.md
         - 微服务之服务容错: blog/microservice/微服务之服务容错.md
         - 微服务之流量控制: blog/microservice/微服务之流量控制.md
+      - 设计模式:
+          - 前言: blog/designmodel/前言.md
+          - 23种设计模式: blog/designmodel/23种设计模式.md
   - LELTS:
       - English_level_up_tips:
         - 认知篇: lelts/part-1/1-understanding.md
