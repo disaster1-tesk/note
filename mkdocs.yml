@@ -145,6 +145,9 @@ nav:
         - 第七章：精读: lelts/everyone-can-us-english/chapter7.md
         - 第八章：叮嘱: lelts/everyone-can-us-english/chapter8.md
         - 后记: everyone-can-us-english/end.md
+      - TheCompleteTrainingManual:
+          - TheCompleteTrainingManual: lelts/TheCompleteTrainingManual/TheCompleteTrainingManual.md
+          - TheCompleteTrainingManual_pdf: lelts/TheCompleteTrainingManual/TheCompleteTrainingManual.pdf
   - 个人杂谈:
       - 面试总结: note/whisper/chapter1.md
 
