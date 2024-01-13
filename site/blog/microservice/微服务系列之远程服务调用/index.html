@@ -1102,46 +1102,46 @@
 
   <h1>微服务系列之远程服务调用</h1>
 
-<h3 id="_1">随笔<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<h3 id="_1">随笔</h3>
 <p>Dissatisfaction with oneself is the fundamental characteristic of any talented person</p>
 <p>参考书籍：
 1. “凤凰架构”
 2. “微服务架构设计模式”</p>
 <p>本篇文章开始之前提示一下，读者带着“IPC与RPC的有什么区别”疑惑读效果更好</p>
-<h3 id="_2">引言<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<h3 id="_2">引言</h3>
 <p>从架构师的角度来看，微服务架构的落地实现第一个需要解决问题就是如何进行远程服务调用。</p>
 <p>我猜接触过微服务架构的小伙伴此时脑子里面已经涌现出诸如dubbo、feign、openfeign等RPC框架去实现远程服务调用。但是在面试过程中如果面试官问大家这些远程服务框架的实现原理是什么，有部分小伙伴就会哑火（以前的博主在面试的过程中体验过），正是有了这样的经历，博主每天头悬梁锥刺股地学习，现在把所学的内容总结一下通过文章的形式发布，巩固自身之外也希望能够给大家带来一点帮助。</p>
-<h3 id="ipc">进程间的通信（IPC）<a class="headerlink" href="#ipc" title="Permanent link">&para;</a></h3>
+<h3 id="ipc">进程间的通信（IPC）</h3>
 <blockquote>
 <p>进程间的通信：是指两个进程的数据之间产生交互</p>
 </blockquote>
 <p>在了解IPC之前，我们先来看看同一个进程是怎么进行数据交互的，下面我们拿一个经典的案例程序“hello world”举例：</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Caller    :  调用者，代码里的main()</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Callee    ： 被调用者，代码里的println()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Call Site ： 调用点，即发生方法调用的指令流位置</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">// Parameter ： 参数，由Caller传递给Callee的数据，即“hello world”</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// Retval    ： 返回值，由Callee传递给Caller的数据。以下代码中如果方法能够正常结束，它是void，如果方法异常完成，它是对应的异常</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;hello world&quot;</span><span class="p">);</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-反编译（javap -c **.class）的结果：</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">com</span><span class="p">.</span><span class="na">servicemeshmall</span><span class="p">.</span><span class="na">componet</span><span class="p">.</span><span class="na">infrastructure</span><span class="p">.</span><span class="na">config</span><span class="p">.</span><span class="na">RedisConfig</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">servicemeshmall</span><span class="p">.</span><span class="na">componet</span><span class="p">.</span><span class="na">infrastructure</span><span class="p">.</span><span class="na">config</span><span class="p">.</span><span class="na">RedisConfig</span><span class="p">();</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">       </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">       </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w">                  </span><span class="c1">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">       </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">String</span><span class="o">[]</span><span class="p">);</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">       </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">getstatic</span><span class="w">     </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">       </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="n">ldc</span><span class="w">           </span><span class="err">#</span><span class="mi">3</span><span class="w">                  </span><span class="c1">// String hello world</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">       </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w">                  </span><span class="c1">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">       </span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">}</span>
-</code></pre></div>
-我们分析一下这个程序从启动到调用println()方法输出hello world这行时，计算机（物理机或者虚拟机）要完成以下几项工作：</p>
+<pre><code class="language-java">// Caller    :  调用者，代码里的main()
+// Callee    ： 被调用者，代码里的println()
+// Call Site ： 调用点，即发生方法调用的指令流位置
+// Parameter ： 参数，由Caller传递给Callee的数据，即“hello world”
+// Retval    ： 返回值，由Callee传递给Caller的数据。以下代码中如果方法能够正常结束，它是void，如果方法异常完成，它是对应的异常
+ public static void main(String[] args) {
+        System.out.println(&quot;hello world&quot;);
+ }
+</code></pre>
+<p>反编译（javap -c **.class）的结果：</p>
+<pre><code class="language-java">public class com.servicemeshmall.componet.infrastructure.config.RedisConfig {
+  public com.servicemeshmall.componet.infrastructure.config.RedisConfig();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+       3: ldc           #3                  // String hello world
+       5: invokevirtual #4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+       8: return
+}
+</code></pre>
+<p>我们分析一下这个程序从启动到调用println()方法输出hello world这行时，计算机（物理机或者虚拟机）要完成以下几项工作：</p>
 <ol>
 <li>调用getstatic字节码指令获取System中的PrintStream静态对象</li>
 <li>调用ldc字节码指令将字符串helloworld的引用地址压栈（传递方法参数）</li>
@@ -1154,16 +1154,20 @@
 <ol>
 <li>管道（Pipe）或者具名管道（Named Pipe）：管道类似于两个进程间的桥梁，可通过管道在进程间传递少量的字符流或字节流。普通管道只用于有亲缘关系进程（由一个进程启动的另外一个进程）间的通信，具名管道摆脱了普通管道没有名字的限制，除具有管道所有的功能外，它还允许无亲缘关系进程间的通信。管道典型的应用就是命令行中的|操作符，譬如：</li>
 </ol>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ps<span class="w"> </span>-ef<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>java
-</code></pre></div>
-2. 信号（Signal）：信号用于通知目标进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程自身。信号的典型应用是kill命令，譬如：</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Shell 进程向指定 PID 的进程发送 SIGKILL 信号</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span>pid
-</code></pre></div>
-3. 信号量（Semaphore）：信号量用于两个进程之间同步协作手段，它相当于操作系统提供的一个特殊变量，程序可以在上面进行wait()和notify()操作。(简而言之就是通过一个共享变量进行进程间的通信，加锁与解锁其实就是一种通信方式，是操作系统层面的提供的)
-4. 消息队列（Message Queue）：以上三种方式只适合传递传递少量信息，POSIX 标准中定义了消息队列用于进程间数据量较多的通信。进程可以向队列添加消息，被赋予读权限的进程则可以从队列消费消息。消息队列克服了信号承载信息量少，管道只能用于无格式字节流以及缓冲区大小受限等缺点，但实时性相对受限。
-5. 共享内存（Shared Memory）：允许多个进程访问同一块公共的内存空间，这是效率最高的进程间通信形式。原本每个进程的内存地址空间都是相互隔离的，但操作系统提供了让进程主动创建、映射、分离、控制某一块内存的程序接口。当一块内存被多进程共享时，各个进程往往会与其它通信机制，譬如信号量结合使用，来达到进程间同步及互斥的协调操作。（可由程序控制，与3中的方式层面不同）
-6. 套接字接口（Socket）：消息队列和共享内存只适合单机多进程间的通信，套接字接口是更为普适的进程间通信机制，可用于不同机器之间的进程通信。套接字（Socket）起初是由 UNIX 系统的 BSD 分支开发出来的，现在已经移植到所有主流的操作系统上。出于效率考虑，当仅限于本机进程间通信时，套接字接口是被优化过的，不会经过网络协议栈，不需要打包拆包、计算校验和、维护序号和应答等操作，只是简单地将应用层数据从一个进程拷贝到另一个进程，这种进程间通信方式有个专名的名称：UNIX Domain Socket，又叫做 IPC Socket</p>
+<pre><code class="language-bash">ps -ef | grep java
+</code></pre>
+<ol>
+<li>信号（Signal）：信号用于通知目标进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程自身。信号的典型应用是kill命令，譬如：</li>
+</ol>
+<pre><code class="language-bash"># Shell 进程向指定 PID 的进程发送 SIGKILL 信号
+kill -9 pid
+</code></pre>
+<ol>
+<li>信号量（Semaphore）：信号量用于两个进程之间同步协作手段，它相当于操作系统提供的一个特殊变量，程序可以在上面进行wait()和notify()操作。(简而言之就是通过一个共享变量进行进程间的通信，加锁与解锁其实就是一种通信方式，是操作系统层面的提供的)</li>
+<li>消息队列（Message Queue）：以上三种方式只适合传递传递少量信息，POSIX 标准中定义了消息队列用于进程间数据量较多的通信。进程可以向队列添加消息，被赋予读权限的进程则可以从队列消费消息。消息队列克服了信号承载信息量少，管道只能用于无格式字节流以及缓冲区大小受限等缺点，但实时性相对受限。</li>
+<li>共享内存（Shared Memory）：允许多个进程访问同一块公共的内存空间，这是效率最高的进程间通信形式。原本每个进程的内存地址空间都是相互隔离的，但操作系统提供了让进程主动创建、映射、分离、控制某一块内存的程序接口。当一块内存被多进程共享时，各个进程往往会与其它通信机制，譬如信号量结合使用，来达到进程间同步及互斥的协调操作。（可由程序控制，与3中的方式层面不同）</li>
+<li>套接字接口（Socket）：消息队列和共享内存只适合单机多进程间的通信，套接字接口是更为普适的进程间通信机制，可用于不同机器之间的进程通信。套接字（Socket）起初是由 UNIX 系统的 BSD 分支开发出来的，现在已经移植到所有主流的操作系统上。出于效率考虑，当仅限于本机进程间通信时，套接字接口是被优化过的，不会经过网络协议栈，不需要打包拆包、计算校验和、维护序号和应答等操作，只是简单地将应用层数据从一个进程拷贝到另一个进程，这种进程间通信方式有个专名的名称：UNIX Domain Socket，又叫做 IPC Socket</li>
+</ol>
 <p>现在我们已经具备多种实现进程间通信的能力，但是，哪种方式更适合实现，需要我们从更高层面的角度考虑几个问题（问题出自：Andrew Tanenbaum 教授曾发表的论文《A Critique of The Remote Procedure Call Paradigm》）：</p>
 <ol>
 <li>两个进程通信，谁作为服务端，谁作为客户端？</li>
@@ -1187,14 +1191,14 @@
 <li>The network is homogeneous —— 网络是同质化的。</li>
 </ol>
 <p>既然一开始想通过socket实现的IPC并没有满足分布式运算下的远程服务调用需要的条件，那么我们就需要采用其他的方式去满足分布式运算下的远程服务调用，先如今市面上主流的满足分布式运算下的远程服务调用有HTTP Rest、RPC框架两种方式。</p>
-<h3 id="rpc">远程服务调用（RPC）<a class="headerlink" href="#rpc" title="Permanent link">&para;</a></h3>
+<h3 id="rpc">远程服务调用（RPC）</h3>
 <blockquote>
 <p>远程服务调用是指位于互不重合的内存地址空间中的两个程序，在语言层面上，以同步的方式使用带宽有限的信道来传输程序控制信息。
 —— Bruce Jay Nelson，<a href="http://www.bitsavers.org/pdf/xerox/parc/techReports/CSL-81-9_Remote_Procedure_Call.pdf">Remote Procedure Call</a>，Xerox PARC，1981</p>
 </blockquote>
 <p><img alt="" src="../images/chapter7_img.png" /></p>
 <p>在 20 世纪 80 年代初期，传奇的施乐 Palo Alto 研究中心发布了基于 Cedar 语言的 RPC 框架 Lupine，并实现了世界上第一个基于 RPC 的商业应用 Courier，而上述RPC的概念也是施乐所提出。</p>
-<p>而现在RPC框架满天飞，熟知的有RMI（Sun/Oracle）、Thrift（Facebook/Apache）、Dubbo（阿里巴巴/Apache）、gRPC（Google）、Motan&frac12;（新浪）、Finagle（Twitter）、brpc（百度/Apache）、.NET Remoting（微软）、Arvo（Hadoop）、JSON-RPC 2.0（公开规范，JSON-RPC 工作组）等。</p>
+<p>而现在RPC框架满天飞，熟知的有RMI（Sun/Oracle）、Thrift（Facebook/Apache）、Dubbo（阿里巴巴/Apache）、gRPC（Google）、Motan1/2（新浪）、Finagle（Twitter）、brpc（百度/Apache）、.NET Remoting（微软）、Arvo（Hadoop）、JSON-RPC 2.0（公开规范，JSON-RPC 工作组）等。</p>
 <p>至于目前的RPC为何如此之多，是因为目前的RPC框架所采用的RPC协议都没有很好的解决“RPC过程中的三个问题”，而且每个框架的侧重点不同，如（引用自《凤凰架构》）：</p>
 <ul>
 <li>朝着面向对象发展，不满足于 RPC 将面向过程的编码方式带到分布式，希望在分布式系统中也能够进行跨进程的面向对象编程，代表为 RMI、.NET Remoting，之前的 CORBA 和 DCOM 也可以归入这类，这条线有一个别名叫做分布式对象（Distributed Object）</li>
@@ -1202,7 +1206,7 @@
 <li>朝着简化发展，代表为 JSON-RPC，说要选功能最强、速度最快的 RPC 可能会很有争议，但选功能弱的、速度慢的，JSON-RPC 肯定会候选人中之一。牺牲了功能和效率，换来的是协议的简单轻便，接口与格式都更为通用，尤其适合用于 Web 浏览器这类一般不会有额外协议支持、额外客户端支持的应用场合。</li>
 </ul>
 <p>虽然目前的RPC框架都没有达到解决“RPC需要解决的三个问题”的“完美 RPC 协议”的要求，但是需要进行表扬的就是来自Alibaba的RPC框架---Dubbo（虽然现在不是Ali维护了～），它默认有自己的传输协议（Dubbo 协议），同时也支持其他协议；默认采用 Hessian 2 作为序列化器，如果你有 JSON 的需求，可以替换为 Fastjson，如果你对性能有更高的追求，可以替换为Kryo、FST、Protocol Buffers 等效率更好的序列化器，如果你不想依赖其他组件库，直接使用 JDK 自带的序列化器也是可以的。这种设计在一定程度上缓和了 RPC 框架必须取舍，难以完美的缺憾。</p>
-<h4 id="rpc_1">RPC需要解决的三个问题（《凤凰架构》）<a class="headerlink" href="#rpc_1" title="Permanent link">&para;</a></h4>
+<h4 id="rpc_1">RPC需要解决的三个问题（《凤凰架构》）</h4>
 <p>20 世纪 80 年代中后期，惠普和 Apollo 提出了网络运算架构（Network Computing Architecture，NCA）的设想，并随后在DCE 项目中将其发展成在 UNIX 系统下的远程服务调用框架DCE/RPC，笔者曾经在“原始分布式时代”中介绍过 DCE，这是历史上第一次对分布式有组织的探索尝试，由于 DCE 本身是基于 UNIX 操作系统的，所以 DCE/RPC 通常也仅适合于 UNIX 系统程序之间使用（微软 COM/DCOM 的前身MS RPC算是 DCE 的一种变体版本，如果把这些派生版算进去的话就要普适一些）。在 1988 年，Sun Microsystems 起草并向互联网工程任务组（Internet Engineering Task Force，IETF）提交了RFC 1050规范，此规范中设计了一套面向于广域网或混合网络环境的、基于 TCP/IP 的、支持 C 语言的 RPC 协议，后被称为ONC RPC（Open Network Computing RPC，也被称为 Sun RPC），这两套 RPC 协议就算是如今各种 RPC 协议和框架的鼻祖了，从它们开始，直至接下来这几十年来所有流行过的 RPC 协议，都不外乎变着花样使用各种手段来解决以下三个基本问题：</p>
 <ul>
 <li>如何表示数据：这里数据包括了传递给方法的参数，以及方法执行后的返回值。无论是将参数传递给另外一个进程，还是从另外一个进程中取回执行结果，都涉及到它们应该如何表示。进程内的方法调用，使用程序语言预置的和程序员自定义的数据类型，就很容易解决数据表示问题，远程方法调用则完全可能面临交互双方各自使用不同程序语言的情况；即使只支持一种程序语言的 RPC 协议，在不同硬件指令集、不同操作系统下，同样的数据类型也完全可能有不一样表现细节，譬如数据宽度、字节序的差异等等。有效的做法是将交互双方所涉及的数据转换为某种事先约定好的中立数据流格式来进行传输，将数据流转换回不同语言中对应的数据类型来进行使用，这个过程说起来拗口，但相信大家一定很熟悉，就是序列化与反序列化。每种 RPC 协议都应该要有对应的序列化协议，譬如：<ul>
@@ -1231,7 +1235,7 @@
 </li>
 </ul>
 <p>以上 RPC 中的三个基本问题，全部都可以在本地方法调用过程中找到相对应的操作。RPC 的想法始于本地方法调用，尽管早已不再追求实现成与本地方法调用完全一致，但其设计思路仍然带有本地方法调用的深刻烙印，抓住两者间的联系来类比，对我们更深刻地理解 RPC 的本质会很有好处。</p>
-<h3 id="restrepresentational-state-transfer">REST（Representational State Transfer）<a class="headerlink" href="#restrepresentational-state-transfer" title="Permanent link">&para;</a></h3>
+<h3 id="restrepresentational-state-transfer">REST（Representational State Transfer）</h3>
 <p>在开始了解 REST（这里所说的REST其实就是我们常挂在嘴边的RESTful）实现远程服务调用之前，需要我们明确的是，REST和RPC是两个完全不同的概念，差异的核心是抽象的目标不一样，即面向资源的编程思想与面向过程的编程思想两者之间的区别。</p>
 <p>REST是一种使用HTTP协议的进程间通信机制，REST 之父Roy Fielding曾经说过：</p>
 <blockquote>

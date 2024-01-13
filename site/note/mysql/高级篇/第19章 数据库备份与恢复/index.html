@@ -1998,105 +1998,105 @@
 
   <h1>第19章 数据库备份与恢复</h1>
 
-<h3 id="19">第19章 数据库备份与恢复<a class="headerlink" href="#19" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>物理备份与逻辑备份</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<h3 id="19">第19章 数据库备份与恢复</h3>
+<h4 id="1"><strong>1.</strong> <strong>物理备份与逻辑备份</strong></h4>
 <p><strong>物理备份</strong>：备份数据文件，转储数据库物理文件到某一目录。物理备份恢复速度比较快，但占用空间比较大，MySQL中可以用<code>xtrabackup</code>工具来进行物理备份。</p>
 <p><strong>逻辑备份</strong>：对数据库对象利用工具进行导出工作，汇总入备份文件内。逻辑备份恢复速度慢，但占用空间小，更灵活。MySQL 中常用的逻辑备份工具为<code>mysqldump</code>。逻辑备份就是<code>备份sql语句</code>，在恢复的时候执行备份的sql语句实现数据库数据的重现。</p>
-<h4 id="2-mysqldump"><strong>2. mysqldump实现逻辑备份</strong><a class="headerlink" href="#2-mysqldump" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>备份一个数据库</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mysqldump<span class="w"> </span>–u<span class="w"> </span>用户名称<span class="w"> </span>–h<span class="w"> </span>主机名称<span class="w"> </span>–p密码<span class="w"> </span>待备份的数据库名称<span class="o">[</span>tbname,<span class="w"> </span><span class="o">[</span>tbname...<span class="o">]]</span>&gt;<span class="w"> </span>备份文件名<span class="w"> </span>称.sql
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu&gt;atguigu.sql<span class="w"> </span><span class="c1">#备份文件存储在当前目录下</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigudb1<span class="w"> </span>&gt;<span class="w"> </span>/var/lib/mysql/atguigu.sql
-</code></pre></div>
-<h5 id="22"><strong>2.2</strong> <strong>备份全部数据库</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-pxxxxxx<span class="w"> </span>--all-databases<span class="w"> </span>&gt;<span class="w"> </span>all_database.sql<span class="w"> </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-pxxxxxx<span class="w"> </span>-A<span class="w"> </span>&gt;<span class="w"> </span>all_database.sql
-</code></pre></div>
-<h5 id="23"><strong>2.3</strong> <strong>备份部分数据库</strong><a class="headerlink" href="#23" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mysqldump<span class="w"> </span>–u<span class="w"> </span>user<span class="w"> </span>–h<span class="w"> </span>host<span class="w"> </span>–p<span class="w"> </span>--databases<span class="w"> </span><span class="o">[</span>数据库的名称1<span class="w"> </span><span class="o">[</span>数据库的名称2...<span class="o">]]</span><span class="w"> </span>&gt;<span class="w"> </span>备份文件名<span class="w"> </span>称.sql
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>--databases<span class="w"> </span>atguigu<span class="w"> </span>atguigu12<span class="w"> </span>&gt;two_database.sql
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>-B<span class="w"> </span>atguigu<span class="w"> </span>atguigu12<span class="w"> </span>&gt;<span class="w"> </span>two_database.sql
-</code></pre></div>
-<h5 id="24"><strong>2.4</strong> <strong>备份部分表</strong><a class="headerlink" href="#24" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>mysqldump<span class="w"> </span>–u<span class="w"> </span>user<span class="w"> </span>–h<span class="w"> </span>host<span class="w"> </span>–p<span class="w"> </span>数据库的名称<span class="w"> </span><span class="o">[</span>表名1<span class="w"> </span><span class="o">[</span>表名2...<span class="o">]]</span><span class="w"> </span>&gt;<span class="w"> </span>备份文件名称.sql
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>book&gt;<span class="w"> </span>book.sql
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1">#备份多张表 </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>book<span class="w"> </span>account<span class="w"> </span>&gt;<span class="w"> </span>2_tables_bak.sql
-</code></pre></div>
-<h5 id="25"><strong>2.5</strong> <strong>备份单表的部分数据</strong><a class="headerlink" href="#25" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>student<span class="w"> </span>--where<span class="o">=</span><span class="s2">&quot;id &lt; 10 &quot;</span><span class="w"> </span>&gt;<span class="w"> </span>student_part_id10_low_bak.sql
-</code></pre></div>
-<h5 id="26"><strong>2.6</strong> <strong>排除某些表的备份</strong><a class="headerlink" href="#26" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>--ignore-table<span class="o">=</span>atguigu.student<span class="w"> </span>&gt;<span class="w"> </span>no_stu_bak.sql
-</code></pre></div>
-<h5 id="27"><strong>2.7</strong> <strong>只备份结构或只备份数据</strong><a class="headerlink" href="#27" title="Permanent link">&para;</a></h5>
+<h4 id="2-mysqldump"><strong>2. mysqldump实现逻辑备份</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>备份一个数据库</strong></h5>
+<pre><code class="language-shell">mysqldump –u 用户名称 –h 主机名称 –p密码 待备份的数据库名称[tbname, [tbname...]]&gt; 备份文件名 称.sql
+</code></pre>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu&gt;atguigu.sql #备份文件存储在当前目录下
+mysqldump -uroot -p atguigudb1 &gt; /var/lib/mysql/atguigu.sql
+</code></pre>
+<h5 id="22"><strong>2.2</strong> <strong>备份全部数据库</strong></h5>
+<pre><code class="language-shell">mysqldump -uroot -pxxxxxx --all-databases &gt; all_database.sql 
+mysqldump -uroot -pxxxxxx -A &gt; all_database.sql
+</code></pre>
+<h5 id="23"><strong>2.3</strong> <strong>备份部分数据库</strong></h5>
+<pre><code class="language-shell">mysqldump –u user –h host –p --databases [数据库的名称1 [数据库的名称2...]] &gt; 备份文件名 称.sql
+</code></pre>
+<pre><code class="language-shell">mysqldump -uroot -p --databases atguigu atguigu12 &gt;two_database.sql
+mysqldump -uroot -p -B atguigu atguigu12 &gt; two_database.sql
+</code></pre>
+<h5 id="24"><strong>2.4</strong> <strong>备份部分表</strong></h5>
+<pre><code class="language-shell">mysqldump –u user –h host –p 数据库的名称 [表名1 [表名2...]] &gt; 备份文件名称.sql
+</code></pre>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu book&gt; book.sql
+#备份多张表 
+mysqldump -uroot -p atguigu book account &gt; 2_tables_bak.sql
+</code></pre>
+<h5 id="25"><strong>2.5</strong> <strong>备份单表的部分数据</strong></h5>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu student --where=&quot;id &lt; 10 &quot; &gt; student_part_id10_low_bak.sql
+</code></pre>
+<h5 id="26"><strong>2.6</strong> <strong>排除某些表的备份</strong></h5>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu --ignore-table=atguigu.student &gt; no_stu_bak.sql
+</code></pre>
+<h5 id="27"><strong>2.7</strong> <strong>只备份结构或只备份数据</strong></h5>
 <ul>
 <li>只备份结构</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>--no-data<span class="w"> </span>&gt;<span class="w"> </span>atguigu_no_data_bak.sql
-</code></pre></div>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu --no-data &gt; atguigu_no_data_bak.sql
+</code></pre>
 <ul>
 <li>只备份数据</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span>--no-create-info<span class="w"> </span>&gt;<span class="w"> </span>atguigu_no_create_info_bak.sql
-</code></pre></div>
-<h5 id="28"><strong>2.8</strong> <strong>备份中包含存储过程、函数、事件</strong><a class="headerlink" href="#28" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>-R<span class="w"> </span>-E<span class="w"> </span>--databases<span class="w"> </span>atguigu<span class="w"> </span>&gt;<span class="w"> </span>fun_atguigu_bak.sql
-</code></pre></div>
-<h4 id="3-mysql"><strong>3. mysql命令恢复数据</strong><a class="headerlink" href="#3-mysql" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>mysql<span class="w"> </span>–u<span class="w"> </span>root<span class="w"> </span>–p<span class="w"> </span><span class="o">[</span>dbname<span class="o">]</span><span class="w"> </span>&lt;<span class="w"> </span>backup.sql
-</code></pre></div>
-<h5 id="31"><strong>3.1</strong> <strong>单库备份中恢复单库</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">#备份文件中包含了创建数据库的语句</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>mysql<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>&lt;<span class="w"> </span>atguigu.sql
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">#备份文件中不包含了创建数据库的语句</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>mysql<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu4&lt;<span class="w"> </span>atguigu.sql
-</code></pre></div>
-<h5 id="32"><strong>3.2</strong> <strong>全量备份恢复</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>mysql<span class="w"> </span>–u<span class="w"> </span>root<span class="w"> </span>–p<span class="w"> </span>&lt;<span class="w"> </span>all.sql
-</code></pre></div>
-<h5 id="33"><strong>3.3</strong> <strong>从全量备份中恢复单库</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;/^-- Current Database: `atguigu`/,/^-- Current Database: `/p&#39;</span><span class="w"> </span>all_database.sql<span class="w"> </span>&gt;<span class="w"> </span>atguigu.sql<span class="w"> </span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1">#分离完成后我们再导入atguigu.sql即可恢复单个库</span>
-</code></pre></div>
-<h5 id="34"><strong>3.4</strong> <strong>从单库备份中恢复单表</strong><a class="headerlink" href="#34" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>cat<span class="w"> </span>atguigu.sql<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;/./{H;$!d;}&#39;</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;x;/CREATE TABLE `class`/!d;q&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>class_structure.sql<span class="w"> </span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cat<span class="w"> </span>atguigu.sql<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>--ignore-case<span class="w"> </span><span class="s1">&#39;insert into `class`&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>class_data.sql<span class="w"> </span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1">#用shell语法分离出创建表的语句及插入数据的语句后 再依次导出即可完成恢复 </span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>use<span class="w"> </span>atguigu<span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>mysql&gt;<span class="w"> </span><span class="nb">source</span><span class="w"> </span>class_structure.sql<span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>Query<span class="w"> </span>OK,<span class="w"> </span><span class="m">0</span><span class="w"> </span>rows<span class="w"> </span>affected,<span class="w"> </span><span class="m">1</span><span class="w"> </span>warning<span class="w"> </span><span class="o">(</span><span class="m">0</span>.00<span class="w"> </span>sec<span class="o">)</span><span class="w"> </span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>mysql&gt;<span class="w"> </span><span class="nb">source</span><span class="w"> </span>class_data.sql<span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>Query<span class="w"> </span>OK,<span class="w"> </span><span class="m">1</span><span class="w"> </span>row<span class="w"> </span>affected<span class="w"> </span><span class="o">(</span><span class="m">0</span>.01<span class="w"> </span>sec<span class="o">)</span>
-</code></pre></div>
-<h4 id="4"><strong>4.</strong> <strong>表的导出与导入</strong><a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
-<h5 id="41"><strong>4.1</strong> <strong>表的导出</strong><a class="headerlink" href="#41" title="Permanent link">&para;</a></h5>
+<pre><code class="language-shell">mysqldump -uroot -p atguigu --no-create-info &gt; atguigu_no_create_info_bak.sql
+</code></pre>
+<h5 id="28"><strong>2.8</strong> <strong>备份中包含存储过程、函数、事件</strong></h5>
+<pre><code class="language-shell">mysqldump -uroot -p -R -E --databases atguigu &gt; fun_atguigu_bak.sql
+</code></pre>
+<h4 id="3-mysql"><strong>3. mysql命令恢复数据</strong></h4>
+<pre><code class="language-shell">mysql –u root –p [dbname] &lt; backup.sql
+</code></pre>
+<h5 id="31"><strong>3.1</strong> <strong>单库备份中恢复单库</strong></h5>
+<pre><code class="language-shell">#备份文件中包含了创建数据库的语句
+mysql -uroot -p &lt; atguigu.sql
+#备份文件中不包含了创建数据库的语句
+mysql -uroot -p atguigu4&lt; atguigu.sql
+</code></pre>
+<h5 id="32"><strong>3.2</strong> <strong>全量备份恢复</strong></h5>
+<pre><code class="language-shell">mysql –u root –p &lt; all.sql
+</code></pre>
+<h5 id="33"><strong>3.3</strong> <strong>从全量备份中恢复单库</strong></h5>
+<pre><code class="language-shell">sed -n '/^-- Current Database: `atguigu`/,/^-- Current Database: `/p' all_database.sql &gt; atguigu.sql 
+#分离完成后我们再导入atguigu.sql即可恢复单个库
+</code></pre>
+<h5 id="34"><strong>3.4</strong> <strong>从单库备份中恢复单表</strong></h5>
+<pre><code class="language-shell">cat atguigu.sql | sed -e '/./{H;$!d;}' -e 'x;/CREATE TABLE `class`/!d;q' &gt; class_structure.sql 
+cat atguigu.sql | grep --ignore-case 'insert into `class`' &gt; class_data.sql 
+#用shell语法分离出创建表的语句及插入数据的语句后 再依次导出即可完成恢复 
+
+use atguigu; 
+mysql&gt; source class_structure.sql; 
+Query OK, 0 rows affected, 1 warning (0.00 sec) 
+
+mysql&gt; source class_data.sql; 
+Query OK, 1 row affected (0.01 sec)
+</code></pre>
+<h4 id="4"><strong>4.</strong> <strong>表的导出与导入</strong></h4>
+<h5 id="41"><strong>4.1</strong> <strong>表的导出</strong></h5>
 <p><strong>1.</strong> <strong>使用SELECT…INTO OUTFILE导出文本文件</strong> </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="k">VARIABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%secure%&#39;</span><span class="p">;</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">account</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">OUTFILE</span><span class="w"> </span><span class="s2">&quot;/var/lib/mysql-files/account.txt&quot;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SHOW GLOBAL VARIABLES LIKE '%secure%';
+SELECT * FROM account INTO OUTFILE &quot;/var/lib/mysql-files/account.txt&quot;;
+</code></pre>
 <p><strong>2.</strong> <strong>使用mysqldump命令导出文本文件</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>-T<span class="w"> </span><span class="s2">&quot;/var/lib/mysql-files/&quot;</span><span class="w"> </span>atguigu<span class="w"> </span>account
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># 或</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>mysqldump<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>-T<span class="w"> </span><span class="s2">&quot;/var/lib/mysql-files/&quot;</span><span class="w"> </span>atguigu<span class="w"> </span>account<span class="w"> </span>--fields-terminated-<span class="w"> </span><span class="nv">by</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="w"> </span>--fields-optionally-enclosed-by<span class="o">=</span><span class="s1">&#39;\&quot;&#39;</span>
-</code></pre></div>
+<pre><code class="language-shell">mysqldump -uroot -p -T &quot;/var/lib/mysql-files/&quot; atguigu account
+# 或
+mysqldump -uroot -p -T &quot;/var/lib/mysql-files/&quot; atguigu account --fields-terminated- by=',' --fields-optionally-enclosed-by='\&quot;'
+</code></pre>
 <p><strong>3.</strong> <strong>使用mysql命令导出文本文件</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>mysql<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>--execute<span class="o">=</span><span class="s2">&quot;SELECT * FROM account;&quot;</span><span class="w"> </span>atguigu&gt;<span class="w"> </span><span class="s2">&quot;/var/lib/mysql-files/account.txt&quot;</span>
-</code></pre></div>
-<h5 id="42"><strong>4.2</strong> <strong>表的导入</strong><a class="headerlink" href="#42" title="Permanent link">&para;</a></h5>
+<pre><code class="language-shell">mysql -uroot -p --execute=&quot;SELECT * FROM account;&quot; atguigu&gt; &quot;/var/lib/mysql-files/account.txt&quot;
+</code></pre>
+<h5 id="42"><strong>4.2</strong> <strong>表的导入</strong></h5>
 <p><strong>1.</strong> <strong>使用LOAD DATA INFILE方式导入文本文件</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">LOAD</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="k">INFILE</span><span class="w"> </span><span class="s1">&#39;/var/lib/mysql-files/account_0.txt&#39;</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">atguigu</span><span class="p">.</span><span class="k">account</span><span class="p">;</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># 或</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">LOAD</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="k">INFILE</span><span class="w"> </span><span class="s1">&#39;/var/lib/mysql-files/account_1.txt&#39;</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">atguigu</span><span class="p">.</span><span class="k">account</span><span class="w"> </span><span class="k">FIELDS</span><span class="w"> </span><span class="k">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span><span class="k">ENCLOSED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">LOAD DATA INFILE '/var/lib/mysql-files/account_0.txt' INTO TABLE atguigu.account;
+# 或
+LOAD DATA INFILE '/var/lib/mysql-files/account_1.txt' INTO TABLE atguigu.account FIELDS TERMINATED BY ',' ENCLOSED BY '\&quot;';
+</code></pre>
 <p><strong>2.</strong> <strong>使用mysqlimport方式导入文本文件</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>mysqlimport<span class="w"> </span>-uroot<span class="w"> </span>-p<span class="w"> </span>atguigu<span class="w"> </span><span class="s1">&#39;/var/lib/mysql-files/account.txt&#39;</span><span class="w"> </span>--fields-terminated-<span class="w"> </span><span class="nv">by</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="w"> </span>--fields-optionally-enclosed-by<span class="o">=</span><span class="s1">&#39;\&quot;&#39;</span>
-</code></pre></div>
+<pre><code class="language-shell">mysqlimport -uroot -p atguigu '/var/lib/mysql-files/account.txt' --fields-terminated- by=',' --fields-optionally-enclosed-by='\&quot;'
+</code></pre>
 
 
 

@@ -2198,26 +2198,26 @@
 
   <h1>第07章 InnoDB数据存储结构</h1>
 
-<h3 id="07-innodb">第07章 InnoDB数据存储结构<a class="headerlink" href="#07-innodb" title="Permanent link">&para;</a></h3>
-<h4 id="1">1. 数据库的存储结构：页<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<h3 id="07-innodb">第07章 InnoDB数据存储结构</h3>
+<h4 id="1">1. 数据库的存储结构：页</h4>
 <p>索引结构给我们提供了高效的索引方式，不过索引信息以及数据记录都保存在文件上的，确切说是存储在页结构中。另一方面，索引是在存储引擎中实现的，MySQL服务器上的<code>存储引擎</code>负责对表中数据的读取和写入工作。不同存储引擎中<code>存放的格式</code>一般不同的，甚至有的存储引擎比如Memory都不用磁盘来存储数据。</p>
 <p>由于<code>InnoDB</code>是MySQL的<code>默认存储引擎</code>，所以本章剖析InooDB存储引擎的数据存储结构。</p>
-<h5 id="11">1.1 磁盘与内存交互基本单位：页<a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
+<h5 id="11">1.1 磁盘与内存交互基本单位：页</h5>
 <p>InnoDB将数据划分为若干个页，InnoDB中页的大小默认为<code>16KB</code>。</p>
-<p>以<code>页</code>作为磁盘和内存之间交互的基本单位，也就是一次最少从磁盘中读取16KB的内容到内存中，一次最少把内存中的16KB内容刷新到磁盘中。也就是说，**在数据库中，不论读一行，还是读多行，都是将这些行所在的页进行加载。也就是说，数据库管理存储空间的基本单位是页（Page），数据库I/O操作的最小单位是页。**一个页中可以存储多个行记录。</p>
+<p>以<code>页</code>作为磁盘和内存之间交互的基本单位，也就是一次最少从磁盘中读取16KB的内容到内存中，一次最少把内存中的16KB内容刷新到磁盘中。也就是说，<strong>在数据库中，不论读一行，还是读多行，都是将这些行所在的页进行加载。也就是说，数据库管理存储空间的基本单位是页（Page），数据库I/O操作的最小单位是页。</strong>一个页中可以存储多个行记录。</p>
 <blockquote>
 <p>记录是按照行来存储的，但是数据库的读取并不以行为单位，否则一次读取（也就是一次I/O操作）只能处理一行数据，效率会非常低。</p>
 </blockquote>
-<h5 id="12">1.2 页结构概述<a class="headerlink" href="#12" title="Permanent link">&para;</a></h5>
+<h5 id="12">1.2 页结构概述</h5>
 <p>页a、页b、页c...页n这些页可以<code>不在物理结构上相连</code>，只要通过<code>双向链表</code>相关联即可。每个数据页中的记录会按照主键值从小到大的顺序组成一个<code>单向链表</code>，每个数据页都会为存储在它里边的记录生成一个<code>页目录</code>，在通过主键查找某条记录的时候可以在页目录中<code>使用二分法</code>快速定位到对应的槽，然后再遍历该槽对应的分组中的记录即可快速找到指定的记录。</p>
-<h5 id="13">1.3 页的上层结构<a class="headerlink" href="#13" title="Permanent link">&para;</a></h5>
+<h5 id="13">1.3 页的上层结构</h5>
 <p><img alt="image-20220330183814954" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301838071.png" /></p>
 <p>区（Extent）是比页大一级的存储结构，在InnoDB存储引擎中，一个区会分配<code>64个连续的页</code>。因为InnoDB中的页大小默认是16KB，所以一个区的大小是64*16KB=<code>1MB</code>。</p>
 <p>段（Segment）由一个或多个区组成，区在文件系统是一个连续分配的空间（在InnoDB中是连续的64个页），不过在段中不要求区与区之间是相邻的。<code>段是数据库中的分配单位，不同类型的数据库对象以不同的段形式存在。</code>当我们创建数据表、索引的时候，就会相应创建对应的段，比如创建一张表时会创建一个表段，创建一个索引时会创建一个索引段。</p>
 <p>表空间（Tablespace）是一个逻辑容器，表空间存储的对象是段，在一个表空间中可以有一个或多个段，但是一个段只能属于一个表空间。数据库由一个或多个表空间组成，表空间从管理上可以划分为<code>系统表空间</code>、<code>用户表空间</code>、<code>撤销表空间</code>、<code>临时表空间</code>等。</p>
-<h4 id="2">2. 页的内部结构<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
-<h5 id="21-1">2.1 第1部分：文件头部和文件尾部<a class="headerlink" href="#21-1" title="Permanent link">&para;</a></h5>
-<h6 id="211-file-header38">2.1.1 File Header（文件头部）（38字节）<a class="headerlink" href="#211-file-header38" title="Permanent link">&para;</a></h6>
+<h4 id="2">2. 页的内部结构</h4>
+<h5 id="21-1">2.1 第1部分：文件头部和文件尾部</h5>
+<h6 id="211-file-header38">2.1.1 File Header（文件头部）（38字节）</h6>
 <p><strong>作用</strong>：
 描述各种页的通用信息。（比如页的编号、其上一页、下一页是谁等）</p>
 <p><strong>大小</strong>：38字节</p>
@@ -2343,7 +2343,7 @@
 </tbody>
 </table>
 <ul>
-<li><code>FIL_PAGE_PREV（4字节）和FIL_PAGE_NEXT（4字节）</code>：InnoDB都是以页为单位存放数据的，如果数据分散到多个不连续的页中存储的话需要把这些页关联起来，FIL_PAGE_PREV和FIL_PAGE_NEXT就分别代表本页的上一个和下一个页的页号。这样通过建立一个双向链表把许许多多的页就都串联起来了，保证这些页之间**不需要是物理上的连续，而是逻辑上的连续。**</li>
+<li><code>FIL_PAGE_PREV（4字节）和FIL_PAGE_NEXT（4字节）</code>：InnoDB都是以页为单位存放数据的，如果数据分散到多个不连续的页中存储的话需要把这些页关联起来，FIL_PAGE_PREV和FIL_PAGE_NEXT就分别代表本页的上一个和下一个页的页号。这样通过建立一个双向链表把许许多多的页就都串联起来了，保证这些页之间<strong>不需要是物理上的连续，而是逻辑上的连续。</strong></li>
 <li><code>FIL_PAGE_SPACE_OR_CHKSUM（4字节）</code>：代表当前页面的校验和（checksum）。文件头部和文件尾部都有属性：FIL_PAGE_SPACE_OR_CHKSUM</li>
 </ul>
 <p><strong>作用：</strong></p>
@@ -2352,25 +2352,25 @@
 <ul>
 <li><code>FIL_PAGE_LSN（8字节）</code>：页面被最后修改时对应的日志序列位置（英文名是：Log Sequence Number）</li>
 </ul>
-<h6 id="212-file-trailer8">2.1.2 File Trailer（文件尾部）（8字节）<a class="headerlink" href="#212-file-trailer8" title="Permanent link">&para;</a></h6>
+<h6 id="212-file-trailer8">2.1.2 File Trailer（文件尾部）（8字节）</h6>
 <ul>
 <li>前4个字节代表页的校验和：这个部分是和File Header中的校验和相对应的。</li>
 <li>后4个字节代表页面被最后修改时对应的日志序列位置（LSN）：这个部分也是为了校验页的完整性的，如果首部和尾部的LSN值校验不成功的话，就说明同步过程出现了问题。</li>
 </ul>
-<h5 id="22-2">2.2 第2部分：空闲空间、用户记录和最小最大记录<a class="headerlink" href="#22-2" title="Permanent link">&para;</a></h5>
-<h6 id="221-free-space">2.2.1 Free Space (空闲空间)<a class="headerlink" href="#221-free-space" title="Permanent link">&para;</a></h6>
+<h5 id="22-2">2.2 第2部分：空闲空间、用户记录和最小最大记录</h5>
+<h6 id="221-free-space">2.2.1 Free Space (空闲空间)</h6>
 <p>我们自己存储的记录会按照指定的<code>行格式</code>存储到<code>User Records</code>部分。但是在一开始生成页的时候，其实并没有User Records这个部分，<code>每当我们插入一条记录，都会从Free Space部分，也就是尚未使用的存储空间中申请一个记录大小的空间划分到User Records部分</code>，当Free Space部分的空间全部被User Records部分替代掉之后，也就意味着这个页使用完了，如果还有新的记录插入的话，就需要去<code>申请新的页</code>了。</p>
-<h6 id="222-user-records">2.2.2 User Records (用户记录)<a class="headerlink" href="#222-user-records" title="Permanent link">&para;</a></h6>
+<h6 id="222-user-records">2.2.2 User Records (用户记录)</h6>
 <p>User Records中的这些记录按照<code>指定的行格式</code>一条一条摆在User Records部分，相互之间形成<code>单链表</code>。</p>
-<h6 id="223-infimum-supremum">2.2.3 Infimum + Supremum（最小最大记录）<a class="headerlink" href="#223-infimum-supremum" title="Permanent link">&para;</a></h6>
+<h6 id="223-infimum-supremum">2.2.3 Infimum + Supremum（最小最大记录）</h6>
 <p><strong>记录可以比较大小吗</strong>？
 是的，记录可以比大小，对于一条完整的记录来说，比较记录的大小就是<code>比较主键</code>的大小。比方说我们插入的4行记录的主键值分别是：1、2、3、4，这也就意味着这4条记录是从小到大依次递增。</p>
 <p>InnoDB规定的最小记录与最大记录这两条记录的构造十分简单，都是由5字节大小的记录头信息和8字节大小的一个固定的部分组成的。</p>
 <p><img alt="image-20220330191335574" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301913664.png" /></p>
 <p>这两条记录<code>不是我们自己定义的记录</code>，所以它们并不存放在页的User Records部分，他们被单独放在一个称为Infimum + Supremum的部分</p>
 <p><img alt="image-20220330191446070" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301914167.png" /></p>
-<h5 id="23-3">2.3 第3部分：页目录和页面头部<a class="headerlink" href="#23-3" title="Permanent link">&para;</a></h5>
-<h6 id="231-page-directory">2.3.1 Page Directory（页目录）<a class="headerlink" href="#231-page-directory" title="Permanent link">&para;</a></h6>
+<h5 id="23-3">2.3 第3部分：页目录和页面头部</h5>
+<h6 id="231-page-directory">2.3.1 Page Directory（页目录）</h6>
 <p><strong>为什么需要页目录</strong>？
 在页中，记录是以<code>单向链表</code>的形式进行存储的。单向链表的特点就是插入、删除非常方便，但是<code>检索效率不高</code>，最差的情况下需要遍历链表上的所有节点才能完成检索。因此在页结构中专门设计了页目录这个模块，<code>专门给记录做一个目录</code>，通过<code>二分查找法</code>的方式进行检索，提升效率。</p>
 <p><strong>页目录，二分法查找</strong></p>
@@ -2403,7 +2403,7 @@
 <li>之后每插入一条记录，都会从页目录中找到主键值比本记录的主键值大并且差值最小的槽，然后把该槽对应的记录的n_owned值加1，表示本组内又添加了一条记录，直到该组中的记录数等于8个。</li>
 <li>在一个组中的记录数等于8个后再插入一条记录时，会将组中的记录拆分成两个组，一个组中4条记录，另一个5条记录。这个过程会在页目录中新增一个槽来记录这个新增分组中最大的那条记录的偏移量。</li>
 </ul>
-<h6 id="232-page-header">2.3.2 Page Header（页面头部）<a class="headerlink" href="#232-page-header" title="Permanent link">&para;</a></h6>
+<h6 id="232-page-header">2.3.2 Page Header（页面头部）</h6>
 <p>为了能得到一个数据页中存储的记录的状态信息，比如本页中已经存储了多少条记录，第一条记录的地址是什么，页目录中存储了多少个槽等等，特意在页中定义了一个叫Page Header的部分，这个部分占用固定的56个字节，专门存储各种状态信息。</p>
 <table>
 <thead>
@@ -2486,21 +2486,21 @@
 </tr>
 </tbody>
 </table>
-<h4 id="3-innodb">3. InnoDB行格式（或记录格式）<a class="headerlink" href="#3-innodb" title="Permanent link">&para;</a></h4>
-<h5 id="31">3.1 指定行格式的语法<a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="p">(</span><span class="n">列的信息</span><span class="p">)</span><span class="w"> </span><span class="k">ROW_FORMAT</span><span class="o">=</span><span class="n">行格式名称</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">ROW_FORMAT</span><span class="o">=</span><span class="n">行格式名称</span>
-</code></pre></div>
-<h5 id="32-compact">3.2 COMPACT行格式<a class="headerlink" href="#32-compact" title="Permanent link">&para;</a></h5>
+<h4 id="3-innodb">3. InnoDB行格式（或记录格式）</h4>
+<h5 id="31">3.1 指定行格式的语法</h5>
+<pre><code class="language-mysql">CREATE TABLE 表名 (列的信息) ROW_FORMAT=行格式名称
+</code></pre>
+<pre><code class="language-mysql">ALTER TABLE 表名 ROW_FORMAT=行格式名称
+</code></pre>
+<h5 id="32-compact">3.2 COMPACT行格式</h5>
 <p>在MySQL 5.1版本中，默认设置为Compact行格式。一条完整的记录其实可以被分为记录的额外信息和记录的真实数据两大部分。</p>
 <p><img alt="image-20220330193949517" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301939611.png" /></p>
-<h6 id="321">3.2.1 变长字段长度列表<a class="headerlink" href="#321" title="Permanent link">&para;</a></h6>
+<h6 id="321">3.2.1 变长字段长度列表</h6>
 <p>MySQL支持一些变长的数据类型，比如VARCHAR(M)、VARBINARY(M)、TEXT类型，BLOB类型，这些数据类型修饰列称为<code>变长字段</code>，变长字段中存储多少字节的数据不是固定的，所以我们在存储真实数据的时候需要顺便把这些数据占用的字节数也存起来。<code>在Compact行格式中，把所有变长字段的真实数据占用的字节长度都存放在记录的开头部位，从而形成一个变长字段长度列表。</code></p>
 <blockquote>
 <p>注意：这里面存储的变长长度和字段顺序是反过来的。比如两个varchar字段在表结构的顺序是a(10)，b(15)。那么在变长字段长度列表中存储的长度顺序就是15，10，是反过来的。</p>
 </blockquote>
-<h6 id="322-null">3.2.2 NULL值列表<a class="headerlink" href="#322-null" title="Permanent link">&para;</a></h6>
+<h6 id="322-null">3.2.2 NULL值列表</h6>
 <p>Compact行格式会把可以为NULL的列统一管理起来，存在一个标记为NULL值列表中。如果表中没有允许存储 NULL 的列，则 NULL值列表也不存在了。
 <strong>为什么定义NULL值列表？</strong>
 之所以要存储NULL是因为数据都是需要对齐的，如果<code>没有标注出来NULL值的位置</code>，就有可能在查询数据的时候<code>出现混乱</code>。如果使用<code>一个特定的符号</code>放到相应的数据位表示空置的话，虽然能达到效果，但是这样很浪费空间，所以直接就在行数据得头部开辟出一块空间专门用来记录该行数据哪些是非空数据，哪些是空数据，格式如下：</p>
@@ -2511,7 +2511,7 @@
 <blockquote>
 <p>注意：同样顺序也是反过来存放的</p>
 </blockquote>
-<h6 id="323-5">3.2.3 记录头信息（5字节）<a class="headerlink" href="#323-5" title="Permanent link">&para;</a></h6>
+<h6 id="323-5">3.2.3 记录头信息（5字节）</h6>
 <p><img alt="image-20220330194534127" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301945235.png" /></p>
 <table>
 <thead>
@@ -2586,7 +2586,7 @@ MySQL会自动给每个页里加了两个记录，由于这两个记录并不是
 <li><code>n_owned</code>：页目录中每个组中最后一条记录的头信息中会存储该组一共有多少条记录，作为 n_owned 字段</li>
 <li><code>next_record</code>：记录头信息里该属性非常重要，它表示从当前记录的真实数据到下一条记录的真实数据的<code>地址偏移量</code>。</li>
 </ul>
-<h6 id="324">3.2.4 记录的真实数据<a class="headerlink" href="#324" title="Permanent link">&para;</a></h6>
+<h6 id="324">3.2.4 记录的真实数据</h6>
 <table>
 <thead>
 <tr>
@@ -2618,7 +2618,7 @@ MySQL会自动给每个页里加了两个记录，由于这两个记录并不是
 </tbody>
 </table>
 <p>一个表没有手动定义主键，则会选取一个Unique键作为主键，如果连Unique键都没有定义的话，则会为表默认添加一个名为row_id的隐藏列作为主键。所以row_id是在没有自定义主键以及Unique键的情况下才会存在的。</p>
-<h5 id="33-dynamiccompressed">3.3 Dynamic和Compressed行格式<a class="headerlink" href="#33-dynamiccompressed" title="Permanent link">&para;</a></h5>
+<h5 id="33-dynamiccompressed">3.3 Dynamic和Compressed行格式</h5>
 <p>我们可以知道一个页的大小一般是16KB，也就是16384字节，而一个VARCHAR(M)类型的列就最多可以存储65533个字节，这样就可能出现一个页存放不了一条记录，这种现象称为<code>行溢出</code></p>
 <p>在Compact和Reduntant行格式中，对于占用存储空间非常大的列，在记录的真实数据处只会存储该列的一部分数据，把剩余的数据分散存储在几个其他的页中进行<code>分页存储</code>，然后记录的真实数据处用20个字节存储指向这些页的地址（当然这20个字节中还包括这些分散在其他页面中的数据的占用的字节数），从而可以找到剩余数据所在的页。这称为<code>页的扩展</code>。</p>
 <p>在MySQL 8.0中，默认行格式就是Dynamic，Dynamic、Compressed行格式和Compact行格式挺像，只不过在处理行溢出数据时有分歧</p>
@@ -2626,17 +2626,17 @@ MySQL会自动给每个页里加了两个记录，由于这两个记录并不是
 <li>Compressed和Dynamic两种记录格式对于存放在BLOB中的数据采用了完全的行溢出的方式。如图，在数据页中只存放20个字节的指针（溢出页的地址），实际的数据都存放在Off Page（溢出页）中。</li>
 <li>Compact和Redundant两种格式会在记录的真实数据处存储一部分数据（存放768个前缀字节）。</li>
 </ul>
-<h4 id="4">4. 区、段和碎片区<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
-<h5 id="41">4.1 为什么要有区？<a class="headerlink" href="#41" title="Permanent link">&para;</a></h5>
+<h4 id="4">4. 区、段和碎片区</h4>
+<h5 id="41">4.1 为什么要有区？</h5>
 <p><code>B+</code>树的每一层中的页都会形成一个双向链表，如果是以<code>页为单位</code>来分配存储空间的话，双向链表相邻的两个页之间的<code>物理位置可能离得非常远</code>。我们介绍B+树索引的使用场景的时候特别提到范围查询只需要定位到最左边的记录和最右边的记录，然后沿着双向链表一直扫描就可以了，而如果链表中相邻的两个页物理位置离得非常远，就是所谓的<code>随机I/O</code>。再一次强调，磁盘的速度和内存的速度差了好几个数量级，<code>随机I/O是非常慢</code>的，所以我们应该尽量让链表中相邻的页的物理位置也相邻，这样进行范围查询的时候才可以使用所谓的<code>顺序I/O</code>。</p>
 <p>引入<code>区</code>的概念，一个区就是物理位置上连续的<code>64个页</code>。因为InnoDB中的页的大小默认是16KB，所以一个区的大小是64*16KB=<code>1MB</code>。在表中<code>数据量大</code>的时候，为某个索引分配空间的时候就不再按照页的单位分配了，而是按照<code>区为单位分配</code>，甚至在表中的数据特别多的时候，可以一次性分配多个连续的区。虽然可能造成<code>一点点空间的浪费</code>（数据不足以填充满整个区），但是从性能角度看，可以消除很多的随机I/O，<code>功大于过</code>！</p>
-<h5 id="42">4.2 为什么要有段？<a class="headerlink" href="#42" title="Permanent link">&para;</a></h5>
+<h5 id="42">4.2 为什么要有段？</h5>
 <p>对于范围查询，其实是对B+树叶子节点中的记录进行顺序扫描，而如果不区分叶子节点和非叶子节点，统统把节点代表的页面放到申请到的区中的话，进行范围扫描的效果就大打折扣了。所以InnoDB对B+树的<code>叶子节点</code>和<code>非叶子节点</code>进行了区别对待，也就是说叶子节点有自己独有的区，非叶子节点也有自己独有的区。存放叶子节点的区的集合就算是一个<code>段（segment）</code>，存放非叶子节点的区的集合也算是一个段。也就是说一个索引会生成2个段，一个<code>叶子节点段</code>，一个<code>非叶子节点段</code>。</p>
 <p>除了索引的叶子节点段和非叶子节点段之外，InnoDB中还有为存储一些特殊的数据而定义的段，比如回滚段。所以，常见的段有<code>数据段</code>、<code>索引段</code>、<code>回滚段</code>。数据段即为B+树的叶子节点，索引段即为B+树的非叶子节点。</p>
 <p>在InnoDB存储引擎中，对段的管理都是由引擎自身所完成，DBA不能也没有必要对其进行控制。这从一定程度上简化了DBA对于段的管理。</p>
 <p>段其实不对应表空间中的某一个连续的物理区域，而是一个逻辑上的概念，由若干个零散的页面以及一些完整的区组成。</p>
-<h5 id="43">4.3 为什么要有碎片区？<a class="headerlink" href="#43" title="Permanent link">&para;</a></h5>
-<p>默认情况下，一个使用InnoDB存储引擎的表只有一个聚簇索引，一个索引会生成2个段，而段是以区为单位申请存储空间的，一个区默认占用1M（64*16KB=1024KB）存储空间，所以**默认情况下一个只存在几条记录的小表也需要2M的存储空间么？**以后每次添加一个索引都要多申请2M的存储空间么？这对于存储记录比较少的表简直是天大的浪费。这个问题的症结在于到现在为止我们介绍的区都是非常<code>纯粹</code>的，也就是一个区被整个分配给某一个段，或者说区中的所有页面都是为了存储同一个段的数据而存在的，即使段的数据填不满区中所有的页面，那余下的页面也不能挪作他用。</p>
+<h5 id="43">4.3 为什么要有碎片区？</h5>
+<p>默认情况下，一个使用InnoDB存储引擎的表只有一个聚簇索引，一个索引会生成2个段，而段是以区为单位申请存储空间的，一个区默认占用1M（64<em>16KB=1024KB）存储空间，所以</em><em>默认情况下一个只存在几条记录的小表也需要2M的存储空间么？</em>*以后每次添加一个索引都要多申请2M的存储空间么？这对于存储记录比较少的表简直是天大的浪费。这个问题的症结在于到现在为止我们介绍的区都是非常<code>纯粹</code>的，也就是一个区被整个分配给某一个段，或者说区中的所有页面都是为了存储同一个段的数据而存在的，即使段的数据填不满区中所有的页面，那余下的页面也不能挪作他用。</p>
 <p>为了考虑以完整的区为单位分配给某个段对于<code>数据量较小</code>的表太浪费存储空间的这种情况，InnoDB提出了一个<code>碎片（fragment）区</code>的概念。在一个碎片区中，并不是所有的页都是为了存储同一个段的数据而存在的，而是碎片区中的页可以用于不同的目的，比如有些页面用于段A，有些页面用于段B，有些页甚至哪个段都不属于。<code>碎片区直属于表空间</code>，并不属于任何一个段。</p>
 <p>所以此后为某个段分配存储空间的策略是这样的：</p>
 <ul>
@@ -2644,7 +2644,7 @@ MySQL会自动给每个页里加了两个记录，由于这两个记录并不是
 <li>当某个段已经占用了<code>32个碎片区</code>页面之后，就会申请以完整的区为单位来分配存储空间。</li>
 </ul>
 <p>所以现在段不能仅定义为是某些区的集合，更精确的应该是<code>某些零散的页面</code>已经<code>一些完整的区</code>的集合。</p>
-<h5 id="44">4.4 区的分类<a class="headerlink" href="#44" title="Permanent link">&para;</a></h5>
+<h5 id="44">4.4 区的分类</h5>
 <p>区大体上可以分为4种类型：</p>
 <ul>
 <li><code>空闲的区(FREE)</code>：现在还没有用到这个区中的任何页面。</li>

@@ -916,12 +916,12 @@
   
 
 
-<h1 id="_1">堆<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">堆的核心概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h3 id="_3">堆与进程<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h1 id="_1">堆</h1>
+<h2 id="_2">堆的核心概述</h2>
+<h3 id="_3">堆与进程</h3>
 <ol>
-<li>堆针对一个JVM进程来说是唯一的。也就是**一个进程只有一个JVM实例**，一个JVM实例中就有一个运行时数据区，一个运行时数据区只有一个堆和一个方法区。</li>
-<li>但是**进程包含多个线程，他们是共享同一堆空间的**。</li>
+<li>堆针对一个JVM进程来说是唯一的。也就是<strong>一个进程只有一个JVM实例</strong>，一个JVM实例中就有一个运行时数据区，一个运行时数据区只有一个堆和一个方法区。</li>
+<li>但是<strong>进程包含多个线程，他们是共享同一堆空间的</strong>。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0001.png"></p>
 <ol>
@@ -946,28 +946,28 @@
 <blockquote>
 <p>随着JVM的迭代升级，原来一些绝对的事情，在后续版本中也开始有了特例，变的不再那么绝对。</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SimpleHeap</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="c1">//属性、成员变量</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">SimpleHeap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">show</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;My ID is &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="n">SimpleHeap</span><span class="w"> </span><span class="n">sl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SimpleHeap</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">SimpleHeap</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SimpleHeap</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">        </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="n">Object</span><span class="o">[]</span><span class="w"> </span><span class="n">arr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class SimpleHeap {
+    private int id;//属性、成员变量
+
+    public SimpleHeap(int id) {
+        this.id = id;
+    }
+
+    public void show() {
+        System.out.println(&quot;My ID is &quot; + id);
+    }
+    public static void main(String[] args) {
+        SimpleHeap sl = new SimpleHeap(1);
+        SimpleHeap s2 = new SimpleHeap(2);
+
+        int[] arr = new int[10];
+
+        Object[] arr1 = new Object[10];
+    }
+}
+</code></pre>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0002.png"></p>
-<h3 id="_4">堆内存细分<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_4">堆内存细分</h3>
 <p>现代垃圾收集器大部分都基于分代收集理论设计，堆空间细分为：</p>
 <ol>
 <li>Java7 及之前堆内存逻辑上分为三部分：新生区+养老区+永久区<ul>
@@ -992,36 +992,36 @@
 <li>堆空间内部结构，JDK1.8之前从永久代 替换成 元空间</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0004.png"></p>
-<h2 id="jvisualvm">JVisualVM可视化查看堆内存<a class="headerlink" href="#jvisualvm" title="Permanent link">&para;</a></h2>
+<h2 id="jvisualvm">JVisualVM可视化查看堆内存</h2>
 <p>运行下面代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HeapDemo</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;start...&quot;</span><span class="p">);</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">            </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MINUTES</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;end...&quot;</span><span class="p">);</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class HeapDemo {
+    public static void main(String[] args) {
+        System.out.println(&quot;start...&quot;);
+        try {
+            TimeUnit.MINUTES.sleep(30);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(&quot;end...&quot;);
+    }
+
+}
+</code></pre>
 <p>1、双击jdk目录下的这个文件</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0005.png"></p>
 <p>2、工具 -&gt; 插件 -&gt; 安装Visual GC插件</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0006.png"></p>
 <p>3、运行上面的代码</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0007.png"></p>
-<h2 id="oom">设置堆内存大小与 OOM<a class="headerlink" href="#oom" title="Permanent link">&para;</a></h2>
-<h3 id="_5">设置堆内存<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<h2 id="oom">设置堆内存大小与 OOM</h2>
+<h3 id="_5">设置堆内存</h3>
 <ol>
 <li>
 <p>Java堆区用于存储Java对象实例，那么堆的大小在JVM启动时就已经设定好了，大家可以通过选项"-Xms"和"-Xmx"来进行设置。</p>
 <ul>
-<li><strong>-Xms**用于表示堆区的起始内存，等价于</strong>-XX:InitialHeapSize**</li>
-<li><strong>-Xmx**则用于表示堆区的最大内存，等价于</strong>-XX:MaxHeapSize**</li>
+<li><strong>-Xms</strong>用于表示堆区的起始内存，等价于<strong>-XX:InitialHeapSize</strong></li>
+<li><strong>-Xmx</strong>则用于表示堆区的最大内存，等价于<strong>-XX:MaxHeapSize</strong></li>
 <li>一旦堆区中的内存大小超过“-Xmx"所指定的最大内存时，将会抛出OutofMemoryError异常。</li>
 <li>通常会将-Xms和-Xmx两个参数配置相同的值</li>
 <li>原因：假设两个不一样，初始内存小，最大内存大。在运行期间如果堆内存不够用了，会一直扩容直到最大内存。如果内存够用且多了，也会不断的缩容释放。频繁的扩容和释放造成不必要的压力，避免在GC之后调整堆内存给服务器带来压力。</li>
@@ -1036,78 +1036,78 @@
 </ul>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cm">/**</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm"> * 1. 设置堆空间大小的参数</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm"> * -Xms 用来设置堆空间（年轻代+老年代）的初始内存大小</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="cm"> *      -X 是jvm的运行参数</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="cm"> *      ms 是memory start</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="cm"> * -Xmx 用来设置堆空间（年轻代+老年代）的最大内存大小</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="cm"> *</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="cm"> * 2. 默认堆空间的大小</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="cm"> *    初始内存大小：物理电脑内存大小 / 64</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="cm"> *             最大内存大小：物理电脑内存大小 / 4</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="cm"> * 3. 手动设置：-Xms600m -Xmx600m</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="cm"> *     开发中建议将初始堆内存和最大的堆内存设置成相同的值。</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="cm"> *</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="cm"> * 4. 查看设置的参数：方式一： jps   /  jstat -gc 进程id</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="cm"> *                  方式二：-XX:+PrintGCDetails</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="cm"> */</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HeapSpaceInitial</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="c1">//返回Java虚拟机中的堆内存总量</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">initialMemory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">totalMemory</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="c1">//返回Java虚拟机试图使用的最大堆内存量</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">maxMemory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">maxMemory</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;-Xms : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">initialMemory</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;M&quot;</span><span class="p">);</span>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;-Xmx : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">maxMemory</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;M&quot;</span><span class="p">);</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;系统内存大小为：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">initialMemory</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">64.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;G&quot;</span><span class="p">);</span>
-<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;系统内存大小为：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">maxMemory</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">4.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;G&quot;</span><span class="p">);</span>
-<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 1. 设置堆空间大小的参数
+ * -Xms 用来设置堆空间（年轻代+老年代）的初始内存大小
+ *      -X 是jvm的运行参数
+ *      ms 是memory start
+ * -Xmx 用来设置堆空间（年轻代+老年代）的最大内存大小
+ *
+ * 2. 默认堆空间的大小
+ *    初始内存大小：物理电脑内存大小 / 64
+ *             最大内存大小：物理电脑内存大小 / 4
+ * 3. 手动设置：-Xms600m -Xmx600m
+ *     开发中建议将初始堆内存和最大的堆内存设置成相同的值。
+ *
+ * 4. 查看设置的参数：方式一： jps   /  jstat -gc 进程id
+ *                  方式二：-XX:+PrintGCDetails
+ */
+public class HeapSpaceInitial {
+    public static void main(String[] args) {
+
+        //返回Java虚拟机中的堆内存总量
+        long initialMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
+        //返回Java虚拟机试图使用的最大堆内存量
+        long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+
+        System.out.println(&quot;-Xms : &quot; + initialMemory + &quot;M&quot;);
+        System.out.println(&quot;-Xmx : &quot; + maxMemory + &quot;M&quot;);
+
+        System.out.println(&quot;系统内存大小为：&quot; + initialMemory * 64.0 / 1024 + &quot;G&quot;);
+        System.out.println(&quot;系统内存大小为：&quot; + maxMemory * 4.0 / 1024 + &quot;G&quot;);
+
+        try {
+            Thread.sleep(1000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">-</span><span class="n">Xms</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="n">M</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">-</span><span class="n">Xmx</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1794</span><span class="n">M</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">系统内存大小为</span><span class="err">：</span><span class="mf">7.6875</span><span class="n">G</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">系统内存大小为</span><span class="err">：</span><span class="mf">7.0078125</span><span class="n">G</span>
-</code></pre></div>
+<pre><code class="language-java">-Xms : 123M
+-Xmx : 1794M
+系统内存大小为：7.6875G
+系统内存大小为：7.0078125G
+</code></pre>
 <p>1、笔者电脑内存大小是8G，不足8G的原因是操作系统自身还占据了一些。</p>
 <p>2、两个不一样的原因待会再说</p>
 <p>设置下参数再看</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0008.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HeapSpaceInitial</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="c1">//返回Java虚拟机中的堆内存总量</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">initialMemory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">totalMemory</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="c1">//返回Java虚拟机试图使用的最大堆内存量</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">maxMemory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">maxMemory</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;-Xms : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">initialMemory</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;M&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;-Xmx : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">maxMemory</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;M&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class HeapSpaceInitial {
+    public static void main(String[] args) {
+
+        //返回Java虚拟机中的堆内存总量
+        long initialMemory = Runtime.getRuntime().totalMemory() / 1024 / 1024;
+        //返回Java虚拟机试图使用的最大堆内存量
+        long maxMemory = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+
+        System.out.println(&quot;-Xms : &quot; + initialMemory + &quot;M&quot;);
+        System.out.println(&quot;-Xmx : &quot; + maxMemory + &quot;M&quot;);
+
+
+        try {
+            Thread.sleep(1000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">-</span><span class="n">Xms</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">575</span><span class="n">M</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">-</span><span class="n">Xmx</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">575</span><span class="n">M</span>
-</code></pre></div>
+<pre><code class="language-java">-Xms : 575M
+-Xmx : 575M
+</code></pre>
 <p>为什么会少25M</p>
 <p><strong>方式一： jps   /  jstat -gc 进程id</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0009.png"></p>
@@ -1115,15 +1115,15 @@
 <p>jps：查看java进程</p>
 <p>jstat：查看某进程内存使用情况</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nl">SOC</span><span class="p">:</span><span class="w"> </span><span class="n">S0区总共容量</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nl">S1C</span><span class="p">:</span><span class="w"> </span><span class="n">S1区总共容量</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nl">S0U</span><span class="p">:</span><span class="w"> </span><span class="n">S0区使用的量</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nl">S1U</span><span class="p">:</span><span class="w"> </span><span class="n">S1区使用的量</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nl">EC</span><span class="p">:</span><span class="w"> </span><span class="n">伊甸园区总共容量</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nl">EU</span><span class="p">:</span><span class="w"> </span><span class="n">伊甸园区使用的量</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nl">OC</span><span class="p">:</span><span class="w"> </span><span class="n">老年代总共容量</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nl">OU</span><span class="p">:</span><span class="w"> </span><span class="n">老年代使用的量</span>
-</code></pre></div>
+<pre><code class="language-java">SOC: S0区总共容量
+S1C: S1区总共容量
+S0U: S0区使用的量
+S1U: S1区使用的量
+EC: 伊甸园区总共容量
+EU: 伊甸园区使用的量
+OC: 老年代总共容量
+OU: 老年代使用的量
+</code></pre>
 <p>1、</p>
 <p>25600+25600+153600+409600 = 614400K</p>
 <p>614400 /1024 = 600M</p>
@@ -1134,47 +1134,47 @@
 <p>并非巧合，S0区和S1区两个只有一个能使用，另一个用不了（后面会详解）</p>
 <p><strong>方式二：-XX:+PrintGCDetails</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0010.png"></p>
-<h3 id="oom_1">OOM<a class="headerlink" href="#oom_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">OOMTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Picture</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">){</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">                </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">            </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Picture</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Random</span><span class="p">().</span><span class="na">nextInt</span><span class="p">(</span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">)));</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="p">}</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="kd">class</span> <span class="nc">Picture</span><span class="p">{</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">pixels</span><span class="p">;</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Picture</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">pixels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">length</span><span class="o">]</span><span class="p">;</span>
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="p">}</span>
-</code></pre></div>
+<h3 id="oom_1">OOM</h3>
+<pre><code class="language-java">public class OOMTest {
+    public static void main(String[] args) {
+        ArrayList&lt;Picture&gt; list = new ArrayList&lt;&gt;();
+        while(true){
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            list.add(new Picture(new Random().nextInt(1024 * 1024)));
+        }
+    }
+}
+
+class Picture{
+    private byte[] pixels;
+
+    public Picture(int length) {
+        this.pixels = new byte[length];
+    }
+}
+</code></pre>
 <p>1、设置虚拟机参数</p>
 <p><code>-Xms600m -Xmx600m</code></p>
 <p>最终输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">Exception</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">OutOfMemoryError</span><span class="p">:</span><span class="w"> </span><span class="n">Java</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">space</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">Picture</span><span class="p">.</span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span><span class="p">(</span><span class="n">OOMTest</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">29</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">OOMTest</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="n">OOMTest</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">20</span><span class="p">)</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">1</span>
-</code></pre></div>
+<pre><code class="language-java">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space
+    at com.atguigu.java.Picture.&lt;init&gt;(OOMTest.java:29)
+    at com.atguigu.java.OOMTest.main(OOMTest.java:20)
+
+Process finished with exit code 1
+</code></pre>
 <p>2、堆内存变化图</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0011.png"></p>
 <p>3、原因：大对象导致堆内存溢出</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0012.png"></p>
-<h2 id="_6">年轻代与老年代<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h2 id="_6">年轻代与老年代</h2>
 <p>1、存储在JVM中的Java对象可以被划分为两类：</p>
-<div class="highlight"><pre><span></span><code>- 一类是生命周期较短的瞬时对象，这类对象的创建和消亡都非常迅速
+<pre><code>- 一类是生命周期较短的瞬时对象，这类对象的创建和消亡都非常迅速
 - 另外一类对象的生命周期却非常长，在某些极端的情况下还能够与JVM的生命周期保持一致
-</code></pre></div>
+</code></pre>
 <p>2、Java堆区进一步细分的话，可以划分为年轻代（YoungGen）和老年代（oldGen）</p>
 <p>3、其中年轻代又可以划分为Eden空间、Survivor0空间和Survivor1空间（有时也叫做from区、to区）</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0013.png"></p>
@@ -1184,16 +1184,16 @@
 <p>配置新生代与老年代在堆结构的占比</p>
 </li>
 <li>
-<p>默认**-XX:NewRatio**=2，表示新生代占1，老年代占2，新生代占整个堆的&#8531;</p>
+<p>默认<strong>-XX:NewRatio</strong>=2，表示新生代占1，老年代占2，新生代占整个堆的1/3</p>
 </li>
 <li>
-<p>可以修改**-XX:NewRatio**=4，表示新生代占1，老年代占4，新生代占整个堆的&#8533;</p>
+<p>可以修改<strong>-XX:NewRatio</strong>=4，表示新生代占1，老年代占4，新生代占整个堆的1/5</p>
 </li>
 <li>
 <p>在HotSpot中，Eden空间和另外两个survivor空间缺省所占的比例是8 : 1 : 1，</p>
 </li>
 <li>
-<p>当然开发人员可以通过选项**-XX:SurvivorRatio**调整这个空间比例。比如-XX:SurvivorRatio=8</p>
+<p>当然开发人员可以通过选项<strong>-XX:SurvivorRatio</strong>调整这个空间比例。比如-XX:SurvivorRatio=8</p>
 </li>
 <li>
 <p>几乎所有的Java对象都是在Eden区被new出来的。</p>
@@ -1206,29 +1206,29 @@
 </li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0015.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cm">/**</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="cm"> * -Xms600m -Xmx600m</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="cm"> *</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="cm"> * -XX:NewRatio ： 设置新生代与老年代的比例。默认值是2.</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="cm"> * -XX:SurvivorRatio ：设置新生代中Eden区与Survivor区的比例。默认值是8</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="cm"> * -XX:-UseAdaptiveSizePolicy ：关闭自适应的内存分配策略  （暂时用不到）</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="cm"> * -Xmn:设置新生代的空间的大小。 （一般不设置）</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="cm"> *</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="cm"> * @author shkstart  shkstart@126.com</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="cm"> * @create 2020  17:23</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="cm"> */</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EdenSurvivorTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;我只是来打个酱油~&quot;</span><span class="p">);</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="p">}</span>
-</code></pre></div>
-<h2 id="_7">图解对象分配过程<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<pre><code class="language-java">/**
+ * -Xms600m -Xmx600m
+ *
+ * -XX:NewRatio ： 设置新生代与老年代的比例。默认值是2.
+ * -XX:SurvivorRatio ：设置新生代中Eden区与Survivor区的比例。默认值是8
+ * -XX:-UseAdaptiveSizePolicy ：关闭自适应的内存分配策略  （暂时用不到）
+ * -Xmn:设置新生代的空间的大小。 （一般不设置）
+ *
+ * @author shkstart  shkstart@126.com
+ * @create 2020  17:23
+ */
+public class EdenSurvivorTest {
+    public static void main(String[] args) {
+        System.out.println(&quot;我只是来打个酱油~&quot;);
+        try {
+            Thread.sleep(1000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+<h2 id="_7">图解对象分配过程</h2>
 <p>为新对象分配内存是一件非常严谨和复杂的任务，JVM的设计者们不仅需要考虑内存如何分配、在哪里分配等问题，并且由于内存分配算法与内存回收算法密切相关，所以还需要考虑GC执行完内存回收后是否会在内存空间中产生内存碎片。</p>
 <p><strong>具体过程</strong></p>
 <ol>
@@ -1241,7 +1241,7 @@
 <li>在养老区，相对悠闲。当养老区内存不足时，再次触发GC：Major GC，进行养老区的内存清理</li>
 <li>若养老区执行了Major GC之后，发现依然无法进行对象的保存，就会产生OOM异常。</li>
 </ol>
-<h3 id="_8">图解对象分配（一般情况）<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<h3 id="_8">图解对象分配（一般情况）</h3>
 <p>1、我们创建的对象，一般都是存放在Eden区的，<strong>当我们Eden区满了后，就会触发GC操作</strong>，一般被称为 YGC / Minor GC操作</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0016.png"></p>
 <p>2、当我们进行一次垃圾收集后，红色的对象将会被回收，而绿色的独享还被占用着，存放在S0(Survivor From)区。同时我们给每个对象设置了一个年龄计数器，经过一次回收后还存在的对象，将其年龄加 1。</p>
@@ -1256,7 +1256,7 @@
 <p>4、我们继续不断的进行对象生成和垃圾回收，当Survivor中的对象的年龄达到15的时候，将会触发一次 Promotion 晋升的操作，也就是将年轻代中的对象晋升到老年代中</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0018.png"></p>
 <p>关于垃圾回收：频繁在新生区收集，很少在养老区收集，几乎不在永久区/元空间收集。</p>
-<h3 id="_9">特殊情况说明<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<h3 id="_9">特殊情况说明</h3>
 <p><strong>对象分配的特殊情况</strong></p>
 <ol>
 <li>如果来了一个新对象，先看看 Eden 是否放的下？<ul>
@@ -1272,7 +1272,7 @@
 <li>如果 Eden 区满了，将对象往幸存区拷贝时，发现幸存区放不下啦，那只能便宜了某些新对象，让他们直接晋升至老年区</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0019.png"></p>
-<h3 id="_10">常用调优工具<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<h3 id="_10">常用调优工具</h3>
 <ol>
 <li>JDK命令行</li>
 <li>Eclipse：Memory Analyzer Tool</li>
@@ -1283,7 +1283,7 @@
 <li>GCViewer</li>
 <li>GCEasy</li>
 </ol>
-<h2 id="gc">GC分类<a class="headerlink" href="#gc" title="Permanent link">&para;</a></h2>
+<h2 id="gc">GC分类</h2>
 <ol>
 <li>
 <p>我们都知道，JVM的调优的一个环节，也就是垃圾收集，我们需要尽量的避免垃圾回收，因为在垃圾回收的过程中，容易出现STW（Stop the World）的问题，<strong>而 Major GC 和 Full GC出现STW的时间，是Minor GC的10倍以上</strong></p>
@@ -1308,7 +1308,7 @@
 <blockquote>
 <p>由于历史原因，外界各种解读，majorGC和Full GC有些混淆。</p>
 </blockquote>
-<h3 id="young-gc">Young GC<a class="headerlink" href="#young-gc" title="Permanent link">&para;</a></h3>
+<h3 id="young-gc">Young GC</h3>
 <p><strong>年轻代 GC（Minor GC）触发机制</strong></p>
 <ol>
 <li>
@@ -1322,7 +1322,7 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0020.png"></p>
-<h3 id="majorfull-gc">Major/Full GC<a class="headerlink" href="#majorfull-gc" title="Permanent link">&para;</a></h3>
+<h3 id="majorfull-gc">Major/Full GC</h3>
 <blockquote>
 <p>Full GC有争议，后续详解两者区别，暂时先看着</p>
 </blockquote>
@@ -1348,60 +1348,62 @@
 <li>由Eden区、survivor space0（From Space）区向survivor space1（To Space）区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小</li>
 </ol>
 <p>说明：Full GC 是开发或调优中尽量要避免的。这样STW时间会短一些</p>
-<h3 id="gc_1">GC日志分析<a class="headerlink" href="#gc_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="cm">/**</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="cm"> * 测试MinorGC 、 MajorGC、FullGC</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="cm"> * -Xms9m -Xmx9m -XX:+PrintGCDetails</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="cm"> * @author shkstart  shkstart@126.com</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="cm"> * @create 2020  14:19</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="cm"> */</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">GCTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;atguigu.com&quot;</span><span class="p">;</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">                </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">                </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">                </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">            </span><span class="n">t</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;遍历次数为：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
-<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="p">}</span>
-</code></pre></div>
+<h3 id="gc_1">GC日志分析</h3>
+<pre><code class="language-java">/**
+ * 测试MinorGC 、 MajorGC、FullGC
+ * -Xms9m -Xmx9m -XX:+PrintGCDetails
+ * @author shkstart  shkstart@126.com
+ * @create 2020  14:19
+ */
+public class GCTest {
+    public static void main(String[] args) {
+        int i = 0;
+        try {
+            List&lt;String&gt; list = new ArrayList&lt;&gt;();
+            String a = &quot;atguigu.com&quot;;
+            while (true) {
+                list.add(a);
+                a = a + a;
+                i++;
+            }
+
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.out.println(&quot;遍历次数为：&quot; + i);
+        }
+    }
+}
+
+</code></pre>
 <p>输出：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">2037</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">504</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">2037</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">728</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0455865</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.06</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">2246</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">496</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">2470</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">1506</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0009094</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">2294</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">488</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">3305</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">2210</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0009568</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">1231</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">488</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">7177</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">6434</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0005594</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">488</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">472</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">6434</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">6418</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0005890</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">472</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">5946</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">4944</span><span class="n">K</span><span class="p">(</span><span class="mi">7168</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">6418</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">4944</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3492</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0045270</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">1536</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">4944</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">4944</span><span class="n">K</span><span class="p">(</span><span class="mi">8704</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0004954</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">OutOfMemoryError</span><span class="p">:</span><span class="w"> </span><span class="n">Java</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">space</span>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Arrays</span><span class="p">.</span><span class="na">copyOf</span><span class="p">(</span><span class="n">Arrays</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">3332</span><span class="p">)</span>
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">AbstractStringBuilder</span><span class="p">.</span><span class="na">ensureCapacityInternal</span><span class="p">(</span><span class="n">AbstractStringBuilder</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">124</span><span class="p">)</span>
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">AbstractStringBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">AbstractStringBuilder</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">448</span><span class="p">)</span>
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">StringBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">StringBuilder</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">136</span><span class="p">)</span>
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java1</span><span class="p">.</span><span class="na">GCTest</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="n">GCTest</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">20</span><span class="p">)</span>
-<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">1536</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">4944</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">4877</span><span class="n">K</span><span class="p">(</span><span class="mi">7168</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">4944</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">4877</span><span class="n">K</span><span class="p">(</span><span class="mi">8704</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3492</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0076061</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="n">遍历次数为</span><span class="err">：</span><span class="mi">16</span>
-<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="n">Heap</span>
-<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">1536</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">60</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ffd00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
-<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">1024</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ffd00000</span><span class="p">,</span><span class="mh">0x00000000ffd0f058</span><span class="p">,</span><span class="mh">0x00000000ffe00000</span><span class="p">)</span>
-<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fff80000</span><span class="p">,</span><span class="mh">0x00000000fff80000</span><span class="p">,</span><span class="mh">0x0000000100000000</span><span class="p">)</span>
-<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">1024</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ffe00000</span><span class="p">,</span><span class="mh">0x00000000ffe00000</span><span class="p">,</span><span class="mh">0x00000000fff00000</span><span class="p">)</span>
-<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">7168</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">4877</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff600000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000ffd00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000ffd00000</span><span class="p">)</span>
-<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">7168</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">68</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff600000</span><span class="p">,</span><span class="mh">0x00000000ffac3408</span><span class="p">,</span><span class="mh">0x00000000ffd00000</span><span class="p">)</span>
-<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3525</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4502</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
-<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">391</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">394</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">2037</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">504</span><span class="n">K</span><span class="p">(</span><span class="mi">2560</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">2037</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">728</span><span class="n">K</span><span class="p">(</span><span class="mi">9728</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0455865</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.06</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
-</code></pre></div>
+<pre><code class="language-java">[GC (Allocation Failure) [PSYoungGen: 2037K-&gt;504K(2560K)] 2037K-&gt;728K(9728K), 0.0455865 secs] [Times: user=0.00 sys=0.00, real=0.06 secs] 
+[GC (Allocation Failure) [PSYoungGen: 2246K-&gt;496K(2560K)] 2470K-&gt;1506K(9728K), 0.0009094 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 2294K-&gt;488K(2560K)] 3305K-&gt;2210K(9728K), 0.0009568 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 1231K-&gt;488K(2560K)] 7177K-&gt;6434K(9728K), 0.0005594 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 488K-&gt;472K(2560K)] 6434K-&gt;6418K(9728K), 0.0005890 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[Full GC (Allocation Failure) [PSYoungGen: 472K-&gt;0K(2560K)] [ParOldGen: 5946K-&gt;4944K(7168K)] 6418K-&gt;4944K(9728K), [Metaspace: 3492K-&gt;3492K(1056768K)], 0.0045270 secs] [Times: user=0.00 sys=0.00, real=0.01 secs] 
+[GC (Allocation Failure) [PSYoungGen: 0K-&gt;0K(1536K)] 4944K-&gt;4944K(8704K), 0.0004954 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[Full GC (Allocation Failure) java.lang.OutOfMemoryError: Java heap space
+    at java.util.Arrays.copyOf(Arrays.java:3332)
+    at java.lang.AbstractStringBuilder.ensureCapacityInternal(AbstractStringBuilder.java:124)
+    at java.lang.AbstractStringBuilder.append(AbstractStringBuilder.java:448)
+    at java.lang.StringBuilder.append(StringBuilder.java:136)
+    at com.atguigu.java1.GCTest.main(GCTest.java:20)
+[PSYoungGen: 0K-&gt;0K(1536K)] [ParOldGen: 4944K-&gt;4877K(7168K)] 4944K-&gt;4877K(8704K), [Metaspace: 3492K-&gt;3492K(1056768K)], 0.0076061 secs] [Times: user=0.00 sys=0.02, real=0.01 secs] 
+遍历次数为：16
+Heap
+ PSYoungGen      total 1536K, used 60K [0x00000000ffd00000, 0x0000000100000000, 0x0000000100000000)
+  eden space 1024K, 5% used [0x00000000ffd00000,0x00000000ffd0f058,0x00000000ffe00000)
+  from space 512K, 0% used [0x00000000fff80000,0x00000000fff80000,0x0000000100000000)
+  to   space 1024K, 0% used [0x00000000ffe00000,0x00000000ffe00000,0x00000000fff00000)
+ ParOldGen       total 7168K, used 4877K [0x00000000ff600000, 0x00000000ffd00000, 0x00000000ffd00000)
+  object space 7168K, 68% used [0x00000000ff600000,0x00000000ffac3408,0x00000000ffd00000)
+ Metaspace       used 3525K, capacity 4502K, committed 4864K, reserved 1056768K
+  class space    used 391K, capacity 394K, committed 512K, reserved 1048576K
+</code></pre>
+<pre><code class="language-java">[GC (Allocation Failure) [PSYoungGen: 2037K-&gt;504K(2560K)] 2037K-&gt;728K(9728K), 0.0455865 secs] [Times: user=0.00 sys=0.00, real=0.06 secs] 
+
+</code></pre>
 <ul>
 <li>
 <p>[PSYoungGen: 2037K-&gt;504K(2560K)]：年轻代总空间为 2560K ，当前占用 2037K ，经过垃圾回收后剩余504K</p>
@@ -1410,7 +1412,7 @@
 <p>2037K-&gt;728K(9728K)：堆内存总空间为 9728K ，当前占用2037K ，经过垃圾回收后剩余728K</p>
 </li>
 </ul>
-<h2 id="_11">堆空间分代思想<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<h2 id="_11">堆空间分代思想</h2>
 <p>为什么要把Java堆分代？不分代就不能正常工作了吗？经研究，不同对象的生命周期不同。70%-99%的对象是临时对象。
 *   新生代：有Eden、两块大小相同的survivor（又称为from/to或s0/s1）构成，to总为空。
 *   老年代：存放新生代中经历多次GC仍然存活的对象。</p>
@@ -1425,11 +1427,11 @@
 </li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0022.png"></p>
-<h2 id="_12">对象内存分配策略<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<h2 id="_12">对象内存分配策略</h2>
 <ol>
 <li>如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Survivor容纳的话，将被移动到Survivor空间中，并将对象年龄设为1。</li>
 <li>对象在Survivor区中每熬过一次MinorGC，年龄就增加1岁，当它的年龄增加到一定程度（默认为15岁，其实每个JVM、每个GC都有所不同）时，就会被晋升到老年代</li>
-<li>对象晋升老年代的年龄阀值，可以通过选项**-XX:MaxTenuringThreshold**来设置</li>
+<li>对象晋升老年代的年龄阀值，可以通过选项<strong>-XX:MaxTenuringThreshold</strong>来设置</li>
 </ol>
 <p><strong>针对不同年龄段的对象分配原则如下所示：</strong></p>
 <ol>
@@ -1442,27 +1444,27 @@
 <blockquote>
 <p>一些细节放在后面说</p>
 </blockquote>
-<h2 id="tlab">TLAB为对象分配内存（保证线程安全）<a class="headerlink" href="#tlab" title="Permanent link">&para;</a></h2>
-<h3 id="tlab_1">为什么有 TLAB<a class="headerlink" href="#tlab_1" title="Permanent link">&para;</a></h3>
+<h2 id="tlab">TLAB为对象分配内存（保证线程安全）</h2>
+<h3 id="tlab_1">为什么有 TLAB</h3>
 <ol>
 <li>堆区是线程共享区域，任何线程都可以访问到堆区中的共享数据</li>
 <li>由于对象实例的创建在JVM中非常频繁，因此在并发环境下从堆区中划分内存空间是线程不安全的</li>
-<li>为避免多个线程操作同一地址，需要使用**加锁等机制**，进而影响分配速度。</li>
+<li>为避免多个线程操作同一地址，需要使用<strong>加锁等机制</strong>，进而影响分配速度。</li>
 </ol>
-<h3 id="tlab_2">什么是 TLAB<a class="headerlink" href="#tlab_2" title="Permanent link">&para;</a></h3>
+<h3 id="tlab_2">什么是 TLAB</h3>
 <p>TLAB（Thread Local Allocation Buffer）</p>
 <ol>
 <li>从内存模型而不是垃圾收集的角度，对Eden区域继续进行划分，<strong>JVM为每个线程分配了一个私有缓存区域，它包含在Eden空间内</strong>。</li>
-<li>多线程同时分配内存时，使用TLAB可以避免一系列的非线程安全问题，同时还能够提升内存分配的吞吐量，因此我们可以将这种内存分配方式称之为**快速分配策略**。</li>
+<li>多线程同时分配内存时，使用TLAB可以避免一系列的非线程安全问题，同时还能够提升内存分配的吞吐量，因此我们可以将这种内存分配方式称之为<strong>快速分配策略</strong>。</li>
 <li>据我所知所有OpenJDK衍生出来的JVM都提供了TLAB的设计。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0023.png"></p>
 <p>1、每个线程都有一个TLAB空间</p>
 <p>2、当一个线程的TLAB存满时，可以使用公共区域（蓝色）的</p>
-<h3 id="tlab_3">TLAB再说明<a class="headerlink" href="#tlab_3" title="Permanent link">&para;</a></h3>
+<h3 id="tlab_3">TLAB再说明</h3>
 <ol>
 <li>
-<p>尽管不是所有的对象实例都能够在TLAB中成功分配内存，但**JVM确实是将TLAB作为内存分配的首选**。</p>
+<p>尽管不是所有的对象实例都能够在TLAB中成功分配内存，但<strong>JVM确实是将TLAB作为内存分配的首选</strong>。</p>
 </li>
 <li>
 <p>在程序中，开发人员可以通过选项“<strong>-XX:UseTLAB</strong>”设置是否开启TLAB空间。</p>
@@ -1471,45 +1473,45 @@
 <p>默认情况下，TLAB空间的内存非常小，仅占有整个Eden空间的1%，当然我们可以通过选项“<strong>-XX:TLABWasteTargetPercent</strong>”设置TLAB空间所占用Eden空间的百分比大小。</p>
 </li>
 <li>
-<p>一旦对象在TLAB空间分配内存失败时，JVM就会尝试着通过**使用加锁机制确保数据操作的原子性**，从而直接在Eden空间中分配内存。</p>
+<p>一旦对象在TLAB空间分配内存失败时，JVM就会尝试着通过<strong>使用加锁机制确保数据操作的原子性</strong>，从而直接在Eden空间中分配内存。</p>
 </li>
 </ol>
 <blockquote>
 <p>1、哪个线程要分配内存，就在哪个线程的本地缓冲区中分配，只有本地缓冲区用完 了，<strong>分配新的缓存区时才需要同步锁定</strong>                   ----这是《深入理解JVM》--第三版里说的</p>
-<p>2、和这里讲的有点不同。我猜测说的意思是某一次分配，如果TLAB用完了，那么**这一次**先在Eden区直接分配。空闲下来后再加锁分配新的TLAB（TLAB内存较大，分配时间应该较长）</p>
+<p>2、和这里讲的有点不同。我猜测说的意思是某一次分配，如果TLAB用完了，那么<strong>这一次</strong>先在Eden区直接分配。空闲下来后再加锁分配新的TLAB（TLAB内存较大，分配时间应该较长）</p>
 </blockquote>
 <p><strong>TLAB 分配过程</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_005/0024.png"></p>
-<h2 id="_13">堆空间参数设置<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
-<h3 id="_14">常用参数设置<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h2 id="_13">堆空间参数设置</h2>
+<h3 id="_14">常用参数设置</h3>
 <blockquote>
 <p><strong>官方文档</strong>：https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html</p>
 <p>我们只说常用的</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="cm">/**</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="cm"> * 测试堆空间常用的jvm参数：</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="cm"> * -XX:+PrintFlagsInitial : 查看所有的参数的默认初始值</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="cm"> * -XX:+PrintFlagsFinal  ：查看所有的参数的最终值（可能会存在修改，不再是初始值）</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="cm"> *      具体查看某个参数的指令： jps：查看当前运行中的进程</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="cm"> *                             jinfo -flag SurvivorRatio 进程id</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="cm"> *</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="cm"> * -Xms：初始堆空间内存 （默认为物理内存的1/64）</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="cm"> * -Xmx：最大堆空间内存（默认为物理内存的1/4）</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="cm"> * -Xmn：设置新生代的大小。(初始值及最大值)</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="cm"> * -XX:NewRatio：配置新生代与老年代在堆结构的占比</span>
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="cm"> * -XX:SurvivorRatio：设置新生代中Eden和S0/S1空间的比例</span>
-<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="cm"> * -XX:MaxTenuringThreshold：设置新生代垃圾的最大年龄</span>
-<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="cm"> * -XX:+PrintGCDetails：输出详细的GC处理日志</span>
-<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="cm"> * 打印gc简要信息：① -XX:+PrintGC   ② -verbose:gc</span>
-<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="cm"> * -XX:HandlePromotionFailure：是否设置空间分配担保</span>
-<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="cm"> */</span>
-</code></pre></div>
-<h3 id="_15">空间分配担保<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<pre><code class="language-java">/**
+ * 测试堆空间常用的jvm参数：
+ * -XX:+PrintFlagsInitial : 查看所有的参数的默认初始值
+ * -XX:+PrintFlagsFinal  ：查看所有的参数的最终值（可能会存在修改，不再是初始值）
+ *      具体查看某个参数的指令： jps：查看当前运行中的进程
+ *                             jinfo -flag SurvivorRatio 进程id
+ *
+ * -Xms：初始堆空间内存 （默认为物理内存的1/64）
+ * -Xmx：最大堆空间内存（默认为物理内存的1/4）
+ * -Xmn：设置新生代的大小。(初始值及最大值)
+ * -XX:NewRatio：配置新生代与老年代在堆结构的占比
+ * -XX:SurvivorRatio：设置新生代中Eden和S0/S1空间的比例
+ * -XX:MaxTenuringThreshold：设置新生代垃圾的最大年龄
+ * -XX:+PrintGCDetails：输出详细的GC处理日志
+ * 打印gc简要信息：① -XX:+PrintGC   ② -verbose:gc
+ * -XX:HandlePromotionFailure：是否设置空间分配担保
+ */
+</code></pre>
+<h3 id="_15">空间分配担保</h3>
 <p>1、在发生Minor GC之前，虚拟机会检查老年代最大可用的连续空间是否大于新生代所有对象的总空间。</p>
 <ul>
 <li>如果大于，则此次Minor GC是安全的</li>
-<li>如果小于，则虚拟机会查看**-XX:HandlePromotionFailure**设置值是否允担保失败。<ul>
-<li>如果HandlePromotionFailure=true，那么会继续检查**老年代最大可用连续空间是否大于历次晋升到老年代的对象的平均大小**。<ul>
+<li>如果小于，则虚拟机会查看<strong>-XX:HandlePromotionFailure</strong>设置值是否允担保失败。<ul>
+<li>如果HandlePromotionFailure=true，那么会继续检查<strong>老年代最大可用连续空间是否大于历次晋升到老年代的对象的平均大小</strong>。<ul>
 <li>如果大于，则尝试进行一次Minor GC，但这次Minor GC依然是有风险的；</li>
 <li>如果小于，则进行一次Full GC。</li>
 </ul>
@@ -1521,22 +1523,22 @@
 <p><strong>历史版本</strong></p>
 <ol>
 <li>在JDK6 Update 24之后，HandlePromotionFailure参数不会再影响到虚拟机的空间分配担保策略，观察openJDK中的源码变化，虽然源码中还定义了HandlePromotionFailure参数，但是在代码中已经不会再使用它。</li>
-<li>JDK6 Update 24之后的规则变为**只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行Minor GC**，否则将进行Full GC。即 HandlePromotionFailure=true</li>
+<li>JDK6 Update 24之后的规则变为<strong>只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行Minor GC</strong>，否则将进行Full GC。即 HandlePromotionFailure=true</li>
 </ol>
-<h2 id="_16">堆是分配对象的唯一选择么？<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<h2 id="_16">堆是分配对象的唯一选择么？</h2>
 <p><strong>在《深入理解Java虚拟机》中关于Java堆内存有这样一段描述：</strong></p>
 <ol>
 <li>
-<p>随着JIT编译期的发展与**逃逸分析技术**逐渐成熟，**栈上分配、标量替换**优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么“绝对”了。</p>
+<p>随着JIT编译期的发展与<strong>逃逸分析技术</strong>逐渐成熟，<strong>栈上分配、标量替换</strong>优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么“绝对”了。</p>
 </li>
 <li>
-<p>在Java虚拟机中，对象是在Java堆中分配内存的，这是一个普遍的常识。但是，有一种特殊情况，那就是**如果经过逃逸分析（Escape Analysis）后发现，一个对象并没有逃逸出方法的话，那么就可能被优化成栈上分配**。这样就无需在堆上分配内存，也无须进行垃圾回收了。这也是最常见的堆外存储技术。</p>
+<p>在Java虚拟机中，对象是在Java堆中分配内存的，这是一个普遍的常识。但是，有一种特殊情况，那就是<strong>如果经过逃逸分析（Escape Analysis）后发现，一个对象并没有逃逸出方法的话，那么就可能被优化成栈上分配</strong>。这样就无需在堆上分配内存，也无须进行垃圾回收了。这也是最常见的堆外存储技术。</p>
 </li>
 <li>
 <p>此外，前面提到的基于OpenJDK深度定制的TaoBao VM，其中创新的GCIH（GC invisible heap）技术实现off-heap，将生命周期较长的Java对象从heap中移至heap外，并且GC不能管理GCIH内部的Java对象，以此达到降低GC的回收频率和提升GC的回收效率的目的。</p>
 </li>
 </ol>
-<h3 id="_17">逃逸分析<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<h3 id="_17">逃逸分析</h3>
 <ol>
 <li>如何将堆上的对象分配到栈，需要使用逃逸分析手段。</li>
 <li>这是一种可以有效减少Java程序中同步负载和内存堆分配压力的跨函数全局数据流分析算法。</li>
@@ -1549,67 +1551,69 @@
 </ol>
 <p><strong>逃逸分析举例</strong></p>
 <p>1、没有发生逃逸的对象，则可以分配到栈（无线程安全问题）上，随着方法执行的结束，栈空间就被移除（也就无需GC）</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">my_method</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="n">V</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">V</span><span class="p">();</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="c1">// use v</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="c1">// ....</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public void my_method() {
+    V v = new V();
+    // use v
+    // ....
+    v = null;
+}
+</code></pre>
 <p>2、下面代码中的 StringBuffer sb 发生了逃逸，不能在栈上分配</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">StringBuffer</span><span class="w"> </span><span class="nf">createStringBuffer</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="n">StringBuffer</span><span class="w"> </span><span class="n">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuffer</span><span class="p">();</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">s2</span><span class="p">);</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sb</span><span class="p">;</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public static StringBuffer createStringBuffer(String s1, String s2) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(s1);
+    sb.append(s2);
+    return sb;
+}
+</code></pre>
 <p>3、如果想要StringBuffer sb不发生逃逸，可以这样写</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">createStringBuffer</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="n">StringBuffer</span><span class="w"> </span><span class="n">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuffer</span><span class="p">();</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="n">sb</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">s2</span><span class="p">);</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sb</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">}</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="cm">/**</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="cm"> * 逃逸分析</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="cm"> *</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="cm"> *  如何快速的判断是否发生了逃逸分析，大家就看new的对象实体是否有可能在方法外被调用。</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="cm"> */</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EscapeAnalysis</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">EscapeAnalysis</span><span class="w"> </span><span class="n">obj</span><span class="p">;</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="cm">/*</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="cm">    方法返回EscapeAnalysis对象，发生逃逸</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="cm">     */</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">EscapeAnalysis</span><span class="w"> </span><span class="nf">getInstance</span><span class="p">(){</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="o">?</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EscapeAnalysis</span><span class="p">()</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">obj</span><span class="p">;</span>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">    </span><span class="cm">/*</span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="cm">    为成员属性赋值，发生逃逸</span>
-<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="cm">     */</span>
-<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setObj</span><span class="p">(){</span>
-<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EscapeAnalysis</span><span class="p">();</span>
-<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="w">    </span><span class="c1">//思考：如果当前的obj引用声明为static的？仍然会发生逃逸。</span>
-<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>
-<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="w">    </span><span class="cm">/*</span>
-<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="cm">    对象的作用域仅在当前方法中有效，没有发生逃逸</span>
-<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="cm">     */</span>
-<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">useEscapeAnalysis</span><span class="p">(){</span>
-<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="w">        </span><span class="n">EscapeAnalysis</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">EscapeAnalysis</span><span class="p">();</span>
-<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a><span class="w">    </span><span class="cm">/*</span>
-<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="cm">    引用成员变量的值，发生逃逸</span>
-<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="cm">     */</span>
-<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">useEscapeAnalysis1</span><span class="p">(){</span>
-<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="w">        </span><span class="n">EscapeAnalysis</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getInstance</span><span class="p">();</span>
-<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="w">        </span><span class="c1">//getInstance().xxx()同样会发生逃逸</span>
-<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public static String createStringBuffer(String s1, String s2) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(s1);
+    sb.append(s2);
+    return sb.toString();
+}
+</code></pre>
+<pre><code class="language-java">
+/**
+ * 逃逸分析
+ *
+ *  如何快速的判断是否发生了逃逸分析，大家就看new的对象实体是否有可能在方法外被调用。
+ */
+public class EscapeAnalysis {
+
+    public EscapeAnalysis obj;
+
+    /*
+    方法返回EscapeAnalysis对象，发生逃逸
+     */
+    public EscapeAnalysis getInstance(){
+        return obj == null? new EscapeAnalysis() : obj;
+    }
+    /*
+    为成员属性赋值，发生逃逸
+     */
+    public void setObj(){
+        this.obj = new EscapeAnalysis();
+    }
+    //思考：如果当前的obj引用声明为static的？仍然会发生逃逸。
+
+    /*
+    对象的作用域仅在当前方法中有效，没有发生逃逸
+     */
+    public void useEscapeAnalysis(){
+        EscapeAnalysis e = new EscapeAnalysis();
+    }
+    /*
+    引用成员变量的值，发生逃逸
+     */
+    public void useEscapeAnalysis1(){
+        EscapeAnalysis e = getInstance();
+        //getInstance().xxx()同样会发生逃逸
+    }
+}
+
+</code></pre>
 <p><strong>逃逸分析参数设置</strong></p>
 <ol>
 <li>
@@ -1625,126 +1629,126 @@
 </ol>
 <p><strong>总结</strong></p>
 <p>开发中能使用局部变量的，就不要使用在方法外定义。</p>
-<h3 id="_18">代码优化<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<h3 id="_18">代码优化</h3>
 <p>使用逃逸分析，编译器可以对代码做如下优化：</p>
 <ol>
 <li><strong>栈上分配</strong>：将堆分配转化为栈分配。如果一个对象在子程序中被分配，要使指向该对象的指针永远不会发生逃逸，对象可能是栈上分配的候选，而不是堆上分配</li>
 <li><strong>同步省略</strong>：如果一个对象被发现只有一个线程被访问到，那么对于这个对象的操作可以不考虑同步。</li>
 <li><strong>分离对象或标量替换</strong>：有的对象可能不需要作为一个连续的内存结构存在也可以被访问到，那么对象的部分（或全部）可以不存储在内存，而是存储在CPU寄存器中。</li>
 </ol>
-<h3 id="_19">栈上分配<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<h3 id="_19">栈上分配</h3>
 <ol>
 <li>JIT编译器在编译期间根据逃逸分析的结果，发现如果一个对象并没有逃逸出方法的话，就可能被优化成栈上分配。分配完成后，继续在调用栈内执行，最后线程结束，栈空间被回收，局部变量对象也被回收。这样就无须进行垃圾回收了。</li>
 <li>常见的栈上分配的场景：在逃逸分析中，已经说明了，分别是给成员变量赋值、方法返回值、实例引用传递。</li>
 </ol>
 <p><strong>栈上分配举例</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="cm">/**</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="cm"> * 栈上分配测试</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="cm"> * -Xmx128m -Xms128m -XX:-DoEscapeAnalysis -XX:+PrintGCDetails</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="cm"> */</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StackAllocation</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10000000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">            </span><span class="n">alloc</span><span class="p">();</span>
-<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">        </span><span class="c1">// 查看执行时间</span>
-<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;花费的时间为： &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; ms&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">        </span><span class="c1">// 为了方便查看堆内存中对象个数，线程sleep</span>
-<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">            </span><span class="n">e1</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>
-<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">alloc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="w">        </span><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">();</span><span class="c1">//未发生逃逸</span>
-<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a>
-<a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a>
-<a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 栈上分配测试
+ * -Xmx128m -Xms128m -XX:-DoEscapeAnalysis -XX:+PrintGCDetails
+ */
+public class StackAllocation {
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
+        for (int i = 0; i &lt; 10000000; i++) {
+            alloc();
+        }
+        // 查看执行时间
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;花费的时间为： &quot; + (end - start) + &quot; ms&quot;);
+        // 为了方便查看堆内存中对象个数，线程sleep
+        try {
+            Thread.sleep(1000000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private static void alloc() {
+        User user = new User();//未发生逃逸
+    }
+
+    static class User {
+
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>[GC (Allocation Failure) [PSYoungGen: 33280K-&gt;808K(38400K)] 33280K-&gt;816K(125952K), 0.0483350 secs] [Times: user=0.00 sys=0.00, real=0.06 secs] 
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>[GC (Allocation Failure) [PSYoungGen: 34088K-&gt;808K(38400K)] 34096K-&gt;816K(125952K), 0.0008411 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>[GC (Allocation Failure) [PSYoungGen: 34088K-&gt;792K(38400K)] 34096K-&gt;800K(125952K), 0.0008427 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>[GC (Allocation Failure) [PSYoungGen: 34072K-&gt;808K(38400K)] 34080K-&gt;816K(125952K), 0.0012223 secs] [Times: user=0.08 sys=0.00, real=0.00 secs] 
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>花费的时间为： 114 ms
-</code></pre></div>
+<pre><code>[GC (Allocation Failure) [PSYoungGen: 33280K-&gt;808K(38400K)] 33280K-&gt;816K(125952K), 0.0483350 secs] [Times: user=0.00 sys=0.00, real=0.06 secs] 
+[GC (Allocation Failure) [PSYoungGen: 34088K-&gt;808K(38400K)] 34096K-&gt;816K(125952K), 0.0008411 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 34088K-&gt;792K(38400K)] 34096K-&gt;800K(125952K), 0.0008427 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+[GC (Allocation Failure) [PSYoungGen: 34072K-&gt;808K(38400K)] 34080K-&gt;816K(125952K), 0.0012223 secs] [Times: user=0.08 sys=0.00, real=0.00 secs] 
+花费的时间为： 114 ms
+</code></pre>
 <p>1、JVM 参数设置</p>
 <p>-Xmx128m -Xms128m -XX:-DoEscapeAnalysis -XX:+PrintGCDetails</p>
 <p>2、日志打印：发生了 GC ，耗时 114ms</p>
 <p><strong>开启逃逸分析的情况</strong></p>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>花费的时间为： 5 ms
-</code></pre></div>
+<pre><code>花费的时间为： 5 ms
+</code></pre>
 <p>1、参数设置</p>
 <p>-Xmx128m -Xms128m -XX:+DoEscapeAnalysis -XX:+PrintGCDetails</p>
 <p>2、日志打印：并没有发生 GC ，耗时5ms 。</p>
-<h3 id="_20">同步省略（同步消除）<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<h3 id="_20">同步省略（同步消除）</h3>
 <ol>
 <li>
 <p>线程同步的代价是相当高的，同步的后果是降低并发性和性能。</p>
 </li>
 <li>
-<p>在动态编译同步块的时候，JIT编译器可以借助逃逸分析来**判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程**。</p>
+<p>在动态编译同步块的时候，JIT编译器可以借助逃逸分析来<strong>判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程</strong>。</p>
 </li>
 <li>
-<p>如果没有，那么JIT编译器在编译这个同步块的时候就会取消对这部分代码的同步。这样就能大大提高并发性和性能。这个**取消同步的过程就叫同步省略，也叫锁消除**。</p>
+<p>如果没有，那么JIT编译器在编译这个同步块的时候就会取消对这部分代码的同步。这样就能大大提高并发性和性能。这个<strong>取消同步的过程就叫同步省略，也叫锁消除</strong>。</p>
 </li>
 </ol>
 <p>例如下面的代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="n">Object</span><span class="w"> </span><span class="n">hollis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="kd">synchronized</span><span class="p">(</span><span class="n">hollis</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">hollis</span><span class="p">);</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public void f() {
+    Object hollis = new Object();
+    synchronized(hollis) {
+        System.out.println(hollis);
+    }
+}
+</code></pre>
 <p>代码中对hollis这个对象加锁，但是hollis对象的生命周期只在f()方法中，并不会被其他线程所访问到，所以在JIT编译阶段就会被优化掉，优化成：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">f</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="n">Object</span><span class="w"> </span><span class="n">hellis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">hellis</span><span class="p">);</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public void f() {
+    Object hellis = new Object();
+    System.out.println(hellis);
+}
+</code></pre>
 <p><strong>字节码分析</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>public class SynchronizedTest {
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    public void f() {
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>        Object hollis = new Object();
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>        synchronized(hollis) {
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>            System.out.println(hollis);
-<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>        }
-<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    }
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>}
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="err">#</span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span><span class="o">&gt;</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">dup</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;&gt;</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">astore_1</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">aload_1</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="n">dup</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="mi">10</span><span class="w"> </span><span class="n">astore_2</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="mi">11</span><span class="w"> </span><span class="n">monitorenter</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="mi">12</span><span class="w"> </span><span class="n">getstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="o">&gt;</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="mi">15</span><span class="w"> </span><span class="n">aload_1</span>
-<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="mi">16</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span><span class="p">.</span><span class="na">println</span><span class="o">&gt;</span>
-<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="mi">19</span><span class="w"> </span><span class="n">aload_2</span>
-<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="mi">20</span><span class="w"> </span><span class="n">monitorexit</span>
-<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="mi">21</span><span class="w"> </span><span class="k">goto</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="p">(</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span>
-<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="mi">24</span><span class="w"> </span><span class="n">astore_3</span>
-<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="mi">25</span><span class="w"> </span><span class="n">aload_2</span>
-<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a><span class="mi">26</span><span class="w"> </span><span class="n">monitorexit</span>
-<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="mi">27</span><span class="w"> </span><span class="n">aload_3</span>
-<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a><span class="mi">28</span><span class="w"> </span><span class="n">athrow</span>
-<a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="mi">29</span><span class="w"> </span><span class="k">return</span>
-</code></pre></div>
+<pre><code>public class SynchronizedTest {
+    public void f() {
+        Object hollis = new Object();
+        synchronized(hollis) {
+            System.out.println(hollis);
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-java"> 0 new #2 &lt;java/lang/Object&gt;
+ 3 dup
+ 4 invokespecial #1 &lt;java/lang/Object.&lt;init&gt;&gt;
+ 7 astore_1
+ 8 aload_1
+ 9 dup
+10 astore_2
+11 monitorenter
+12 getstatic #3 &lt;java/lang/System.out&gt;
+15 aload_1
+16 invokevirtual #4 &lt;java/io/PrintStream.println&gt;
+19 aload_2
+20 monitorexit
+21 goto 29 (+8)
+24 astore_3
+25 aload_2
+26 monitorexit
+27 aload_3
+28 athrow
+29 return
+</code></pre>
 <p>注意：字节码文件中并没有进行优化，可以看到加锁和释放锁的操作依然存在，<strong>同步省略操作是在解释运行时发生的</strong></p>
-<h3 id="_21">标量替换<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<h3 id="_21">标量替换</h3>
 <p><strong>分离对象或标量替换</strong></p>
 <ol>
 <li>
@@ -1759,25 +1763,25 @@
 </ol>
 <p><strong>标量替换举例</strong></p>
 <p>代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">args</span><span class="o">[]</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span><span class="n">alloc</span><span class="p">();</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="p">}</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">alloc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">    </span><span class="n">Point</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;point.x&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">point</span><span class="p">.</span><span class="na">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;;point.y&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">point</span><span class="p">.</span><span class="na">y</span><span class="p">);</span>
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="p">}</span>
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="kd">class</span> <span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
-<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public static void main(String args[]) {
+    alloc();
+}
+private static void alloc() {
+    Point point = new Point(1,2);
+    System.out.println(&quot;point.x&quot; + point.x + &quot;;point.y&quot; + point.y);
+}
+class Point {
+    private int x;
+    private int y;
+}
+</code></pre>
 <p>以上代码，经过标量替换后，就会变成</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">alloc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;point.x = &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;; point.y=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">private static void alloc() {
+    int x = 1;
+    int y = 2;
+    System.out.println(&quot;point.x = &quot; + x + &quot;; point.y=&quot; + y);
+}
+</code></pre>
 <ol>
 <li>可以看到，Point这个聚合量经过逃逸分析后，发现他并没有逃逸，就被替换成两个聚合量了。</li>
 <li>那么标量替换有什么好处呢？就是可以大大减少堆内存的占用。因为一旦不需要创建对象了，那么就不再需要分配堆内存了。</li>
@@ -1786,54 +1790,54 @@
 <p><strong>标量替换参数设置</strong></p>
 <p>参数 -XX:+ElimilnateAllocations：开启了标量替换（默认打开），允许将对象打散分配在栈上。</p>
 <p><strong>代码示例</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="cm">/**</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="cm"> * 标量替换测试</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="cm"> *  -Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:-EliminateAllocations</span>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="cm"> * @author shkstart  shkstart@126.com</span>
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="cm"> * @create 2020  12:01</span>
-<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="cm"> */</span>
-<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ScalarReplace</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
-<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>
-<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">alloc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">        </span><span class="n">User</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">();</span><span class="c1">//未发生逃逸</span>
-<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="w">        </span><span class="n">u</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
-<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="w">        </span><span class="n">u</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;www.atguigu.com&quot;</span><span class="p">;</span>
-<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a>
-<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10000000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a><span class="w">            </span><span class="n">alloc</span><span class="p">();</span>
-<a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-27-24" name="__codelineno-27-24" href="#__codelineno-27-24"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-27-25" name="__codelineno-27-25" href="#__codelineno-27-25"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;花费的时间为： &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; ms&quot;</span><span class="p">);</span>
-<a id="__codelineno-27-26" name="__codelineno-27-26" href="#__codelineno-27-26"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-27-27" name="__codelineno-27-27" href="#__codelineno-27-27"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 标量替换测试
+ *  -Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:-EliminateAllocations
+ * @author shkstart  shkstart@126.com
+ * @create 2020  12:01
+ */
+public class ScalarReplace {
+    public static class User {
+        public int id;
+        public String name;
+    }
+
+    public static void alloc() {
+        User u = new User();//未发生逃逸
+        u.id = 5;
+        u.name = &quot;www.atguigu.com&quot;;
+    }
+
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i &lt; 10000000; i++) {
+            alloc();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;花费的时间为： &quot; + (end - start) + &quot; ms&quot;);
+    }
+}
+</code></pre>
 <p><strong>未开启标量替换</strong></p>
 <p>1、JVM 参数</p>
 <p>-Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:-EliminateAllocations</p>
 <p>2、日志</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">25600</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">880</span><span class="n">K</span><span class="p">(</span><span class="mi">98304</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0012658</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">26480</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">832</span><span class="n">K</span><span class="p">(</span><span class="mi">98304</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0012124</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">26432</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">784</span><span class="n">K</span><span class="p">(</span><span class="mi">98304</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0009719</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">26384</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">832</span><span class="n">K</span><span class="p">(</span><span class="mi">98304</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0009071</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">26432</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">768</span><span class="n">K</span><span class="p">(</span><span class="mi">98304</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0010643</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">26368</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">824</span><span class="n">K</span><span class="p">(</span><span class="mi">101376</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0012354</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">32568</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">712</span><span class="n">K</span><span class="p">(</span><span class="mi">100864</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0011291</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">Allocation</span><span class="w"> </span><span class="n">Failure</span><span class="p">)</span><span class="w">  </span><span class="mi">32456</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">712</span><span class="n">K</span><span class="p">(</span><span class="mi">100864</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0006368</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
-<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="n">花费的时间为</span><span class="err">：</span><span class="w"> </span><span class="mi">99</span><span class="w"> </span><span class="n">ms</span>
-</code></pre></div>
+<pre><code class="language-java">[GC (Allocation Failure)  25600K-&gt;880K(98304K), 0.0012658 secs]
+[GC (Allocation Failure)  26480K-&gt;832K(98304K), 0.0012124 secs]
+[GC (Allocation Failure)  26432K-&gt;784K(98304K), 0.0009719 secs]
+[GC (Allocation Failure)  26384K-&gt;832K(98304K), 0.0009071 secs]
+[GC (Allocation Failure)  26432K-&gt;768K(98304K), 0.0010643 secs]
+[GC (Allocation Failure)  26368K-&gt;824K(101376K), 0.0012354 secs]
+[GC (Allocation Failure)  32568K-&gt;712K(100864K), 0.0011291 secs]
+[GC (Allocation Failure)  32456K-&gt;712K(100864K), 0.0006368 secs]
+花费的时间为： 99 ms
+</code></pre>
 <p><strong>开启标量替换</strong></p>
 <p>1、JVM 参数</p>
 <p>-Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:+EliminateAllocations</p>
 <p>2、日志：时间减少很多，且无GC</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>花费的时间为： 6 ms
-</code></pre></div>
+<pre><code>花费的时间为： 6 ms
+</code></pre>
 <p>上述代码在主函数中调用了1亿次alloc()方法，进行对象创建由于User对象实例需要占据约16字节的空间，因此累计分配空间达到将近1.5GB。如果堆空间小于这个值，就必然会发生GC。使用如下参数运行上述代码：</p>
 <p><code>-server -Xmx100m -Xms100m -XX:+DoEscapeAnalysis -XX:+PrintGC -XX:+EliminateAllocations</code></p>
 <p>这里设置参数如下：</p>
@@ -1844,20 +1848,20 @@
 <li>参数 -XX:+PrintGC：将打印GC日志。</li>
 <li>参数 -XX:+EliminateAllocations：开启了标量替换（默认打开），允许将对象打散分配在栈上，比如对象拥有id和name两个字段，那么这两个字段将会被视为两个独立的局部变量进行分配</li>
 </ol>
-<h3 id="_22">逃逸分析的不足<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<h3 id="_22">逃逸分析的不足</h3>
 <ol>
 <li>关于逃逸分析的论文在1999年就已经发表了，但直到JDK1.6才有实现，而且这项技术到如今也并不是十分成熟的。</li>
 <li>其根本原因就是无法保证逃逸分析的性能消耗一定能高于他的消耗。虽然经过逃逸分析可以做标量替换、栈上分配、和锁消除。但是逃逸分析自身也是需要进行一系列复杂的分析的，这其实也是一个相对耗时的过程。</li>
 <li>一个极端的例子，就是经过逃逸分析之后，发现没有一个对象是不逃逸的。那这个逃逸分析的过程就白白浪费掉了。</li>
 <li>虽然这项技术并不十分成熟，但是它也是即时编译器优化技术中一个十分重要的手段。</li>
 <li>注意到有一些观点，认为通过逃逸分析，JVM会在栈上分配那些不会逃逸的对象，这在理论上是可行的，但是取决于JVM设计者的选择。据我所知，<strong>Oracle Hotspot JVM中并未这么做</strong>（刚刚演示的效果，是因为HotSpot实现了标量替换），这一点在逃逸分析相关的文档里已经说明，<strong>所以可以明确在HotSpot虚拟机上，所有的对象实例都是创建在堆上</strong>。</li>
-<li>目前很多书籍还是基于JDK7以前的版本，JDK已经发生了很大变化，intern字符串的缓存和静态变量曾经都被分配在永久代上，而永久代已经被元数据区取代。但是**intern字符串缓存和静态变量并不是被转移到元数据区，而是直接在堆上分配**，<strong>所以这一点同样符合前面一点的结论：对象实例都是分配在堆上</strong>。</li>
+<li>目前很多书籍还是基于JDK7以前的版本，JDK已经发生了很大变化，intern字符串的缓存和静态变量曾经都被分配在永久代上，而永久代已经被元数据区取代。但是<strong>intern字符串缓存和静态变量并不是被转移到元数据区，而是直接在堆上分配</strong>，<strong>所以这一点同样符合前面一点的结论：对象实例都是分配在堆上</strong>。</li>
 </ol>
 <blockquote>
 <p><strong>堆是分配对象的唯一选择么？</strong></p>
 </blockquote>
 <p>综上：<strong>对象实例都是分配在堆上</strong>。What the fuck？</p>
-<h2 id="_23">小结<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h2>
+<h2 id="_23">小结</h2>
 <ol>
 <li>
 <p>年轻代是对象的诞生、成长、消亡的区域，一个对象在这里产生、应用，最后被垃圾回收器收集、结束生命。</p>

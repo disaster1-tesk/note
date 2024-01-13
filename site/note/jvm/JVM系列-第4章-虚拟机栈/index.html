@@ -1046,20 +1046,20 @@
   
 
 
-<h1 id="_1">虚拟机栈<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">简介<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h3 id="_3">虚拟机栈的出现背景<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h1 id="_1">虚拟机栈</h1>
+<h2 id="_2">简介</h2>
+<h3 id="_3">虚拟机栈的出现背景</h3>
 <ol>
 <li>由于跨平台性的设计，Java的指令都是根据栈来设计的。不同平台CPU架构不同，所以不能设计为基于寄存器的【如果设计成基于寄存器的，耦合度高，性能会有所提升，因为可以对具体的CPU架构进行优化，但是跨平台性大大降低】。</li>
 <li>优点是跨平台，指令集小，编译器容易实现，缺点是性能下降，实现同样的功能需要更多的指令。</li>
 </ol>
-<h3 id="_4">内存中的栈与堆<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_4">内存中的栈与堆</h3>
 <ol>
 <li>首先栈是运行时的单位，而堆是存储的单位。</li>
 <li>即：栈解决程序的运行问题，即程序如何执行，或者说如何处理数据。堆解决的是数据存储的问题，即数据怎么放，放哪里</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0001.png"></p>
-<h3 id="_5">虚拟机栈基本内容<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<h3 id="_5">虚拟机栈基本内容</h3>
 <ul>
 <li>
 <p>Java虚拟机栈是什么？</p>
@@ -1068,26 +1068,27 @@
 <p>Java虚拟机栈（Java Virtual Machine Stack），早期也叫Java栈。每个线程在创建时都会创建一个虚拟机栈，其内部保存一个个的栈帧（Stack Frame），<strong>对应着一次次的Java方法调用</strong>，栈是线程私有的</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StackTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="n">StackTest</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StackTest</span><span class="p">();</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">test</span><span class="p">.</span><span class="na">methodA</span><span class="p">();</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodA</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="n">methodB</span><span class="p">();</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodB</span><span class="p">(){</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">;</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
-</code></pre></div>
+<p>```java
+  public class StackTest {</p>
+<pre><code>  public static void main(String[] args) {
+      StackTest test = new StackTest();
+      test.methodA();
+  }
+
+  public void methodA() {
+      int i = 10;
+      int j = 20;
+
+      methodB();
+  }
+
+  public void methodB(){
+      int k = 30;
+      int m = 40;
+  }
+</code></pre>
+<p>}</p>
+<p>```</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0002.png"></p>
 <ul>
 <li>虚拟机栈的生命周期</li>
@@ -1101,13 +1102,13 @@
 <li>局部变量，它是相比于成员变量来说的（或属性）</li>
 <li>基本数据类型变量 VS 引用类型变量（类、数组、接口）</li>
 </ul>
-<h3 id="_6">虚拟机栈的特点<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<h3 id="_6">虚拟机栈的特点</h3>
 <ul>
 <li>栈是一种快速有效的分配存储方式，访问速度仅次于程序计数器。</li>
 <li>JVM直接对Java栈的操作只有两个：</li>
-<li>每个方法执行，伴随着**进栈**（入栈、压栈）</li>
+<li>每个方法执行，伴随着<strong>进栈</strong>（入栈、压栈）</li>
 <li>
-<p>执行结束后的**出栈**工作</p>
+<p>执行结束后的<strong>出栈</strong>工作</p>
 </li>
 <li>
 <p>对于栈来说不存在垃圾回收问题</p>
@@ -1115,21 +1116,21 @@
 <li>栈不需要GC，但是可能存在OOM</li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0003.png"></p>
-<h3 id="_7">虚拟机栈的异常<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h3 id="_7">虚拟机栈的异常</h3>
 <p><strong>面试题：栈中可能出现的异常？</strong></p>
 <ul>
 <li>
 <p>Java 虚拟机规范允许Java栈的大小是动态的或者是固定不变的。</p>
 </li>
 <li>
-<p>如果采用固定大小的Java虚拟机栈，那每一个线程的Java虚拟机栈容量可以在线程创建的时候独立选定。如果线程请求分配的栈容量超过Java虚拟机栈允许的最大容量，Java虚拟机将会抛出一个**StackoverflowError** 异常。</p>
+<p>如果采用固定大小的Java虚拟机栈，那每一个线程的Java虚拟机栈容量可以在线程创建的时候独立选定。如果线程请求分配的栈容量超过Java虚拟机栈允许的最大容量，Java虚拟机将会抛出一个<strong>StackoverflowError</strong> 异常。</p>
 </li>
 <li>
 <p>如果Java虚拟机栈可以动态扩展，并且在尝试扩展的时候无法申请到足够的内存，或者在创建新的线程时没有足够的内存去创建对应的虚拟机栈，那Java虚拟机将会抛出一个 <strong>OutofMemoryError</strong> 异常。</p>
 </li>
 </ul>
-<h3 id="_8">设置栈内存大小<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
-<h4 id="_9">概念<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<h3 id="_8">设置栈内存大小</h3>
+<h4 id="_9">概念</h4>
 <blockquote>
 <p>多去官方文档看看：https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE</p>
 <p>地址经常变</p>
@@ -1145,53 +1146,53 @@
 </ul>
 </blockquote>
 <p>The following examples set the thread stack size to 1024 KB in different units:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">-</span><span class="n">Xss1m</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="o">-</span><span class="n">Xss1024k</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="o">-</span><span class="n">Xss1048576</span>
-</code></pre></div>
-<h4 id="_10">举例<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StackErrorTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">-Xss1m
+-Xss1024k
+-Xss1048576
+</code></pre>
+<h4 id="_10">举例</h4>
+<pre><code class="language-java">public class StackErrorTest {
+    private static int count = 1;
+    public static void main(String[] args) {
+        System.out.println(count);
+        count++;
+        main(args);
+    }
+}
+</code></pre>
 <p><strong>没设置参数前</strong></p>
 <p>部分输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="mi">11404</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="mi">11405</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="mi">11406</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">Exception</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">StackOverflowError</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">sun</span><span class="p">.</span><span class="na">nio</span><span class="p">.</span><span class="na">cs</span><span class="p">.</span><span class="na">UTF_8$Encoder</span><span class="p">.</span><span class="na">encodeLoop</span><span class="p">(</span><span class="n">UTF_8</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">691</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-java">11404
+11405
+11406
+Exception in thread &quot;main&quot; java.lang.StackOverflowError
+    at sun.nio.cs.UTF_8$Encoder.encodeLoop(UTF_8.java:691)
+</code></pre>
 <p>说明栈在11406这个深度溢出了</p>
 <p><strong>设置栈参数之后</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0004.png"></p>
 <p>部分输出结果</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="mi">2474</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="mi">2475</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="mi">2476</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">Exception</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">StackOverflowError</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">sun</span><span class="p">.</span><span class="na">nio</span><span class="p">.</span><span class="na">cs</span><span class="p">.</span><span class="na">UTF_8</span><span class="p">.</span><span class="na">updatePositions</span><span class="p">(</span><span class="n">UTF_8</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">77</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-java">2474
+2475
+2476
+Exception in thread &quot;main&quot; java.lang.StackOverflowError
+    at sun.nio.cs.UTF_8.updatePositions(UTF_8.java:77)
+</code></pre>
 <p>说明参数起作用了</p>
-<h2 id="_11">栈的存储单位<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<h3 id="_12">栈中存储什么？<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<h2 id="_11">栈的存储单位</h2>
+<h3 id="_12">栈中存储什么？</h3>
 <ol>
-<li>每个线程都有自己的栈，栈中的数据都是以**栈帧**（Stack Frame）的格式存在</li>
+<li>每个线程都有自己的栈，栈中的数据都是以<strong>栈帧</strong>（Stack Frame）的格式存在</li>
 <li>在这个线程上正在执行的每个方法都各自对应一个栈帧（Stack Frame）。</li>
 <li>栈帧是一个内存区块，是一个数据集，维系着方法执行过程中的各种数据信息。</li>
 </ol>
-<h3 id="_13">栈运行原理<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<h3 id="_13">栈运行原理</h3>
 <ol>
 <li>
-<p>JVM直接对Java栈的操作只有两个，就是对栈帧的**压栈和出栈**，遵循先进后出（后进先出）原则</p>
+<p>JVM直接对Java栈的操作只有两个，就是对栈帧的<strong>压栈和出栈</strong>，遵循先进后出（后进先出）原则</p>
 </li>
 <li>
-<p>在一条活动线程中，一个时间点上，只会有一个活动的栈帧。即只有当前正在执行的方法的栈帧（栈顶栈帧）是有效的。这个栈帧被称为**当前栈帧（Current Frame）<strong>，与当前栈帧相对应的方法就是**当前方法（Current Method）</strong>，定义这个方法的类就是**当前类（Current Class）**</p>
+<p>在一条活动线程中，一个时间点上，只会有一个活动的栈帧。即只有当前正在执行的方法的栈帧（栈顶栈帧）是有效的。这个栈帧被称为<strong>当前栈帧（Current Frame）</strong>，与当前栈帧相对应的方法就是<strong>当前方法（Current Method）</strong>，定义这个方法的类就是<strong>当前类（Current Class）</strong></p>
 </li>
 <li>
 <p>执行引擎运行的所有字节码指令只针对当前栈帧进行操作。</p>
@@ -1211,7 +1212,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="_14">栈帧的内部结构<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h3 id="_14">栈帧的内部结构</h3>
 <p>每个栈帧中存储着：</p>
 <ul>
 <li>
@@ -1233,14 +1234,14 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0006.png"></p>
 <p>并行每个线程下的栈都是私有的，因此每个线程都有自己各自的栈，并且每个栈里面都有很多栈帧，栈帧的大小主要由局部变量表 和 操作数栈决定的</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0007.png"></p>
-<h2 id="_15">局部变量表<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
-<h3 id="_16">认识局部变量表<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
-<h4 id="_17">概念<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<h2 id="_15">局部变量表</h2>
+<h3 id="_16">认识局部变量表</h3>
+<h4 id="_17">概念</h4>
 <ol>
 <li>局部变量表也被称之为局部变量数组或本地变量表</li>
 <li><strong>定义为一个数字数组，主要用于存储方法参数和定义在方法体内的局部变量</strong>，这些数据类型包括各类基本数据类型、对象引用（reference），以及returnAddress返回值类型。</li>
-<li>由于局部变量表是建立在线程的栈上，是线程的私有数据，因此**不存在数据安全问题**</li>
-<li><strong>局部变量表所需的容量大小是在编译期确定下来的</strong>，并保存在方法的Code属性的**maximum local variables**数据项中。在方法运行期间是不会改变局部变量表的大小的。</li>
+<li>由于局部变量表是建立在线程的栈上，是线程的私有数据，因此<strong>不存在数据安全问题</strong></li>
+<li><strong>局部变量表所需的容量大小是在编译期确定下来的</strong>，并保存在方法的Code属性的<strong>maximum local variables</strong>数据项中。在方法运行期间是不会改变局部变量表的大小的。</li>
 <li>方法嵌套调用的次数由栈的大小决定。一般来说，栈越大，方法嵌套调用次数越多。<ul>
 <li>对一个函数而言，它的参数和局部变量越多，使得局部变量表膨胀，它的栈帧就越大，以满足方法调用所需传递的信息增大的需求。</li>
 <li>进而函数调用就会占用更多的栈空间，导致其嵌套调用次数就会减少。</li>
@@ -1252,64 +1253,64 @@
 </ul>
 </li>
 </ol>
-<h4 id="_18">举例<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LocalVariablesTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="n">LocalVariablesTest</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalVariablesTest</span><span class="p">();</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="n">test</span><span class="p">.</span><span class="na">test1</span><span class="p">();</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="c1">//练习：</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testStatic</span><span class="p">(){</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="n">LocalVariablesTest</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalVariablesTest</span><span class="p">();</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">        </span><span class="c1">//因为this变量不存在于当前方法的局部变量表中！！</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1">//        System.out.println(this.count);</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">    </span><span class="c1">//关于Slot的使用的理解</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">LocalVariablesTest</span><span class="p">(){</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">name1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;atguigu.com&quot;</span><span class="p">;</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">        </span><span class="n">test2</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="w"> </span><span class="n">name1</span><span class="p">);</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">date</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name1</span><span class="p">);</span>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">test2</span><span class="p">(</span><span class="n">Date</span><span class="w"> </span><span class="n">dateP</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">        </span><span class="n">dateP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">        </span><span class="n">name2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;songhongkang&quot;</span><span class="p">;</span>
-<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">130.5</span><span class="p">;</span><span class="c1">//占据两个slot</span>
-<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;男&#39;</span><span class="p">;</span>
-<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">dateP</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name2</span><span class="p">;</span>
-<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>
-<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>
-<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">        </span><span class="p">{</span>
-<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">            </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="w">        </span><span class="c1">//变量c使用之前已经销毁的变量b占据的slot的位置</span>
-<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a><span class="p">}</span>
-</code></pre></div>
+<h4 id="_18">举例</h4>
+<pre><code class="language-java">public class LocalVariablesTest {
+    private int count = 0;
+
+    public static void main(String[] args) {
+        LocalVariablesTest test = new LocalVariablesTest();
+        int num = 10;
+        test.test1();
+    }
+
+    //练习：
+    public static void testStatic(){
+        LocalVariablesTest test = new LocalVariablesTest();
+        Date date = new Date();
+        int count = 10;
+        System.out.println(count);
+        //因为this变量不存在于当前方法的局部变量表中！！
+//        System.out.println(this.count);
+    }
+
+    //关于Slot的使用的理解
+    public LocalVariablesTest(){
+        this.count = 1;
+    }
+
+    public void test1() {
+        Date date = new Date();
+        String name1 = &quot;atguigu.com&quot;;
+        test2(date, name1);
+        System.out.println(date + name1);
+    }
+
+    public String test2(Date dateP, String name2) {
+        dateP = null;
+        name2 = &quot;songhongkang&quot;;
+        double weight = 130.5;//占据两个slot
+        char gender = '男';
+        return dateP + name2;
+    }
+
+    public void test3() {
+        this.count++;
+    }
+
+    public void test4() {
+        int a = 0;
+        {
+            int b = 0;
+            b = a + 1;
+        }
+        //变量c使用之前已经销毁的变量b占据的slot的位置
+        int c = a + 1;
+    }
+}
+</code></pre>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0008.png"></p>
 <p>看完字节码后，可得结论：所以局部变量表所需的容量大小是在编译期确定下来的。</p>
-<h4 id="_19">部分详解<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<h4 id="_19">部分详解</h4>
 <p>为了更好讲解，我们直接用jclasslib来看字节码，以main方法为例来讲解。一些一目了然的就不讲了</p>
 <p>1、0-15  也就是有16行字节码</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0009.png"></p>
@@ -1326,7 +1327,7 @@
 <p>2、Start PC==11表示在字节码的11行开始生效，也就是Java代码对应的第15行。而声明int num在java代码的是第14行，说明是从声明的下一行开始生效</p>
 <p>3、Length== 5表示局部变量剩余有效行数，main方法字节码指令总共有16行，从11行开始生效，那么剩下就是16-11 ==5。</p>
 <p>4、<code>Ljava/lang/String</code>   前面的L表示引用类型</p>
-<h3 id="slot">关于Slot的理解<a class="headerlink" href="#slot" title="Permanent link">&para;</a></h3>
+<h3 id="slot">关于Slot的理解</h3>
 <ol>
 <li>参数值的存放总是从局部变量数组索引 0 的位置开始，到数组长度-1的索引结束。</li>
 <li>局部变量表，<strong>最基本的存储单元是Slot（变量槽）</strong>，局部变量表中存放编译期可知的各种基本数据类型（8种），引用类型（reference），returnAddress类型的变量。</li>
@@ -1336,74 +1337,74 @@
 </ul>
 </li>
 <li>JVM会为局部变量表中的每一个Slot都分配一个访问索引，通过这个索引即可成功访问到局部变量表中指定的局部变量值</li>
-<li>当一个实例方法被调用的时候，它的方法参数和方法体内部定义的局部变量将会**按照顺序被复制**到局部变量表中的每一个slot上</li>
+<li>当一个实例方法被调用的时候，它的方法参数和方法体内部定义的局部变量将会<strong>按照顺序被复制</strong>到局部变量表中的每一个slot上</li>
 <li>如果需要访问局部变量表中一个64bit的局部变量值时，只需要使用前一个索引即可。（比如：访问long或double类型变量）</li>
-<li>如果当前帧是由构造方法或者实例方法创建的，那么**该对象引用this将会存放在index为0的slot处**，其余的参数按照参数表顺序继续排列。（this也相当于一个变量）</li>
+<li>如果当前帧是由构造方法或者实例方法创建的，那么<strong>该对象引用this将会存放在index为0的slot处</strong>，其余的参数按照参数表顺序继续排列。（this也相当于一个变量）</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0014.png"></p>
-<h3 id="slot_1">Slot代码示例<a class="headerlink" href="#slot_1" title="Permanent link">&para;</a></h3>
+<h3 id="slot_1">Slot代码示例</h3>
 <p><strong>this 存放在 index = 0 的位置：</strong></p>
 <p>代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">count</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">    public void test3() {
+        this.count++;
+    }
+</code></pre>
 <p>局部变量表：this 存放在 index = 0 的位置</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0015.png"></p>
 <p><strong>64位的类型（1ong和double）占用两个slot</strong></p>
 <p>代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">test2</span><span class="p">(</span><span class="n">Date</span><span class="w"> </span><span class="n">dateP</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">        </span><span class="n">dateP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="n">name2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;songhongkang&quot;</span><span class="p">;</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">130.5</span><span class="p">;</span><span class="c1">//占据两个slot</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;男&#39;</span><span class="p">;</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">dateP</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name2</span><span class="p">;</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">    public String test2(Date dateP, String name2) {
+        dateP = null;
+        name2 = &quot;songhongkang&quot;;
+        double weight = 130.5;//占据两个slot
+        char gender = '男';
+        return dateP + name2;
+    }
+</code></pre>
 <p>weight 为 double 类型，index 直接从 3 蹦到了 5</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0016.png"></p>
 <p><strong>static 无法调用 this</strong></p>
 <p>this 不存在与 static 方法的局部变量表中，所以无法调用</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testStatic</span><span class="p">(){</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">        </span><span class="n">LocalVariablesTest</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalVariablesTest</span><span class="p">();</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">date</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="c1">//因为this变量不存在于当前方法的局部变量表中！！</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1">//        System.out.println(this.count);</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
-<h3 id="slot_2">Slot的重复利用<a class="headerlink" href="#slot_2" title="Permanent link">&para;</a></h3>
+<pre><code class="language-java">    public static void testStatic(){
+        LocalVariablesTest test = new LocalVariablesTest();
+        Date date = new Date();
+        int count = 10;
+        System.out.println(count);
+        //因为this变量不存在于当前方法的局部变量表中！！
+//        System.out.println(this.count);
+    }
+</code></pre>
+<h3 id="slot_2">Slot的重复利用</h3>
 <p>栈帧中的局部变量表中的槽位是可以重用的，如果一个局部变量过了其作用域，那么在其作用域之后申明新的局部变量变就很有可能会复用过期局部变量的槽位，从而达到节省资源的目的。</p>
 <p>代码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">        </span><span class="p">{</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">            </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="c1">//变量c使用之前已经销毁的变量b占据的slot的位置</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">    public void test4() {
+        int a = 0;
+        {
+            int b = 0;
+            b = a + 1;
+        }
+        //变量c使用之前已经销毁的变量b占据的slot的位置
+        int c = a + 1;
+    }
+</code></pre>
 <p>局部变量 c 重用了局部变量 b 的 slot 位置</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0017.png"></p>
-<h3 id="_20">静态变量与局部变量的对比<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">变量的分类</span><span class="err">：</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="mi">1</span><span class="err">、</span><span class="n">按照数据类型分</span><span class="err">：</span><span class="n">①</span><span class="w"> </span><span class="n">基本数据类型</span><span class="w">  </span><span class="n">②</span><span class="w"> </span><span class="n">引用数据类型</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="mi">2</span><span class="err">、</span><span class="n">按照在类中声明的位置分</span><span class="err">：</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="err">、</span><span class="n">成员变量</span><span class="err">：</span><span class="n">在使用前</span><span class="err">，</span><span class="n">都经历过默认初始化赋值</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">       </span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="err">、</span><span class="n">类变量</span><span class="p">:</span><span class="w"> </span><span class="n">linking的prepare阶段</span><span class="err">：</span><span class="n">给类变量默认赋值</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">              </span><span class="o">---&gt;</span><span class="w"> </span><span class="n">initial阶段</span><span class="err">：</span><span class="n">给类变量显式赋值即静态代码块赋值</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">       </span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="err">、</span><span class="n">实例变量</span><span class="err">：</span><span class="n">随着对象的创建</span><span class="err">，</span><span class="n">会在堆空间中分配实例变量空间</span><span class="err">，</span><span class="n">并进行默认赋值</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span><span class="mi">2</span><span class="o">-</span><span class="mi">2</span><span class="err">、</span><span class="n">局部变量</span><span class="err">：</span><span class="n">在使用前</span><span class="err">，</span><span class="n">必须要进行显式赋值的</span><span class="err">！</span><span class="n">否则</span><span class="err">，</span><span class="n">编译不通过</span><span class="err">。</span>
-</code></pre></div>
+<h3 id="_20">静态变量与局部变量的对比</h3>
+<pre><code class="language-java">变量的分类：
+1、按照数据类型分：① 基本数据类型  ② 引用数据类型
+2、按照在类中声明的位置分：
+  2-1、成员变量：在使用前，都经历过默认初始化赋值
+       2-1-1、类变量: linking的prepare阶段：给类变量默认赋值
+              ---&gt; initial阶段：给类变量显式赋值即静态代码块赋值
+       2-1-2、实例变量：随着对象的创建，会在堆空间中分配实例变量空间，并进行默认赋值
+  2-2、局部变量：在使用前，必须要进行显式赋值的！否则，编译不通过。
+</code></pre>
 <ol>
 <li>参数表分配完毕之后，再根据方法体内定义的变量的顺序和作用域分配。</li>
-<li>我们知道成员变量有两次初始化的机会**，**第一次是在“准备阶段”，执行系统初始化，对类变量设置零值，另一次则是在“初始化”阶段，赋予程序员在代码中定义的初始值。</li>
+<li>我们知道成员变量有两次初始化的机会<strong>，</strong>第一次是在“准备阶段”，执行系统初始化，对类变量设置零值，另一次则是在“初始化”阶段，赋予程序员在代码中定义的初始值。</li>
 <li>和类变量初始化不同的是，<strong>局部变量表不存在系统初始化的过程</strong>，这意味着一旦定义了局部变量则必须人为的初始化，否则无法使用。</li>
 </ol>
-<h3 id="_21">补充说明<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<h3 id="_21">补充说明</h3>
 <ol>
 <li>
 <p>在栈帧中，与性能调优关系最为密切的部分就是前面提到的局部变量表。在方法执行时，虚拟机使用局部变量表完成方法的传递。</p>
@@ -1412,11 +1413,11 @@
 <p>局部变量表中的变量也是重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。</p>
 </li>
 </ol>
-<h2 id="_22">操作数栈<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h2>
-<h3 id="_23">操作数栈的特点<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<h2 id="_22">操作数栈</h2>
+<h3 id="_23">操作数栈的特点</h3>
 <ol>
 <li>
-<p>每一个独立的栈帧除了包含局部变量表以外，还包含一个后进先出（Last - In - First -Out）的 操作数栈，也可以称之为**表达式栈**（Expression Stack）</p>
+<p>每一个独立的栈帧除了包含局部变量表以外，还包含一个后进先出（Last - In - First -Out）的 操作数栈，也可以称之为<strong>表达式栈</strong>（Expression Stack）</p>
 </li>
 <li>
 <p>操作数栈，在方法执行过程中，<strong>根据字节码指令，往栈中写入数据或提取数据</strong>，即入栈（push）和 出栈（pop）</p>
@@ -1426,7 +1427,7 @@
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0018.png"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0019.png"></p>
-<h3 id="_24">操作数栈的作用<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<h3 id="_24">操作数栈的作用</h3>
 <ol>
 <li>
 <p>操作数栈，<strong>主要用于保存计算过程的中间结果，同时作为计算过程中变量临时的存储空间</strong>。</p>
@@ -1435,7 +1436,7 @@
 <p>操作数栈就是JVM执行引擎的一个工作区，当一个方法刚开始执行的时候，一个新的栈帧也会随之被创建出来，这时方法的操作数栈是空的。</p>
 </li>
 <li>
-<p>每一个操作数栈都会拥有一个明确的栈深度用于存储数值，其所需的最大深度在编译期就定义好了，保存在方法的Code属性中，为**maxstack**的值。</p>
+<p>每一个操作数栈都会拥有一个明确的栈深度用于存储数值，其所需的最大深度在编译期就定义好了，保存在方法的Code属性中，为<strong>maxstack</strong>的值。</p>
 </li>
 <li>
 <p>栈中的任何一个元素都是可以任意的Java数据类型</p>
@@ -1458,30 +1459,30 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0020.jpg"></p>
 <p>局部变量表就相当于食材</p>
 <p>操作数栈就相当于做法步骤</p>
-<h2 id="_25">操作数栈代码追踪<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAddOperation</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">        </span><span class="c1">//byte、short、char、boolean：都以int型来保存</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">        </span><span class="kt">byte</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">       </span><span class="c1">// int m = 800;</span>
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
+<h2 id="_25">操作数栈代码追踪</h2>
+<pre><code class="language-java">    public void testAddOperation() {
+        //byte、short、char、boolean：都以int型来保存
+        byte i = 15;
+        int j = 8;
+        int k = i + j;
+
+       // int m = 800;
+
+    }
+</code></pre>
 <p>对应字节码指令</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">bipush</span><span class="w"> </span><span class="mi">15</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">istore_1</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">bipush</span><span class="w"> </span><span class="mi">8</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">istore_2</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">iload_1</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="n">iload_2</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">iadd</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="n">istore_3</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="mi">10</span><span class="w"> </span><span class="k">return</span>
-</code></pre></div>
+<pre><code class="language-java"> 0 bipush 15
+ 2 istore_1
+ 3 bipush 8
+ 5 istore_2
+ 6 iload_1
+ 7 iload_2
+ 8 iadd
+ 9 istore_3
+10 return
+</code></pre>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0021.png"></p>
-<h3 id="_26">一步一步看流程<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<h3 id="_26">一步一步看流程</h3>
 <p>1、首先执行第一条语句，PC寄存器指向的是0，也就是指令地址为0，然后使用bipush让操作数15入操作数栈。</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0022.png"></p>
 <p>2、执行完后，PC寄存器往下移，指向下一行代码，下一行代码就是将操作数栈的元素存储到局部变量表1的位置（istore_1），我们可以看到局部变量表的已经增加了一个元素。并且操作数栈为空了</p>
@@ -1496,7 +1497,7 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0025.png"></p>
 <p>5、然后将操作数栈中的两个元素执行相加操作，并存储在局部变量表3的位置</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0026.png"></p>
-<h3 id="_27">小问题<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<h3 id="_27">小问题</h3>
 <p><strong>关于类型转换的说明</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0027.png"></p>
 <ul>
@@ -1508,24 +1509,24 @@
 <li>m改成800之后，byte存储不了，就成了short型，sipush 800</li>
 </ul>
 <p><strong>如果被调用的方法带有返回值，返回值入操作数栈</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getSum</span><span class="p">(){</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testGetSum</span><span class="p">(){</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">        </span><span class="c1">//获取上一个栈桢返回的结果，并保存在操作数栈中</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSum</span><span class="p">();</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">    </span><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">  public int getSum(){
+        int m = 10;
+        int n = 20;
+        int k = m + n;
+        return k;
+    }
+
+    public void testGetSum(){
+        //获取上一个栈桢返回的结果，并保存在操作数栈中
+        int i = getSum();
+        int j = 10;
+    }
+</code></pre>
 <p>getSum() 方法字节码指令：最后带着个 ireturn</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0029.png"></p>
 <p>testGetSum() 方法字节码指令：一上来就加载 getSum() 方法的返回值()</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0030.png"></p>
-<h2 id="_28">栈顶缓存技术<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h2>
+<h2 id="_28">栈顶缓存技术</h2>
 <p><strong>栈顶缓存技术：Top Of Stack Cashing</strong></p>
 <ol>
 <li>
@@ -1538,150 +1539,150 @@
 <p>寄存器的主要优点：指令更少，执行速度快，但是指令集（也就是指令种类）很多</p>
 </li>
 </ol>
-<h2 id="_29">动态链接<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h2>
+<h2 id="_29">动态链接</h2>
 <p><strong>动态链接（或指向运行时常量池的方法引用）</strong></p>
 <ol>
 <li>
-<p>每一个栈帧内部都包含**一个指向运行时常量池中该栈帧所属方法的引用**。包含这个引用的目的就是**为了支持当前方法的代码能够实现动态链接**（Dynamic Linking），比如：invokedynamic指令</p>
+<p>每一个栈帧内部都包含<strong>一个指向运行时常量池中该栈帧所属方法的引用</strong>。包含这个引用的目的就是<strong>为了支持当前方法的代码能够实现动态链接</strong>（Dynamic Linking），比如：invokedynamic指令</p>
 </li>
 <li>
-<p>在Java源文件被编译到字节码文件中时，所有的变量和方法引用都作为符号引用（Symbolic Reference）保存在class文件的常量池里。比如：描述一个方法调用了另外的其他方法时，就是通过常量池中指向方法的符号引用来表示的，那么**动态链接的作用就是为了将这些符号引用转换为调用方法的直接引用**</p>
+<p>在Java源文件被编译到字节码文件中时，所有的变量和方法引用都作为符号引用（Symbolic Reference）保存在class文件的常量池里。比如：描述一个方法调用了另外的其他方法时，就是通过常量池中指向方法的符号引用来表示的，那么<strong>动态链接的作用就是为了将这些符号引用转换为调用方法的直接引用</strong></p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DynamicLinkingTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodA</span><span class="p">(){</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;methodA()....&quot;</span><span class="p">);</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodB</span><span class="p">(){</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;methodB()....&quot;</span><span class="p">);</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">        </span><span class="n">methodA</span><span class="p">();</span>
-<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
-<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">        </span><span class="n">num</span><span class="o">++</span><span class="p">;</span>
-<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
-<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class DynamicLinkingTest {
+
+    int num = 10;
+
+    public void methodA(){
+        System.out.println(&quot;methodA()....&quot;);
+    }
+
+    public void methodB(){
+        System.out.println(&quot;methodB()....&quot;);
+
+        methodA();
+
+        num++;
+    }
+
+}
+</code></pre>
 <p>对应字节码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">Classfile</span><span class="w"> </span><span class="o">/</span><span class="n">F</span><span class="p">:</span><span class="o">/</span><span class="n">IDEAWorkSpaceSourceCode</span><span class="o">/</span><span class="n">JVMDemo</span><span class="o">/</span><span class="n">out</span><span class="o">/</span><span class="n">production</span><span class="o">/</span><span class="n">chapter05</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span><span class="p">.</span><span class="na">class</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="n">Last</span><span class="w"> </span><span class="n">modified</span><span class="w"> </span><span class="mi">2020</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="mi">712</span><span class="w"> </span><span class="n">bytes</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="n">MD5</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="n">e56913c945f897c7ee6c0a608629bca8</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="n">Compiled</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="s">&quot;DynamicLinkingTest.java&quot;</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java1</span><span class="p">.</span><span class="na">DynamicLinkingTest</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="n">minor</span><span class="w"> </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span><span class="n">major</span><span class="w"> </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="mi">52</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span><span class="p">,</span><span class="w"> </span><span class="n">ACC_SUPER</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="n">Constant</span><span class="w"> </span><span class="n">pool</span><span class="p">:</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">   </span><span class="err">#</span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Methodref</span><span class="w">          </span><span class="err">#</span><span class="mf">9.</span><span class="err">#</span><span class="mi">23</span><span class="w">         </span><span class="c1">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
-<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">   </span><span class="err">#</span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Fieldref</span><span class="w">           </span><span class="err">#</span><span class="mf">8.</span><span class="err">#</span><span class="mi">24</span><span class="w">         </span><span class="c1">// com/atguigu/java1/DynamicLinkingTest.num:I</span>
-<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">   </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Fieldref</span><span class="w">           </span><span class="err">#</span><span class="mf">25.</span><span class="err">#</span><span class="mi">26</span><span class="w">        </span><span class="c1">// java/lang/System.out:Ljava/io/PrintStream;</span>
-<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">   </span><span class="err">#</span><span class="mi">4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="w">             </span><span class="err">#</span><span class="mi">27</span><span class="w">            </span><span class="c1">// methodA()....</span>
-<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">   </span><span class="err">#</span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Methodref</span><span class="w">          </span><span class="err">#</span><span class="mf">28.</span><span class="err">#</span><span class="mi">29</span><span class="w">        </span><span class="c1">// java/io/PrintStream.println:(Ljava/lang/String;)V</span>
-<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">   </span><span class="err">#</span><span class="mi">6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="w">             </span><span class="err">#</span><span class="mi">30</span><span class="w">            </span><span class="c1">// methodB()....</span>
-<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">   </span><span class="err">#</span><span class="mi">7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Methodref</span><span class="w">          </span><span class="err">#</span><span class="mf">8.</span><span class="err">#</span><span class="mi">31</span><span class="w">         </span><span class="c1">// com/atguigu/java1/DynamicLinkingTest.methodA:()V</span>
-<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">   </span><span class="err">#</span><span class="mi">8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">32</span><span class="w">            </span><span class="c1">// com/atguigu/java1/DynamicLinkingTest</span>
-<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">   </span><span class="err">#</span><span class="mi">9</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">33</span><span class="w">            </span><span class="c1">// java/lang/Object</span>
-<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">  </span><span class="err">#</span><span class="mi">10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">num</span>
-<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">  </span><span class="err">#</span><span class="mi">11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">I</span>
-<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">  </span><span class="err">#</span><span class="mi">12</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span>
-<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">  </span><span class="err">#</span><span class="mi">13</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="p">()</span><span class="n">V</span>
-<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">  </span><span class="err">#</span><span class="mi">14</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Code</span>
-<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">  </span><span class="err">#</span><span class="mi">15</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">LineNumberTable</span>
-<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">  </span><span class="err">#</span><span class="mi">16</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">LocalVariableTable</span>
-<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">  </span><span class="err">#</span><span class="mi">17</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="k">this</span>
-<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">  </span><span class="err">#</span><span class="mi">18</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span><span class="p">;</span>
-<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">  </span><span class="err">#</span><span class="mi">19</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">methodA</span>
-<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">  </span><span class="err">#</span><span class="mi">20</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">methodB</span>
-<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="w">  </span><span class="err">#</span><span class="mi">21</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">SourceFile</span>
-<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="w">  </span><span class="err">#</span><span class="mi">22</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">DynamicLinkingTest</span><span class="p">.</span><span class="na">java</span>
-<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="w">  </span><span class="err">#</span><span class="mi">23</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">12</span><span class="p">:</span><span class="err">#</span><span class="mi">13</span><span class="w">        </span><span class="c1">// &quot;&lt;init&gt;&quot;:()V</span>
-<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="w">  </span><span class="err">#</span><span class="mi">24</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">10</span><span class="p">:</span><span class="err">#</span><span class="mi">11</span><span class="w">        </span><span class="c1">// num:I</span>
-<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a><span class="w">  </span><span class="err">#</span><span class="mi">25</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">34</span><span class="w">            </span><span class="c1">// java/lang/System</span>
-<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="w">  </span><span class="err">#</span><span class="mi">26</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">35</span><span class="p">:</span><span class="err">#</span><span class="mi">36</span><span class="w">        </span><span class="c1">// out:Ljava/io/PrintStream;</span>
-<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="w">  </span><span class="err">#</span><span class="mi">27</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="nf">methodA</span><span class="p">()....</span>
-<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="w">  </span><span class="err">#</span><span class="mi">28</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">37</span><span class="w">            </span><span class="c1">// java/io/PrintStream</span>
-<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a><span class="w">  </span><span class="err">#</span><span class="mi">29</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">38</span><span class="p">:</span><span class="err">#</span><span class="mi">39</span><span class="w">        </span><span class="c1">// println:(Ljava/lang/String;)V</span>
-<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a><span class="w">  </span><span class="err">#</span><span class="mi">30</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="nf">methodB</span><span class="p">()....</span>
-<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a><span class="w">  </span><span class="err">#</span><span class="mi">31</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">19</span><span class="p">:</span><span class="err">#</span><span class="mi">13</span><span class="w">        </span><span class="c1">// methodA:()V</span>
-<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a><span class="w">  </span><span class="err">#</span><span class="mi">32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span>
-<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a><span class="w">  </span><span class="err">#</span><span class="mi">33</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span>
-<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a><span class="w">  </span><span class="err">#</span><span class="mi">34</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">System</span>
-<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a><span class="w">  </span><span class="err">#</span><span class="mi">35</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">out</span>
-<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a><span class="w">  </span><span class="err">#</span><span class="mi">36</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Ljava</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span><span class="p">;</span>
-<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a><span class="w">  </span><span class="err">#</span><span class="mi">37</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span>
-<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a><span class="w">  </span><span class="err">#</span><span class="mi">38</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">println</span>
-<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a><span class="w">  </span><span class="err">#</span><span class="mi">39</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="p">(</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;)</span><span class="n">V</span>
-<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a><span class="p">{</span>
-<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span>
-<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="n">I</span>
-<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span>
-<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>
-<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java1</span><span class="p">.</span><span class="na">DynamicLinkingTest</span><span class="p">();</span>
-<a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="n">V</span>
-<a id="__codelineno-15-56" name="__codelineno-15-56" href="#__codelineno-15-56"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-15-57" name="__codelineno-15-57" href="#__codelineno-15-57"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-15-58" name="__codelineno-15-58" href="#__codelineno-15-58"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
-<a id="__codelineno-15-59" name="__codelineno-15-59" href="#__codelineno-15-59"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-15-60" name="__codelineno-15-60" href="#__codelineno-15-60"></a><span class="w">         </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w">                  </span><span class="c1">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
-<a id="__codelineno-15-61" name="__codelineno-15-61" href="#__codelineno-15-61"></a><span class="w">         </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-15-62" name="__codelineno-15-62" href="#__codelineno-15-62"></a><span class="w">         </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">bipush</span><span class="w">        </span><span class="mi">10</span>
-<a id="__codelineno-15-63" name="__codelineno-15-63" href="#__codelineno-15-63"></a><span class="w">         </span><span class="mi">7</span><span class="p">:</span><span class="w"> </span><span class="n">putfield</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// Field num:I</span>
-<a id="__codelineno-15-64" name="__codelineno-15-64" href="#__codelineno-15-64"></a><span class="w">        </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-15-65" name="__codelineno-15-65" href="#__codelineno-15-65"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-15-66" name="__codelineno-15-66" href="#__codelineno-15-66"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-15-67" name="__codelineno-15-67" href="#__codelineno-15-67"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">9</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
-<a id="__codelineno-15-68" name="__codelineno-15-68" href="#__codelineno-15-68"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-15-69" name="__codelineno-15-69" href="#__codelineno-15-69"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-15-70" name="__codelineno-15-70" href="#__codelineno-15-70"></a><span class="w">            </span><span class="mi">0</span><span class="w">      </span><span class="mi">11</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span><span class="p">;</span>
-<a id="__codelineno-15-71" name="__codelineno-15-71" href="#__codelineno-15-71"></a>
-<a id="__codelineno-15-72" name="__codelineno-15-72" href="#__codelineno-15-72"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodA</span><span class="p">();</span>
-<a id="__codelineno-15-73" name="__codelineno-15-73" href="#__codelineno-15-73"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="n">V</span>
-<a id="__codelineno-15-74" name="__codelineno-15-74" href="#__codelineno-15-74"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-15-75" name="__codelineno-15-75" href="#__codelineno-15-75"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-15-76" name="__codelineno-15-76" href="#__codelineno-15-76"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
-<a id="__codelineno-15-77" name="__codelineno-15-77" href="#__codelineno-15-77"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">getstatic</span><span class="w">     </span><span class="err">#</span><span class="mi">3</span><span class="w">                  </span><span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
-<a id="__codelineno-15-78" name="__codelineno-15-78" href="#__codelineno-15-78"></a><span class="w">         </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="n">ldc</span><span class="w">           </span><span class="err">#</span><span class="mi">4</span><span class="w">                  </span><span class="c1">// String methodA()....</span>
-<a id="__codelineno-15-79" name="__codelineno-15-79" href="#__codelineno-15-79"></a><span class="w">         </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w">                  </span><span class="c1">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span>
-<a id="__codelineno-15-80" name="__codelineno-15-80" href="#__codelineno-15-80"></a><span class="w">         </span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-15-81" name="__codelineno-15-81" href="#__codelineno-15-81"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-15-82" name="__codelineno-15-82" href="#__codelineno-15-82"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">12</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-15-83" name="__codelineno-15-83" href="#__codelineno-15-83"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">13</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span>
-<a id="__codelineno-15-84" name="__codelineno-15-84" href="#__codelineno-15-84"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-15-85" name="__codelineno-15-85" href="#__codelineno-15-85"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-15-86" name="__codelineno-15-86" href="#__codelineno-15-86"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">9</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span><span class="p">;</span>
-<a id="__codelineno-15-87" name="__codelineno-15-87" href="#__codelineno-15-87"></a>
-<a id="__codelineno-15-88" name="__codelineno-15-88" href="#__codelineno-15-88"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodB</span><span class="p">();</span>
-<a id="__codelineno-15-89" name="__codelineno-15-89" href="#__codelineno-15-89"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="n">V</span>
-<a id="__codelineno-15-90" name="__codelineno-15-90" href="#__codelineno-15-90"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-15-91" name="__codelineno-15-91" href="#__codelineno-15-91"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-15-92" name="__codelineno-15-92" href="#__codelineno-15-92"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
-<a id="__codelineno-15-93" name="__codelineno-15-93" href="#__codelineno-15-93"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">getstatic</span><span class="w">     </span><span class="err">#</span><span class="mi">3</span><span class="w">                  </span><span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
-<a id="__codelineno-15-94" name="__codelineno-15-94" href="#__codelineno-15-94"></a><span class="w">         </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="n">ldc</span><span class="w">           </span><span class="err">#</span><span class="mi">6</span><span class="w">                  </span><span class="c1">// String methodB()....</span>
-<a id="__codelineno-15-95" name="__codelineno-15-95" href="#__codelineno-15-95"></a><span class="w">         </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w">                  </span><span class="c1">// Method java/io/PrintStream.println:(Ljava/lang/String;)V</span>
-<a id="__codelineno-15-96" name="__codelineno-15-96" href="#__codelineno-15-96"></a><span class="w">         </span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-15-97" name="__codelineno-15-97" href="#__codelineno-15-97"></a><span class="w">         </span><span class="mi">9</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">7</span><span class="w">                  </span><span class="c1">// Method methodA:()V</span>
-<a id="__codelineno-15-98" name="__codelineno-15-98" href="#__codelineno-15-98"></a><span class="w">        </span><span class="mi">12</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-15-99" name="__codelineno-15-99" href="#__codelineno-15-99"></a><span class="w">        </span><span class="mi">13</span><span class="p">:</span><span class="w"> </span><span class="n">dup</span>
-<a id="__codelineno-15-100" name="__codelineno-15-100" href="#__codelineno-15-100"></a><span class="w">        </span><span class="mi">14</span><span class="p">:</span><span class="w"> </span><span class="n">getfield</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// Field num:I</span>
-<a id="__codelineno-15-101" name="__codelineno-15-101" href="#__codelineno-15-101"></a><span class="w">        </span><span class="mi">17</span><span class="p">:</span><span class="w"> </span><span class="n">iconst_1</span>
-<a id="__codelineno-15-102" name="__codelineno-15-102" href="#__codelineno-15-102"></a><span class="w">        </span><span class="mi">18</span><span class="p">:</span><span class="w"> </span><span class="n">iadd</span>
-<a id="__codelineno-15-103" name="__codelineno-15-103" href="#__codelineno-15-103"></a><span class="w">        </span><span class="mi">19</span><span class="p">:</span><span class="w"> </span><span class="n">putfield</span><span class="w">      </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// Field num:I</span>
-<a id="__codelineno-15-104" name="__codelineno-15-104" href="#__codelineno-15-104"></a><span class="w">        </span><span class="mi">22</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-15-105" name="__codelineno-15-105" href="#__codelineno-15-105"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-15-106" name="__codelineno-15-106" href="#__codelineno-15-106"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">16</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-15-107" name="__codelineno-15-107" href="#__codelineno-15-107"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">18</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span>
-<a id="__codelineno-15-108" name="__codelineno-15-108" href="#__codelineno-15-108"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">20</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
-<a id="__codelineno-15-109" name="__codelineno-15-109" href="#__codelineno-15-109"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">21</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span>
-<a id="__codelineno-15-110" name="__codelineno-15-110" href="#__codelineno-15-110"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-15-111" name="__codelineno-15-111" href="#__codelineno-15-111"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-15-112" name="__codelineno-15-112" href="#__codelineno-15-112"></a><span class="w">            </span><span class="mi">0</span><span class="w">      </span><span class="mi">23</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java1</span><span class="o">/</span><span class="n">DynamicLinkingTest</span><span class="p">;</span>
-<a id="__codelineno-15-113" name="__codelineno-15-113" href="#__codelineno-15-113"></a><span class="p">}</span>
-<a id="__codelineno-15-114" name="__codelineno-15-114" href="#__codelineno-15-114"></a><span class="nl">SourceFile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicLinkingTest.java&quot;</span>
-</code></pre></div>
+<pre><code class="language-java">Classfile /F:/IDEAWorkSpaceSourceCode/JVMDemo/out/production/chapter05/com/atguigu/java1/DynamicLinkingTest.class
+  Last modified 2020-11-10; size 712 bytes
+  MD5 checksum e56913c945f897c7ee6c0a608629bca8
+  Compiled from &quot;DynamicLinkingTest.java&quot;
+public class com.atguigu.java1.DynamicLinkingTest
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #9.#23         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+   #2 = Fieldref           #8.#24         // com/atguigu/java1/DynamicLinkingTest.num:I
+   #3 = Fieldref           #25.#26        // java/lang/System.out:Ljava/io/PrintStream;
+   #4 = String             #27            // methodA()....
+   #5 = Methodref          #28.#29        // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #6 = String             #30            // methodB()....
+   #7 = Methodref          #8.#31         // com/atguigu/java1/DynamicLinkingTest.methodA:()V
+   #8 = Class              #32            // com/atguigu/java1/DynamicLinkingTest
+   #9 = Class              #33            // java/lang/Object
+  #10 = Utf8               num
+  #11 = Utf8               I
+  #12 = Utf8               &lt;init&gt;
+  #13 = Utf8               ()V
+  #14 = Utf8               Code
+  #15 = Utf8               LineNumberTable
+  #16 = Utf8               LocalVariableTable
+  #17 = Utf8               this
+  #18 = Utf8               Lcom/atguigu/java1/DynamicLinkingTest;
+  #19 = Utf8               methodA
+  #20 = Utf8               methodB
+  #21 = Utf8               SourceFile
+  #22 = Utf8               DynamicLinkingTest.java
+  #23 = NameAndType        #12:#13        // &quot;&lt;init&gt;&quot;:()V
+  #24 = NameAndType        #10:#11        // num:I
+  #25 = Class              #34            // java/lang/System
+  #26 = NameAndType        #35:#36        // out:Ljava/io/PrintStream;
+  #27 = Utf8               methodA()....
+  #28 = Class              #37            // java/io/PrintStream
+  #29 = NameAndType        #38:#39        // println:(Ljava/lang/String;)V
+  #30 = Utf8               methodB()....
+  #31 = NameAndType        #19:#13        // methodA:()V
+  #32 = Utf8               com/atguigu/java1/DynamicLinkingTest
+  #33 = Utf8               java/lang/Object
+  #34 = Utf8               java/lang/System
+  #35 = Utf8               out
+  #36 = Utf8               Ljava/io/PrintStream;
+  #37 = Utf8               java/io/PrintStream
+  #38 = Utf8               println
+  #39 = Utf8               (Ljava/lang/String;)V
+{
+  int num;
+    descriptor: I
+    flags:
+
+  public com.atguigu.java1.DynamicLinkingTest();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+         4: aload_0
+         5: bipush        10
+         7: putfield      #2                  // Field num:I
+        10: return
+      LineNumberTable:
+        line 7: 0
+        line 9: 4
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      11     0  this   Lcom/atguigu/java1/DynamicLinkingTest;
+
+  public void methodA();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: ldc           #4                  // String methodA()....
+         5: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+         8: return
+      LineNumberTable:
+        line 12: 0
+        line 13: 8
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       9     0  this   Lcom/atguigu/java1/DynamicLinkingTest;
+
+  public void methodB();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=3, locals=1, args_size=1
+         0: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: ldc           #6                  // String methodB()....
+         5: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+         8: aload_0
+         9: invokevirtual #7                  // Method methodA:()V
+        12: aload_0
+        13: dup
+        14: getfield      #2                  // Field num:I
+        17: iconst_1
+        18: iadd
+        19: putfield      #2                  // Field num:I
+        22: return
+      LineNumberTable:
+        line 16: 0
+        line 18: 8
+        line 20: 12
+        line 21: 22
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      23     0  this   Lcom/atguigu/java1/DynamicLinkingTest;
+}
+SourceFile: &quot;DynamicLinkingTest.java&quot;
+</code></pre>
 <p>1、在字节码指令中，methodB() 方法中通过 invokevirtual #7 指令调用了方法 A ，那么 #7 是个啥呢？</p>
 <p>2、往上面翻，找到常量池的定义：<code>#7 = Methodref #8.#31</code></p>
 <ul>
@@ -1710,8 +1711,8 @@
 <p>常量池的作用：就是为了提供一些符号和常量，便于指令的识别</p>
 </li>
 </ol>
-<h2 id="_30">方法的调用<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h2>
-<h3 id="_31">静态链接与动态链接<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h3>
+<h2 id="_30">方法的调用</h2>
+<h3 id="_31">静态链接与动态链接</h3>
 <p>在JVM中，将符号引用转换为调用方法的直接引用与方法的绑定机制相关</p>
 <ul>
 <li><strong>静态链接</strong>：</li>
@@ -1721,7 +1722,7 @@
 <li><strong>动态链接</strong>：</li>
 </ul>
 <p>如果被调用的方法在编译期无法被确定下来，也就是说，只能够在程序运行期将调用的方法的符号转换为直接引用，由于这种引用转换过程具备动态性，因此也被称之为动态链接。</p>
-<h3 id="_32">早期绑定与晚期绑定<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h3>
+<h3 id="_32">早期绑定与晚期绑定</h3>
 <blockquote>
 <p>静态链接与动态链接针对的是方法。早期绑定和晚期绑定范围更广。早期绑定涵盖了静态链接，晚期绑定涵盖了动态链接。</p>
 </blockquote>
@@ -1729,120 +1730,121 @@
 <ul>
 <li><strong>早期绑定</strong></li>
 </ul>
-<p>早期绑定就是指被调用的目标方法如果在编译期可知，且运行期保持不变时，即可将这个方法与所属的类型进行绑定，这样一来，由于明确了被调用的目标方法究竟是哪一个，因此也就**可以使用静态链接的方式将符号引用转换为直接引用**。</p>
+<p>早期绑定就是指被调用的目标方法如果在编译期可知，且运行期保持不变时，即可将这个方法与所属的类型进行绑定，这样一来，由于明确了被调用的目标方法究竟是哪一个，因此也就<strong>可以使用静态链接的方式将符号引用转换为直接引用</strong>。</p>
 <ul>
 <li><strong>晚期绑定</strong></li>
 </ul>
 <p>如果被调用的方法在编译期无法被确定下来，<strong>只能够在程序运行期根据实际的类型绑定相关的方法</strong>，这种绑定方式也就被称之为晚期绑定。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kd">class</span> <span class="nc">Animal</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">eat</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;动物进食&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="p">}</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="kd">interface</span> <span class="nc">Huntable</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">hunt</span><span class="p">();</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">}</span>
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="kd">class</span> <span class="nc">Dog</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Huntable</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">    </span><span class="nd">@Override</span>
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">eat</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;狗吃骨头&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
-<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="w">    </span><span class="nd">@Override</span>
-<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">hunt</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;捕食耗子，多管闲事&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="p">}</span>
-<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
-<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="kd">class</span> <span class="nc">Cat</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Huntable</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>
-<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Cat</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a><span class="w">        </span><span class="kd">super</span><span class="p">();</span><span class="c1">//表现为：早期绑定</span>
-<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>
-<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Cat</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a><span class="w">        </span><span class="k">this</span><span class="p">();</span><span class="c1">//表现为：早期绑定</span>
-<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>
-<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a><span class="w">    </span><span class="nd">@Override</span>
-<a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">eat</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">eat</span><span class="p">();</span><span class="c1">//表现为：早期绑定</span>
-<a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;猫吃鱼&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>
-<a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a><span class="w">    </span><span class="nd">@Override</span>
-<a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">hunt</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;捕食耗子，天经地义&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a><span class="p">}</span>
-<a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a>
-<a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AnimalTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showAnimal</span><span class="p">(</span><span class="n">Animal</span><span class="w"> </span><span class="n">animal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a><span class="w">        </span><span class="n">animal</span><span class="p">.</span><span class="na">eat</span><span class="p">();</span><span class="c1">//表现为：晚期绑定</span>
-<a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>
-<a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showHunt</span><span class="p">(</span><span class="n">Huntable</span><span class="w"> </span><span class="n">h</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a><span class="w">        </span><span class="n">h</span><span class="p">.</span><span class="na">hunt</span><span class="p">();</span><span class="c1">//表现为：晚期绑定</span>
-<a id="__codelineno-16-53" name="__codelineno-16-53" href="#__codelineno-16-53"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-54" name="__codelineno-16-54" href="#__codelineno-16-54"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">class Animal {
+
+    public void eat() {
+        System.out.println(&quot;动物进食&quot;);
+    }
+}
+
+interface Huntable {
+    void hunt();
+}
+
+class Dog extends Animal implements Huntable {
+    @Override
+    public void eat() {
+        System.out.println(&quot;狗吃骨头&quot;);
+    }
+
+    @Override
+    public void hunt() {
+        System.out.println(&quot;捕食耗子，多管闲事&quot;);
+    }
+}
+
+class Cat extends Animal implements Huntable {
+
+    public Cat() {
+        super();//表现为：早期绑定
+    }
+
+    public Cat(String name) {
+        this();//表现为：早期绑定
+    }
+
+    @Override
+    public void eat() {
+        super.eat();//表现为：早期绑定
+        System.out.println(&quot;猫吃鱼&quot;);
+    }
+
+    @Override
+    public void hunt() {
+        System.out.println(&quot;捕食耗子，天经地义&quot;);
+    }
+}
+
+public class AnimalTest {
+    public void showAnimal(Animal animal) {
+        animal.eat();//表现为：晚期绑定
+    }
+
+    public void showHunt(Huntable h) {
+        h.hunt();//表现为：晚期绑定
+    }
+}
+
+</code></pre>
 <p>部分字节码</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java2</span><span class="p">.</span><span class="na">AnimalTest</span><span class="p">();</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="n">V</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">         </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w">                  </span><span class="c1">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">         </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">54</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">5</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">AnimalTest</span><span class="p">;</span>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showAnimal</span><span class="p">(</span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java2</span><span class="p">.</span><span class="na">Animal</span><span class="p">);</span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">Animal</span><span class="p">;)</span><span class="n">V</span>
-<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">2</span>
-<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_1</span>
-<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="w">         </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// Method com/atguigu/java2/Animal.eat:()V</span>
-<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="w">         </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">56</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">57</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
-<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">5</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">AnimalTest</span><span class="p">;</span>
-<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">5</span><span class="w">     </span><span class="mi">1</span><span class="w"> </span><span class="n">animal</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">Animal</span><span class="p">;</span>
-<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>
-<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showHunt</span><span class="p">(</span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java2</span><span class="p">.</span><span class="na">Huntable</span><span class="p">);</span>
-<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">Huntable</span><span class="p">;)</span><span class="n">V</span>
-<a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
-<a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
-<a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">2</span>
-<a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_1</span>
-<a id="__codelineno-17-38" name="__codelineno-17-38" href="#__codelineno-17-38"></a><span class="w">         </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokeinterface</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="w">            </span><span class="c1">// InterfaceMethod com/atguigu/java2/Huntable.hunt:()V</span>
-<a id="__codelineno-17-39" name="__codelineno-17-39" href="#__codelineno-17-39"></a><span class="w">         </span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
-<a id="__codelineno-17-40" name="__codelineno-17-40" href="#__codelineno-17-40"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
-<a id="__codelineno-17-41" name="__codelineno-17-41" href="#__codelineno-17-41"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">60</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-17-42" name="__codelineno-17-42" href="#__codelineno-17-42"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">61</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
-<a id="__codelineno-17-43" name="__codelineno-17-43" href="#__codelineno-17-43"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
-<a id="__codelineno-17-44" name="__codelineno-17-44" href="#__codelineno-17-44"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
-<a id="__codelineno-17-45" name="__codelineno-17-45" href="#__codelineno-17-45"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">7</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">AnimalTest</span><span class="p">;</span>
-<a id="__codelineno-17-46" name="__codelineno-17-46" href="#__codelineno-17-46"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">7</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="n">h</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java2</span><span class="o">/</span><span class="n">Huntable</span><span class="p">;</span>
-<a id="__codelineno-17-47" name="__codelineno-17-47" href="#__codelineno-17-47"></a><span class="p">}</span>
-<a id="__codelineno-17-48" name="__codelineno-17-48" href="#__codelineno-17-48"></a><span class="nl">SourceFile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;AnimalTest.java&quot;</span>
-</code></pre></div>
+<pre><code class="language-java">{
+  public com.atguigu.java2.AnimalTest();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+         4: return
+      LineNumberTable:
+        line 54: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/atguigu/java2/AnimalTest;
+
+  public void showAnimal(com.atguigu.java2.Animal);
+    descriptor: (Lcom/atguigu/java2/Animal;)V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=2, args_size=2
+         0: aload_1
+         1: invokevirtual #2                  // Method com/atguigu/java2/Animal.eat:()V
+         4: return
+      LineNumberTable:
+        line 56: 0
+        line 57: 4
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/atguigu/java2/AnimalTest;
+            0       5     1 animal   Lcom/atguigu/java2/Animal;
+
+  public void showHunt(com.atguigu.java2.Huntable);
+    descriptor: (Lcom/atguigu/java2/Huntable;)V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=2, args_size=2
+         0: aload_1
+         1: invokeinterface #3,  1            // InterfaceMethod com/atguigu/java2/Huntable.hunt:()V
+         6: return
+      LineNumberTable:
+        line 60: 0
+        line 61: 6
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       7     0  this   Lcom/atguigu/java2/AnimalTest;
+            0       7     1     h   Lcom/atguigu/java2/Huntable;
+}
+SourceFile: &quot;AnimalTest.java&quot;
+</code></pre>
 <p>invokevirtual 体现为晚期绑定</p>
 <p>invokeinterface 也体现为晚期绑定</p>
 <p>invokespecial 体现为早期绑定</p>
-<h3 id="_33">多态与绑定<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h3>
+<h3 id="_33">多态与绑定</h3>
 <ol>
 <li>
 <p>随着高级语言的横空出世，类似于Java一样的基于面向对象的编程语言如今越来越多，尽管这类编程语言在语法风格上存在一定的差别，但是它们彼此之间始终保持着一个共性，那就是都支持封装、继承和多态等面向对象特性，既然这一类的编程语言具备多态特性，那么自然也就具备早期绑定和晚期绑定两种绑定方式。</p>
@@ -1851,7 +1853,7 @@
 <p>Java中任何一个普通的方法其实都具备虚函数的特征，它们相当于C++语言中的虚函数（C++中则需要使用关键字virtual来显式定义）。如果在Java程序中不希望某个方法拥有虚函数的特征时，则可以使用关键字final来标记这个方法。</p>
 </li>
 </ol>
-<h4 id="_34">虚方法与非虚方法<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h4>
+<h4 id="_34">虚方法与非虚方法</h4>
 <p><strong>虚方法与非虚方法的区别</strong></p>
 <ol>
 <li>如果方法在编译期就确定了具体的调用版本，这个版本在运行时是不可变的。这样的方法称为非虚方法。</li>
@@ -1882,91 +1884,91 @@
 </ul>
 <p>invokedynamic：动态解析出需要调用的方法，然后执行</p>
 <p>前四条指令固化在虚拟机内部，方法的调用执行不可人为干预。而invokedynamic指令则支持由用户确定方法版本。其中invokestatic指令和invokespecial指令调用的方法称为非虚方法，其余的（final修饰的除外）称为虚方法。</p>
-<h4 id="_35">举例<a class="headerlink" href="#_35" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kd">class</span> <span class="nc">Father</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Father</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;father的构造器&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showStatic</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;father &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showFinal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;father show final&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
-<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showCommon</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;father 普通方法&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="p">}</span>
-<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
-<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Son</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Father</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Son</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">        </span><span class="c1">//invokespecial</span>
-<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">        </span><span class="kd">super</span><span class="p">();</span>
-<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a>
-<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Son</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="w">        </span><span class="c1">//invokespecial</span>
-<a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="w">        </span><span class="k">this</span><span class="p">();</span>
-<a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a>
-<a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="w">    </span><span class="c1">//不是重写的父类的静态方法，因为静态方法不能被重写！</span>
-<a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showStatic</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;son &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
-<a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a>
-<a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">showPrivate</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;son private&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
-<a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a>
-<a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">show</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a><span class="w">        </span><span class="c1">//invokestatic</span>
-<a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a><span class="w">        </span><span class="n">showStatic</span><span class="p">(</span><span class="s">&quot;atguigu.com&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a><span class="w">        </span><span class="c1">//invokestatic</span>
-<a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">showStatic</span><span class="p">(</span><span class="s">&quot;good!&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a><span class="w">        </span><span class="c1">//invokespecial</span>
-<a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a><span class="w">        </span><span class="n">showPrivate</span><span class="p">(</span><span class="s">&quot;hello!&quot;</span><span class="p">);</span>
-<a id="__codelineno-18-46" name="__codelineno-18-46" href="#__codelineno-18-46"></a><span class="w">        </span><span class="c1">//invokespecial</span>
-<a id="__codelineno-18-47" name="__codelineno-18-47" href="#__codelineno-18-47"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">showCommon</span><span class="p">();</span>
-<a id="__codelineno-18-48" name="__codelineno-18-48" href="#__codelineno-18-48"></a>
-<a id="__codelineno-18-49" name="__codelineno-18-49" href="#__codelineno-18-49"></a><span class="w">        </span><span class="c1">//invokevirtual</span>
-<a id="__codelineno-18-50" name="__codelineno-18-50" href="#__codelineno-18-50"></a><span class="w">        </span><span class="n">showFinal</span><span class="p">();</span><span class="c1">//因为此方法声明有final，不能被子类重写，所以也认为此方法是非虚方法。</span>
-<a id="__codelineno-18-51" name="__codelineno-18-51" href="#__codelineno-18-51"></a><span class="w">        </span><span class="c1">//虚方法如下：</span>
-<a id="__codelineno-18-52" name="__codelineno-18-52" href="#__codelineno-18-52"></a>
-<a id="__codelineno-18-53" name="__codelineno-18-53" href="#__codelineno-18-53"></a><span class="w">        </span><span class="cm">/*</span>
-<a id="__codelineno-18-54" name="__codelineno-18-54" href="#__codelineno-18-54"></a><span class="cm">        invokevirtual  你没有显示的加super.，编译器认为你可能调用子类的showCommon(即使son子类没有重写，也        会认为)，所以编译期间确定不下来，就是虚方法。</span>
-<a id="__codelineno-18-55" name="__codelineno-18-55" href="#__codelineno-18-55"></a><span class="cm">        */</span>
-<a id="__codelineno-18-56" name="__codelineno-18-56" href="#__codelineno-18-56"></a><span class="w">        </span><span class="n">showCommon</span><span class="p">();</span>
-<a id="__codelineno-18-57" name="__codelineno-18-57" href="#__codelineno-18-57"></a><span class="w">        </span><span class="n">info</span><span class="p">();</span>
-<a id="__codelineno-18-58" name="__codelineno-18-58" href="#__codelineno-18-58"></a>
-<a id="__codelineno-18-59" name="__codelineno-18-59" href="#__codelineno-18-59"></a><span class="w">        </span><span class="n">MethodInterface</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-18-60" name="__codelineno-18-60" href="#__codelineno-18-60"></a><span class="w">        </span><span class="c1">//invokeinterface</span>
-<a id="__codelineno-18-61" name="__codelineno-18-61" href="#__codelineno-18-61"></a><span class="w">        </span><span class="n">in</span><span class="p">.</span><span class="na">methodA</span><span class="p">();</span>
-<a id="__codelineno-18-62" name="__codelineno-18-62" href="#__codelineno-18-62"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-63" name="__codelineno-18-63" href="#__codelineno-18-63"></a>
-<a id="__codelineno-18-64" name="__codelineno-18-64" href="#__codelineno-18-64"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">info</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-65" name="__codelineno-18-65" href="#__codelineno-18-65"></a>
-<a id="__codelineno-18-66" name="__codelineno-18-66" href="#__codelineno-18-66"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-67" name="__codelineno-18-67" href="#__codelineno-18-67"></a>
-<a id="__codelineno-18-68" name="__codelineno-18-68" href="#__codelineno-18-68"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">display</span><span class="p">(</span><span class="n">Father</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-69" name="__codelineno-18-69" href="#__codelineno-18-69"></a><span class="w">        </span><span class="n">f</span><span class="p">.</span><span class="na">showCommon</span><span class="p">();</span>
-<a id="__codelineno-18-70" name="__codelineno-18-70" href="#__codelineno-18-70"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-71" name="__codelineno-18-71" href="#__codelineno-18-71"></a>
-<a id="__codelineno-18-72" name="__codelineno-18-72" href="#__codelineno-18-72"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-73" name="__codelineno-18-73" href="#__codelineno-18-73"></a><span class="w">        </span><span class="n">Son</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Son</span><span class="p">();</span>
-<a id="__codelineno-18-74" name="__codelineno-18-74" href="#__codelineno-18-74"></a><span class="w">        </span><span class="n">so</span><span class="p">.</span><span class="na">show</span><span class="p">();</span>
-<a id="__codelineno-18-75" name="__codelineno-18-75" href="#__codelineno-18-75"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-18-76" name="__codelineno-18-76" href="#__codelineno-18-76"></a><span class="p">}</span>
-<a id="__codelineno-18-77" name="__codelineno-18-77" href="#__codelineno-18-77"></a>
-<a id="__codelineno-18-78" name="__codelineno-18-78" href="#__codelineno-18-78"></a><span class="kd">interface</span> <span class="nc">MethodInterface</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-18-79" name="__codelineno-18-79" href="#__codelineno-18-79"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">methodA</span><span class="p">();</span>
-<a id="__codelineno-18-80" name="__codelineno-18-80" href="#__codelineno-18-80"></a><span class="p">}</span>
-</code></pre></div>
+<h4 id="_35">举例</h4>
+<pre><code class="language-java">class Father {
+    public Father() {
+        System.out.println(&quot;father的构造器&quot;);
+    }
+
+    public static void showStatic(String str) {
+        System.out.println(&quot;father &quot; + str);
+    }
+
+    public final void showFinal() {
+        System.out.println(&quot;father show final&quot;);
+    }
+
+    public void showCommon() {
+        System.out.println(&quot;father 普通方法&quot;);
+    }
+}
+
+public class Son extends Father {
+    public Son() {
+        //invokespecial
+        super();
+    }
+
+    public Son(int age) {
+        //invokespecial
+        this();
+    }
+
+    //不是重写的父类的静态方法，因为静态方法不能被重写！
+    public static void showStatic(String str) {
+        System.out.println(&quot;son &quot; + str);
+    }
+
+    private void showPrivate(String str) {
+        System.out.println(&quot;son private&quot; + str);
+    }
+
+    public void show() {
+        //invokestatic
+        showStatic(&quot;atguigu.com&quot;);
+        //invokestatic
+        super.showStatic(&quot;good!&quot;);
+        //invokespecial
+        showPrivate(&quot;hello!&quot;);
+        //invokespecial
+        super.showCommon();
+
+        //invokevirtual
+        showFinal();//因为此方法声明有final，不能被子类重写，所以也认为此方法是非虚方法。
+        //虚方法如下：
+
+        /*
+        invokevirtual  你没有显示的加super.，编译器认为你可能调用子类的showCommon(即使son子类没有重写，也        会认为)，所以编译期间确定不下来，就是虚方法。
+        */
+        showCommon();
+        info();
+
+        MethodInterface in = null;
+        //invokeinterface
+        in.methodA();
+    }
+
+    public void info() {
+
+    }
+
+    public void display(Father f) {
+        f.showCommon();
+    }
+
+    public static void main(String[] args) {
+        Son so = new Son();
+        so.show();
+    }
+}
+
+interface MethodInterface {
+    void methodA();
+}
+</code></pre>
 <p>Son 类中 show() 方法的字节码指令如下</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0032.png"></p>
-<h4 id="invokedynamic">关于 invokedynamic 指令<a class="headerlink" href="#invokedynamic" title="Permanent link">&para;</a></h4>
+<h4 id="invokedynamic">关于 invokedynamic 指令</h4>
 <ol>
 <li>
 <p>JVM字节码指令集一直比较稳定，一直到Java7中才增加了一个invokedynamic指令，这是Java为了实现【动态类型语言】支持而做的一种改进。</p>
@@ -1978,36 +1980,36 @@
 <p>Java7中增加的动态语言类型支持的本质是对Java虚拟机规范的修改，而不是对Java语言规则的修改，这一块相对来讲比较复杂，增加了虚拟机中的方法调用，最直接的受益者就是运行在Java平台的动态语言的编译器。</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nd">@FunctionalInterface</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kd">interface</span> <span class="nc">Func</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p">}</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Lambda</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">lambda</span><span class="p">(</span><span class="n">Func</span><span class="w"> </span><span class="n">func</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="w">        </span><span class="n">Lambda</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Lambda</span><span class="p">();</span>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="w">        </span><span class="n">Func</span><span class="w"> </span><span class="n">func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
-<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w">        </span><span class="p">};</span>
-<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>
-<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="w">        </span><span class="n">lambda</span><span class="p">.</span><span class="na">lambda</span><span class="p">(</span><span class="n">func</span><span class="p">);</span>
-<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
-<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="w">        </span><span class="n">lambda</span><span class="p">.</span><span class="na">lambda</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
-<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="w">        </span><span class="p">});</span>
-<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">@FunctionalInterface
+interface Func {
+    public boolean func(String str);
+}
+
+public class Lambda {
+    public void lambda(Func func) {
+        return;
+    }
+
+    public static void main(String[] args) {
+        Lambda lambda = new Lambda();
+
+        Func func = s -&gt; {
+            return true;
+        };
+
+        lambda.lambda(func);
+
+        lambda.lambda(s -&gt; {
+            return true;
+        });
+    }
+}
+</code></pre>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0033.png"></p>
-<h3 id="_36">动态语言和静态语言<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h3>
+<h3 id="_36">动态语言和静态语言</h3>
 <ol>
 <li>
-<p>动态类型语言和静态类型语言两者的区别就在于**对类型的检查是在编译期还是在运行期**，满足前者就是静态类型语言，反之是动态类型语言。</p>
+<p>动态类型语言和静态类型语言两者的区别就在于<strong>对类型的检查是在编译期还是在运行期</strong>，满足前者就是静态类型语言，反之是动态类型语言。</p>
 </li>
 <li>
 <p>说的再直白一点就是，静态类型语言是判断变量自身的类型信息；动态类型语言是判断变量值的类型信息，变量没有类型信息，变量值才有类型信息，这是动态语言的一个重要特征。</p>
@@ -2015,9 +2017,9 @@
 </ol>
 <p>Java：String info = "mogu blog";             (Java是静态类型语言的，会先编译就进行类型检查)
     JS：var name = "shkstart";    var name = 10; （运行时才进行检查）</p>
-<div class="highlight"><pre><span></span><code>Python: info = 130.5 (运行时才检查)
-</code></pre></div>
-<h3 id="java">Java语言中方法重写的本质<a class="headerlink" href="#java" title="Permanent link">&para;</a></h3>
+<pre><code>Python: info = 130.5 (运行时才检查)
+</code></pre>
+<h3 id="java">Java语言中方法重写的本质</h3>
 <ol>
 <li>找到操作数栈顶的第一个元素所执行的对象的实际类型，记作C。</li>
 <li>如果在类型C中找到与常量中的描述符合简单名称都相符的方法，则进行访问权限校验。<ul>
@@ -2029,17 +2031,17 @@
 <li>如果始终没有找到合适的方法，则抛出java.lang.AbstractMethodError异常。</li>
 </ol>
 <blockquote>
-<p>上面这个过程称为**动态分派**</p>
+<p>上面这个过程称为<strong>动态分派</strong></p>
 </blockquote>
 <p><strong>IllegalAccessError介绍</strong></p>
 <ol>
 <li>程序试图访问或修改一个属性或调用一个方法，这个属性或方法，你没有权限访问。一般的，这个会引起编译器异常。这个错误如果发生在运行时，就说明一个类发生了不兼容的改变。</li>
 <li>比如，你把应该有的jar包放从工程中拿走了，或者Maven中存在jar包冲突</li>
 </ol>
-<h3 id="_37">虚方法表<a class="headerlink" href="#_37" title="Permanent link">&para;</a></h3>
+<h3 id="_37">虚方法表</h3>
 <ol>
 <li>
-<p>在面向对象的编程中，会很频繁的使用到**动态分派**，如果在每次动态分派的过程中都要重新在类的方法元数据中搜索合适的目标的话就可能影响到执行效率。因此，为了提高性能，<strong>JVM采用在类的方法区建立一个虚方法表（virtual method table）来实现</strong>，非虚方法不会出现在表中。使用索引表来代替查找。【上面动态分派的过程，我们可以看到如果子类找不到，还要从下往上找其父类，非常耗时】</p>
+<p>在面向对象的编程中，会很频繁的使用到<strong>动态分派</strong>，如果在每次动态分派的过程中都要重新在类的方法元数据中搜索合适的目标的话就可能影响到执行效率。因此，为了提高性能，<strong>JVM采用在类的方法区建立一个虚方法表（virtual method table）来实现</strong>，非虚方法不会出现在表中。使用索引表来代替查找。【上面动态分派的过程，我们可以看到如果子类找不到，还要从下往上找其父类，非常耗时】</p>
 </li>
 <li>
 <p>每个类中都有一个虚方法表，表中存放着各个方法的实际入口。</p>
@@ -2052,13 +2054,13 @@
 <p>如图所示：如果类中重写了方法，那么调用的时候，就会直接在该类的虚方法表中查找</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0034.png"></p>
 <p>1、比如说son在调用toString的时候，Son没有重写过，Son的父类Father也没有重写过，那就直接调用Object类的toString。那么就直接在虚方法表里指明toString直接指向Object类。</p>
-<p>2、下次Son对象再调用toString就直接去找Object，不用先找Son&rarr;再找Father&rarr;最后才到Object的这样的一个过程。</p>
+<p>2、下次Son对象再调用toString就直接去找Object，不用先找Son--&gt;再找Father--&gt;最后才到Object的这样的一个过程。</p>
 <p><strong>例子2</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0035.png"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0036.jpg"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0037.jpg"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0038.jpg"></p>
-<h2 id="_38">方法返回地址<a class="headerlink" href="#_38" title="Permanent link">&para;</a></h2>
+<h2 id="_38">方法返回地址</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0039.png"></p>
 <blockquote>
 <p>在一些帖子里，方法返回地址、动态链接、一些附加信息  也叫做帧数据区</p>
@@ -2083,7 +2085,7 @@
 <p>当一个方法开始执行后，只有两种方式可以退出这个方法，</p>
 <p><strong>正常退出：</strong></p>
 <ol>
-<li>执行引擎遇到任意一个方法返回的字节码指令（return），会有返回值传递给上层的方法调用者，简称**正常完成出口**；</li>
+<li>执行引擎遇到任意一个方法返回的字节码指令（return），会有返回值传递给上层的方法调用者，简称<strong>正常完成出口</strong>；</li>
 <li>一个方法在正常调用完成之后，究竟需要使用哪一个返回指令，还需要根据方法返回值的实际数据类型而定。</li>
 <li>
 <p>在字节码指令中，返回指令包含：</p>
@@ -2112,7 +2114,7 @@
 <p><strong>异常退出：</strong></p>
 <ol>
 <li>
-<p>在方法执行过程中遇到异常（Exception），并且这个异常没有在方法内进行处理，也就是只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，简称**异常完成出口**。</p>
+<p>在方法执行过程中遇到异常（Exception），并且这个异常没有在方法内进行处理，也就是只要在本方法的异常表中没有搜索到匹配的异常处理器，就会导致方法退出，简称<strong>异常完成出口</strong>。</p>
 </li>
 <li>
 <p>方法执行过程中，抛出异常时的异常处理，存储在一个异常处理表，方便在发生异常的时候找到处理异常的代码</p>
@@ -2128,16 +2130,16 @@
 <li>type ：捕获异常的类型</li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_004/0041.png"></p>
-<h2 id="_39">一些附加信息<a class="headerlink" href="#_39" title="Permanent link">&para;</a></h2>
+<h2 id="_39">一些附加信息</h2>
 <p>栈帧中还允许携带与Java虚拟机实现相关的一些附加信息。例如：对程序调试提供支持的信息。</p>
-<h2 id="_40">栈相关面试题<a class="headerlink" href="#_40" title="Permanent link">&para;</a></h2>
-<h3 id="_41">举例栈溢出的情况？<a class="headerlink" href="#_41" title="Permanent link">&para;</a></h3>
+<h2 id="_40">栈相关面试题</h2>
+<h3 id="_41">举例栈溢出的情况？</h3>
 <p>SOF（StackOverflowError），栈大小分为固定的，和动态变化。如果是固定的就可能出现StackOverflowError。如果是动态变化的，内存不足时就可能出现OOM</p>
-<h3 id="_42">调整栈大小，就能保证不出现溢出么？<a class="headerlink" href="#_42" title="Permanent link">&para;</a></h3>
+<h3 id="_42">调整栈大小，就能保证不出现溢出么？</h3>
 <p>不能保证不溢出，只能保证SOF出现的几率小</p>
-<h3 id="_43">分配的栈内存越大越好么？<a class="headerlink" href="#_43" title="Permanent link">&para;</a></h3>
+<h3 id="_43">分配的栈内存越大越好么？</h3>
 <p>不是，一定时间内降低了OOM概率，但是会挤占其它的线程空间，因为整个虚拟机的内存空间是有限的</p>
-<h3 id="_44">垃圾回收是否涉及到虚拟机栈？<a class="headerlink" href="#_44" title="Permanent link">&para;</a></h3>
+<h3 id="_44">垃圾回收是否涉及到虚拟机栈？</h3>
 <p>不会</p>
 <table>
 <thead>
@@ -2175,7 +2177,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="_45">方法中定义的局部变量是否线程安全？<a class="headerlink" href="#_45" title="Permanent link">&para;</a></h3>
+<h3 id="_45">方法中定义的局部变量是否线程安全？</h3>
 <p>具体问题具体分析</p>
 <ol>
 <li>如果只有一个线程才可以操作此数据，则必是线程安全的。</li>
@@ -2185,62 +2187,63 @@
 <ul>
 <li>如果对象是在内部产生，并在内部消亡，没有返回到外部，那么它就是线程安全的，反之则是线程不安全的。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="cm">/**</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="cm"> * 面试题：</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="cm"> * 方法中定义的局部变量是否线程安全？具体情况具体分析</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="cm"> *</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="cm"> *   何为线程安全？</span>
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="cm"> *      如果只有一个线程才可以操作此数据，则必是线程安全的。</span>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="cm"> *      如果有多个线程操作此数据，则此数据是共享数据。如果不考虑同步机制的话，会存在线程安全问题。</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="cm"> */</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StringBuilderTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>
-<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">    </span><span class="c1">//s1的声明方式是线程安全的（只在方法内部用了）</span>
-<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">method1</span><span class="p">(){</span>
-<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">        </span><span class="c1">//StringBuilder:线程不安全</span>
-<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span>
-<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">        </span><span class="c1">//...</span>
-<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">    </span><span class="c1">//sBuilder的操作过程：是线程不安全的（作为参数传进来，可能被其它线程操作）</span>
-<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">method2</span><span class="p">(</span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">sBuilder</span><span class="p">){</span>
-<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="w">        </span><span class="n">sBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">        </span><span class="n">sBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">        </span><span class="c1">//...</span>
-<a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a><span class="w">    </span><span class="c1">//s1的操作：是线程不安全的（有返回值，可能被其它线程操作）</span>
-<a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">StringBuilder</span><span class="w"> </span><span class="nf">method3</span><span class="p">(){</span>
-<a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span>
-<a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">s1</span><span class="p">;</span>
-<a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a><span class="w">    </span><span class="c1">//s1的操作：是线程安全的（s1自己消亡了，最后返回的只是s1.toString的一个新对象）</span>
-<a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">method4</span><span class="p">(){</span>
-<a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span>
-<a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-38" name="__codelineno-20-38" href="#__codelineno-20-38"></a><span class="w">        </span><span class="n">s1</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-39" name="__codelineno-20-39" href="#__codelineno-20-39"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
-<a id="__codelineno-20-40" name="__codelineno-20-40" href="#__codelineno-20-40"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-20-41" name="__codelineno-20-41" href="#__codelineno-20-41"></a>
-<a id="__codelineno-20-42" name="__codelineno-20-42" href="#__codelineno-20-42"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-20-43" name="__codelineno-20-43" href="#__codelineno-20-43"></a><span class="w">        </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span>
-<a id="__codelineno-20-44" name="__codelineno-20-44" href="#__codelineno-20-44"></a>
-<a id="__codelineno-20-45" name="__codelineno-20-45" href="#__codelineno-20-45"></a>
-<a id="__codelineno-20-46" name="__codelineno-20-46" href="#__codelineno-20-46"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-20-47" name="__codelineno-20-47" href="#__codelineno-20-47"></a><span class="w">            </span><span class="n">s</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-48" name="__codelineno-20-48" href="#__codelineno-20-48"></a><span class="w">            </span><span class="n">s</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">);</span>
-<a id="__codelineno-20-49" name="__codelineno-20-49" href="#__codelineno-20-49"></a><span class="w">        </span><span class="p">}).</span><span class="na">start</span><span class="p">();</span>
-<a id="__codelineno-20-50" name="__codelineno-20-50" href="#__codelineno-20-50"></a>
-<a id="__codelineno-20-51" name="__codelineno-20-51" href="#__codelineno-20-51"></a><span class="w">        </span><span class="n">method2</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-<a id="__codelineno-20-52" name="__codelineno-20-52" href="#__codelineno-20-52"></a>
-<a id="__codelineno-20-53" name="__codelineno-20-53" href="#__codelineno-20-53"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-20-54" name="__codelineno-20-54" href="#__codelineno-20-54"></a>
-<a id="__codelineno-20-55" name="__codelineno-20-55" href="#__codelineno-20-55"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 面试题：
+ * 方法中定义的局部变量是否线程安全？具体情况具体分析
+ *
+ *   何为线程安全？
+ *      如果只有一个线程才可以操作此数据，则必是线程安全的。
+ *      如果有多个线程操作此数据，则此数据是共享数据。如果不考虑同步机制的话，会存在线程安全问题。
+ */
+public class StringBuilderTest {
+
+    int num = 10;
+
+    //s1的声明方式是线程安全的（只在方法内部用了）
+    public static void method1(){
+        //StringBuilder:线程不安全
+        StringBuilder s1 = new StringBuilder();
+        s1.append(&quot;a&quot;);
+        s1.append(&quot;b&quot;);
+        //...
+    }
+    //sBuilder的操作过程：是线程不安全的（作为参数传进来，可能被其它线程操作）
+    public static void method2(StringBuilder sBuilder){
+        sBuilder.append(&quot;a&quot;);
+        sBuilder.append(&quot;b&quot;);
+        //...
+    }
+    //s1的操作：是线程不安全的（有返回值，可能被其它线程操作）
+    public static StringBuilder method3(){
+        StringBuilder s1 = new StringBuilder();
+        s1.append(&quot;a&quot;);
+        s1.append(&quot;b&quot;);
+        return s1;
+    }
+    //s1的操作：是线程安全的（s1自己消亡了，最后返回的只是s1.toString的一个新对象）
+    public static String method4(){
+        StringBuilder s1 = new StringBuilder();
+        s1.append(&quot;a&quot;);
+        s1.append(&quot;b&quot;);
+        return s1.toString();
+    }
+
+    public static void main(String[] args) {
+        StringBuilder s = new StringBuilder();
+
+
+        new Thread(() -&gt; {
+            s.append(&quot;a&quot;);
+            s.append(&quot;b&quot;);
+        }).start();
+
+        method2(s);
+
+    }
+
+}
+
+</code></pre>
 
 
 

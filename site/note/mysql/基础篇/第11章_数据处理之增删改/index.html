@@ -1812,63 +1812,63 @@
   
 
 
-<h1 id="11_">第11章_数据处理之增删改<a class="headerlink" href="#11_" title="Permanent link">&para;</a></h1>
+<h1 id="11_">第11章_数据处理之增删改</h1>
 <p>讲师：尚硅谷-宋红康（江湖人称：康师傅）</p>
 <p>官网：<a href="http://www.atguigu.com/">http://www.atguigu.com</a></p>
 <hr />
-<h2 id="1">1. 插入数据<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<h3 id="11">1.1 实际问题<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<h2 id="1">1. 插入数据</h2>
+<h3 id="11">1.1 实际问题</h3>
 <p><img src="images/1555425366064.png" alt="1555425366064" style="zoom:80%;" /></p>
 <p>解决方式：使用 INSERT 语句向表中插入数据。</p>
-<h3 id="12-1values">1.2 方式1：VALUES的方式添加<a class="headerlink" href="#12-1values" title="Permanent link">&para;</a></h3>
-<p>使用这种语法一次只能向表中插入**一条**数据。</p>
+<h3 id="12-1values">1.2 方式1：VALUES的方式添加</h3>
+<p>使用这种语法一次只能向表中插入<strong>一条</strong>数据。</p>
 <p><strong>情况1：为表的所有字段按默认顺序插入数据</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>INSERT INTO 表名
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>VALUES (value1,value2,....);
-</code></pre></div>
+<pre><code>INSERT INTO 表名
+VALUES (value1,value2,....);
+</code></pre>
 <p>值列表中需要为表的每一个字段指定值，并且值的顺序必须和数据表中字段定义时的顺序相同。</p>
 <p>举例：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">departments</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">70</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Pub&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1700</span><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">departments</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">VALUES</span><span class="w">      </span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Finance&#39;</span><span class="p">,</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span><span class="no">NULL</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO departments
+VALUES (70, 'Pub', 100, 1700);
+</code></pre>
+<pre><code class="language-mysql">INSERT INTO departments
+VALUES      (100, 'Finance', NULL, NULL);
+</code></pre>
 <p><strong>情况2：为表的指定字段插入数据</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">表名</span><span class="p">(</span><span class="n">column1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">column2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">columnn</span><span class="err">]</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO 表名(column1 [, column2, …, columnn]) 
+VALUES (value1 [,value2, …, valuen]);
+</code></pre>
 <p>为表的指定字段插入数据，就是在INSERT语句中只向部分字段中插入值，而其他字段的值为表定义时的默认值。</p>
 <p>在 INSERT 子句中随意列出列名，但是一旦列出，VALUES中要插入的value1,....valuen需要与column1,...columnn列一一对应。如果类型不同，将无法插入，并且MySQL会产生错误。</p>
 <p>举例：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">departments</span><span class="p">(</span><span class="n">department_id</span><span class="p">,</span><span class="w"> </span><span class="n">department_name</span><span class="p">)</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;IT&#39;</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO departments(department_id, department_name)
+VALUES (80, 'IT');
+</code></pre>
 <p><strong>情况3：同时插入多条记录</strong></p>
 <p>INSERT语句可以同时向数据表中插入多条记录，插入时指定多个值列表，每个值列表之间用逗号分隔开，基本语法格式如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">VALUES</span><span class="w"> </span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">),</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">),</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">……</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO table_name 
+VALUES 
+(value1 [,value2, …, valuen]),
+(value1 [,value2, …, valuen]),
+……
+(value1 [,value2, …, valuen]);
+</code></pre>
 <p>或者</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">table_name</span><span class="p">(</span><span class="n">column1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">column2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">columnn</span><span class="err">]</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">VALUES</span><span class="w"> </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">),</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">),</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">……</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">(</span><span class="n">value1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">valuen</span><span class="err">]</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO table_name(column1 [, column2, …, columnn]) 
+VALUES 
+(value1 [,value2, …, valuen]),
+(value1 [,value2, …, valuen]),
+……
+(value1 [,value2, …, valuen]);
+</code></pre>
 <p>举例：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">emp</span><span class="p">(</span><span class="n">emp_id</span><span class="p">,</span><span class="n">emp_name</span><span class="p">)</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1001</span><span class="p">,</span><span class="s1">&#39;shkstart&#39;</span><span class="p">),</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="mi">1002</span><span class="p">,</span><span class="s1">&#39;atguigu&#39;</span><span class="p">),</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="mi">1003</span><span class="p">,</span><span class="s1">&#39;Tom&#39;</span><span class="p">);</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">Records</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="n">Duplicates</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="k">Warnings</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; INSERT INTO emp(emp_id,emp_name)
+    -&gt; VALUES (1001,'shkstart'),
+    -&gt; (1002,'atguigu'),
+    -&gt; (1003,'Tom');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+</code></pre>
 <p>使用INSERT同时插入多条记录时，MySQL会返回一些在执行单行插入时没有的额外信息，这些信息的含义如下：
 ●　Records：表明插入的记录条数。
 ●　Duplicates：表明插入时被忽略的记录，原因可能是这些记录包含了重复的主键值。
@@ -1885,44 +1885,44 @@
 <p>字符和日期型数据应包含在单引号中。</p>
 </li>
 </ul>
-<h3 id="13-2">1.3 方式2：将查询结果插入到表中<a class="headerlink" href="#13-2" title="Permanent link">&para;</a></h3>
+<h3 id="13-2">1.3 方式2：将查询结果插入到表中</h3>
 <p>INSERT还可以将SELECT语句查询的结果插入到表中，此时不需要把每一条记录的值一个一个输入，只需要使用一条INSERT语句和一条SELECT语句组成的组合语句即可快速地从一个或多个表中向一个表中插入多行。</p>
 <p>基本语法格式如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">目标表名</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">(</span><span class="n">tar_column1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">tar_column2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">tar_columnn</span><span class="err">]</span><span class="p">)</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">SELECT</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">(</span><span class="n">src_column1</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">src_column2</span><span class="p">,</span><span class="w"> </span><span class="n">…</span><span class="p">,</span><span class="w"> </span><span class="n">src_columnn</span><span class="err">]</span><span class="p">)</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">FROM</span><span class="w"> </span><span class="n">源表名</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="err">[</span><span class="k">WHERE</span><span class="w"> </span><span class="k">condition</span><span class="err">]</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO 目标表名
+(tar_column1 [, tar_column2, …, tar_columnn])
+SELECT
+(src_column1 [, src_column2, …, src_columnn])
+FROM 源表名
+[WHERE condition]
+</code></pre>
 <ul>
 <li>在 INSERT 语句中加入子查询。 </li>
 <li><strong>不必书写</strong> <strong>VALUES</strong> <strong>子句。</strong> </li>
 <li>子查询中的值列表应与 INSERT 子句中的列名对应。</li>
 </ul>
 <p>举例：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">emp2</span><span class="w"> </span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">FROM</span><span class="w"> </span><span class="n">employees</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">90</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">sales_reps</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="n">commission_pct</span><span class="p">)</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">employee_id</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="p">,</span><span class="w"> </span><span class="n">commission_pct</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">FROM</span><span class="w">   </span><span class="n">employees</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">WHERE</span><span class="w">  </span><span class="n">job_id</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%REP%&#39;</span><span class="p">;</span>
-</code></pre></div>
-<h2 id="2">2. 更新数据<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<pre><code class="language-sql">INSERT INTO emp2 
+SELECT * 
+FROM employees
+WHERE department_id = 90;
+</code></pre>
+<pre><code class="language-sql">INSERT INTO sales_reps(id, name, salary, commission_pct)
+SELECT employee_id, last_name, salary, commission_pct
+FROM   employees
+WHERE  job_id LIKE '%REP%';
+</code></pre>
+<h2 id="2">2. 更新数据</h2>
 <p><img alt="1555425824246" src="../images/1555425824246.png" /></p>
 <ul>
 <li>使用 UPDATE 语句更新数据。语法如下：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>UPDATE table_name
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>SET column1=value1, column2=value2, … , column=valuen
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>[WHERE condition]
-</code></pre></div>
+<pre><code>UPDATE table_name
+SET column1=value1, column2=value2, … , column=valuen
+[WHERE condition]
+</code></pre>
 <ul>
 <li>
-<p>可以一次更新**多条**数据。</p>
+<p>可以一次更新<strong>多条</strong>数据。</p>
 </li>
 <li>
 <p>如果需要回滚数据，需要保证在DML前，进行设置：<strong>SET AUTOCOMMIT = FALSE;</strong></p>
@@ -1932,91 +1932,91 @@
 <ul>
 <li>使用 <strong>WHERE</strong> 子句指定需要更新的数据。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">employees</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">SET</span><span class="w">    </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">70</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">WHERE</span><span class="w">  </span><span class="n">employee_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">113</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">UPDATE employees
+SET    department_id = 70
+WHERE  employee_id = 113;
+</code></pre>
 <ul>
 <li>如果省略 WHERE 子句，则表中的所有数据都将被更新。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">UPDATE</span><span class="w">  </span><span class="n">copy_emp</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">SET</span><span class="w">     </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">UPDATE  copy_emp
+SET     department_id = 110;
+</code></pre>
 <ul>
 <li><strong>更新中的数据完整性错误</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">employees</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">SET</span><span class="w">    </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">55</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">WHERE</span><span class="w">  </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">110</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">UPDATE employees
+SET    department_id = 55
+WHERE  department_id = 110;
+</code></pre>
 <p><img alt="1555426069578" src="../images/1555426069578.png" /></p>
 <blockquote>
 <p>说明：不存在 55 号部门</p>
 </blockquote>
-<h2 id="3">3. 删除数据<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h2 id="3">3. 删除数据</h2>
 <p><img alt="1555426124751" src="../images/1555426124751.png" /></p>
 <ul>
 <li>使用 DELETE 语句从表中删除数据</li>
 </ul>
 <p><img alt="1555426162264" src="../images/1555426162264.png" /></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="err">[</span><span class="k">WHERE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">condition</span><span class="o">&gt;</span><span class="err">]</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">DELETE FROM table_name [WHERE &lt;condition&gt;];
+</code></pre>
 <p>table_name指定要执行删除操作的表；“[WHERE <condition>]”为可选参数，指定删除条件，如果没有WHERE子句，DELETE语句将删除表中的所有记录。</p>
 <ul>
 <li>使用 WHERE 子句删除指定的记录。</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">departments</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">WHERE</span><span class="w">  </span><span class="n">department_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Finance&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">DELETE FROM departments
+WHERE  department_name = 'Finance';
+</code></pre>
 <ul>
 <li>如果省略 WHERE 子句，则表中的全部数据将被删除</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w">  </span><span class="n">copy_emp</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">DELETE FROM  copy_emp;
+</code></pre>
 <ul>
 <li><strong>删除中的数据完整性错误</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">departments</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">WHERE</span><span class="w">       </span><span class="n">department_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">DELETE FROM departments
+WHERE       department_id = 60;
+</code></pre>
 <p><img alt="1555426258516" src="../images/1555426258516.png" /></p>
 <blockquote>
 <p>说明：You cannot delete a row that contains a primary key that is used as a foreign key in another table.</p>
 </blockquote>
-<h2 id="4-mysql8">4. MySQL8新特性：计算列<a class="headerlink" href="#4-mysql8" title="Permanent link">&para;</a></h2>
+<h2 id="4-mysql8">4. MySQL8新特性：计算列</h2>
 <p>什么叫计算列呢？简单来说就是某一列的值是通过别的列计算得来的。例如，a列值为1、b列值为2，c列不需要手动插入，定义a+b的结果为c的值，那么c就是计算列，是通过别的列计算得来的。</p>
 <p>在MySQL 8.0中，CREATE TABLE 和 ALTER TABLE 中都支持增加计算列。下面以CREATE TABLE为例进行讲解。</p>
 <p>举例：定义数据表tb1，然后定义字段id、字段a、字段b和字段c，其中字段c为计算列，用于计算a+b的值。
 首先创建测试表tb1，语句如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tb1</span><span class="p">(</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">a</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">b</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">c</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">GENERATED</span><span class="w"> </span><span class="k">ALWAYS</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">VIRTUAL</span>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE tb1(
+id INT,
+a INT,
+b INT,
+c INT GENERATED ALWAYS AS (a + b) VIRTUAL
+);
+</code></pre>
 <p>插入演示数据，语句如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tb1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO tb1(a,b) VALUES (100,200);
+</code></pre>
 <p>查询数据表tb1中的数据，结果如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tb1</span><span class="p">;</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">+------+------+------+------+</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">a</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w">    </span><span class="o">|</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="o">+------+------+------+------+</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="o">|</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">100</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">200</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="mi">300</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="o">+------+------+------+------+</span>
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; SELECT * FROM tb1;
++------+------+------+------+
+| id   | a    | b    | c    |
++------+------+------+------+
+| NULL |  100 |  200 |  300 |
++------+------+------+------+
+1 row in set (0.00 sec)
+</code></pre>
 <p>更新数据中的数据，语句如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="n">tb1</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="k">Rows</span><span class="w"> </span><span class="n">matched</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="k">Changed</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="k">Warnings</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-</code></pre></div>
-<h2 id="5">5. 综合案例<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># 1、创建数据库test01_library</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># 2、创建表 books，表结构如下：</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; UPDATE tb1 SET a = 500;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+</code></pre>
+<h2 id="5">5. 综合案例</h2>
+<pre><code class="language-mysql"># 1、创建数据库test01_library
+
+# 2、创建表 books，表结构如下：
+</code></pre>
 <table>
 <thead>
 <tr>
@@ -2063,12 +2063,12 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># 3、向books表中插入记录</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># 1）不指定字段名称，插入第一条记录</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># 2）指定所有字段名称，插入第二记录</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="c1"># 3）同时插入多条记录（剩下的所有记录）</span>
-</code></pre></div>
+<pre><code class="language-mysql"># 3、向books表中插入记录
+
+# 1）不指定字段名称，插入第一条记录
+# 2）指定所有字段名称，插入第二记录
+# 3）同时插入多条记录（剩下的所有记录）
+</code></pre>
 <table>
 <thead>
 <tr>
@@ -2147,156 +2147,156 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># 4、将小说类型(novel)的书的价格都增加5。</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1"># 5、将名称为EmmaT的书的价格改为40，并将说明改为drama。</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1"># 6、删除库存为0的记录。</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># 7、统计书名中包含a字母的书</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="c1"># 8、统计书名中包含a字母的书的数量和库存总量</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="c1"># 9、找出“novel”类型的书，按照价格降序排列</span>
-<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
-<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="c1"># 10、查询图书信息，按照库存量降序排列，如果库存量相同的按照note升序排列</span>
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
-<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="c1"># 11、按照note分类统计书的数量</span>
-<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>
-<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="c1"># 12、按照note分类统计书的库存量，显示库存量超过30本的</span>
-<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="c1"># 13、查询所有图书，每页显示5本，显示第二页</span>
-<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>
-<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="c1"># 14、按照note分类统计书的库存量，显示库存量最多的</span>
-<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>
-<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a><span class="c1"># 15、查询书名达到10个字符的书，不包括里面的空格</span>
-<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
-<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a><span class="c1"># 16、查询书名和类型，其中note值为novel显示小说，law显示法律，medicine显示医药，cartoon显示卡通，joke显示笑话</span>
-<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a>
-<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a><span class="c1"># 17、查询书名、库存，其中num值超过30本的，显示滞销，大于0并低于10的，显示畅销，为0的显示需要无货</span>
-<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>
-<a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a><span class="c1"># 18、统计每一种note的库存量，并合计总量</span>
-<a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a>
-<a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a><span class="c1"># 19、统计每一种note的数量，并合计总量</span>
-<a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a>
-<a id="__codelineno-26-27" name="__codelineno-26-27" href="#__codelineno-26-27"></a><span class="c1"># 20、统计库存量前三名的图书</span>
-<a id="__codelineno-26-28" name="__codelineno-26-28" href="#__codelineno-26-28"></a>
-<a id="__codelineno-26-29" name="__codelineno-26-29" href="#__codelineno-26-29"></a><span class="c1"># 21、找出最早出版的一本书</span>
-<a id="__codelineno-26-30" name="__codelineno-26-30" href="#__codelineno-26-30"></a>
-<a id="__codelineno-26-31" name="__codelineno-26-31" href="#__codelineno-26-31"></a><span class="c1"># 22、找出novel中价格最高的一本书</span>
-<a id="__codelineno-26-32" name="__codelineno-26-32" href="#__codelineno-26-32"></a>
-<a id="__codelineno-26-33" name="__codelineno-26-33" href="#__codelineno-26-33"></a><span class="c1"># 23、找出书名中字数最多的一本书，不含空格</span>
-</code></pre></div>
+<pre><code class="language-mysql"># 4、将小说类型(novel)的书的价格都增加5。
+
+# 5、将名称为EmmaT的书的价格改为40，并将说明改为drama。
+
+# 6、删除库存为0的记录。
+</code></pre>
+<pre><code class="language-mysql"># 7、统计书名中包含a字母的书
+
+# 8、统计书名中包含a字母的书的数量和库存总量
+
+# 9、找出“novel”类型的书，按照价格降序排列
+
+# 10、查询图书信息，按照库存量降序排列，如果库存量相同的按照note升序排列
+
+# 11、按照note分类统计书的数量
+
+# 12、按照note分类统计书的库存量，显示库存量超过30本的
+
+# 13、查询所有图书，每页显示5本，显示第二页
+
+# 14、按照note分类统计书的库存量，显示库存量最多的
+
+# 15、查询书名达到10个字符的书，不包括里面的空格
+
+# 16、查询书名和类型，其中note值为novel显示小说，law显示法律，medicine显示医药，cartoon显示卡通，joke显示笑话
+
+# 17、查询书名、库存，其中num值超过30本的，显示滞销，大于0并低于10的，显示畅销，为0的显示需要无货
+
+# 18、统计每一种note的库存量，并合计总量
+
+# 19、统计每一种note的数量，并合计总量
+
+# 20、统计库存量前三名的图书
+
+# 21、找出最早出版的一本书
+
+# 22、找出novel中价格最高的一本书
+
+# 23、找出书名中字数最多的一本书，不含空格
+</code></pre>
 <p>答案：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1">#1、创建数据库test01_library</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">test01_library</span><span class="w"> </span><span class="k">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="s1">&#39;utf8&#39;</span><span class="p">;</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="c1">#指定使用哪个数据库</span>
-<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="k">USE</span><span class="w"> </span><span class="n">test01_library</span><span class="p">;</span>
-<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>
-<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="c1">#2、创建表 books</span>
-<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">books</span><span class="p">(</span>
-<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">    </span><span class="k">name</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
-<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">    </span><span class="n n-Quoted">`authors`</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">,</span>
-<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">    </span><span class="n">price</span><span class="w"> </span><span class="kt">FLOAT</span><span class="p">,</span>
-<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">    </span><span class="n">pubdate</span><span class="w"> </span><span class="kt">YEAR</span><span class="w"> </span><span class="p">,</span>
-<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">    </span><span class="n">note</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="w">    </span><span class="n">num</span><span class="w"> </span><span class="kt">INT</span>
-<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a><span class="p">);</span>
-<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a>
-<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a><span class="c1">#3、向books表中插入记录</span>
-<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a><span class="c1"># 1）不指定字段名称，插入第一条记录</span>
-<a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">books</span><span class="w"> </span>
-<a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;Tal of AAA&#39;</span><span class="p">,</span><span class="s1">&#39;Dickes&#39;</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">1995</span><span class="p">,</span><span class="s1">&#39;novel&#39;</span><span class="p">,</span><span class="mi">11</span><span class="p">);</span>
-<a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a><span class="c1"># 2）指定所有字段名称，插入第二记录</span>
-<a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="p">,</span><span class="n n-Quoted">`authors`</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">pubdate</span><span class="p">,</span><span class="n">note</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
-<a id="__codelineno-27-24" name="__codelineno-27-24" href="#__codelineno-27-24"></a><span class="k">VALUES</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;EmmaT&#39;</span><span class="p">,</span><span class="s1">&#39;Jane lura&#39;</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">1993</span><span class="p">,</span><span class="s1">&#39;Joke&#39;</span><span class="p">,</span><span class="mi">22</span><span class="p">);</span>
-<a id="__codelineno-27-25" name="__codelineno-27-25" href="#__codelineno-27-25"></a><span class="c1"># 3）同时插入多条记录（剩下的所有记录）</span>
-<a id="__codelineno-27-26" name="__codelineno-27-26" href="#__codelineno-27-26"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="p">,</span><span class="n n-Quoted">`authors`</span><span class="p">,</span><span class="n">price</span><span class="p">,</span><span class="n">pubdate</span><span class="p">,</span><span class="n">note</span><span class="p">,</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
-<a id="__codelineno-27-27" name="__codelineno-27-27" href="#__codelineno-27-27"></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;Story of Jane&#39;</span><span class="p">,</span><span class="s1">&#39;Jane Tim&#39;</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">2001</span><span class="p">,</span><span class="s1">&#39;novel&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
-<a id="__codelineno-27-28" name="__codelineno-27-28" href="#__codelineno-27-28"></a><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;Lovey Day&#39;</span><span class="p">,</span><span class="s1">&#39;George Byron&#39;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">2005</span><span class="p">,</span><span class="s1">&#39;novel&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">),</span>
-<a id="__codelineno-27-29" name="__codelineno-27-29" href="#__codelineno-27-29"></a><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;Old land&#39;</span><span class="p">,</span><span class="s1">&#39;Honore Blade&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">2010</span><span class="p">,</span><span class="s1">&#39;Law&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
-<a id="__codelineno-27-30" name="__codelineno-27-30" href="#__codelineno-27-30"></a><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="s1">&#39;The Battle&#39;</span><span class="p">,</span><span class="s1">&#39;Upton Sara&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">1999</span><span class="p">,</span><span class="s1">&#39;medicine&#39;</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span>
-<a id="__codelineno-27-31" name="__codelineno-27-31" href="#__codelineno-27-31"></a><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="s1">&#39;Rose Hood&#39;</span><span class="p">,</span><span class="s1">&#39;Richard haggard&#39;</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">2008</span><span class="p">,</span><span class="s1">&#39;cartoon&#39;</span><span class="p">,</span><span class="mi">28</span><span class="p">);</span>
-<a id="__codelineno-27-32" name="__codelineno-27-32" href="#__codelineno-27-32"></a>
-<a id="__codelineno-27-33" name="__codelineno-27-33" href="#__codelineno-27-33"></a><span class="c1"># 4、将小说类型(novel)的书的价格都增加5。</span>
-<a id="__codelineno-27-34" name="__codelineno-27-34" href="#__codelineno-27-34"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="o">+</span><span class="mi">5</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;novel&#39;</span><span class="p">;</span>
-<a id="__codelineno-27-35" name="__codelineno-27-35" href="#__codelineno-27-35"></a>
-<a id="__codelineno-27-36" name="__codelineno-27-36" href="#__codelineno-27-36"></a><span class="c1"># 5、将名称为EmmaT的书的价格改为40，并将说明改为drama。</span>
-<a id="__codelineno-27-37" name="__codelineno-27-37" href="#__codelineno-27-37"></a><span class="k">UPDATE</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">price</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">note</span><span class="o">=</span><span class="s1">&#39;drama&#39;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="o">=</span><span class="s1">&#39;EmmaT&#39;</span><span class="p">;</span>
-<a id="__codelineno-27-38" name="__codelineno-27-38" href="#__codelineno-27-38"></a>
-<a id="__codelineno-27-39" name="__codelineno-27-39" href="#__codelineno-27-39"></a><span class="c1"># 6、删除库存为0的记录。</span>
-<a id="__codelineno-27-40" name="__codelineno-27-40" href="#__codelineno-27-40"></a><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># 7、统计书名中包含a字母的书</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%a%&#39;</span><span class="p">;</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="c1"># 8、统计书名中包含a字母的书的数量和库存总量</span>
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="k">SELECT</span><span class="w"> </span><span class="nf">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">),</span><span class="nf">SUM</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%a%&#39;</span><span class="p">;</span>
-<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>
-<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="c1"># 9、找出“novel”类型的书，按照价格降序排列</span>
-<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;novel&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>
-<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="c1"># 10、查询图书信息，按照库存量降序排列，如果库存量相同的按照note升序排列</span>
-<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="n">note</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span>
-<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>
-<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a><span class="c1"># 11、按照note分类统计书的数量</span>
-<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="nf">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">note</span><span class="p">;</span>
-<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>
-<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a><span class="c1"># 12、按照note分类统计书的库存量，显示库存量超过30本的</span>
-<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="nf">SUM</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">HAVING</span><span class="w"> </span><span class="nf">SUM</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">30</span><span class="p">;</span>
-<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>
-<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="c1"># 13、查询所有图书，每页显示5本，显示第二页</span>
-<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">;</span>
-<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>
-<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="c1"># 14、按照note分类统计书的库存量，显示库存量最多的</span>
-<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="nf">SUM</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="n">sum_num</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sum_num</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a>
-<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a><span class="c1"># 15、查询书名达到10个字符的书，不包括里面的空格</span>
-<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="nf">CHAR_LENGTH</span><span class="p">(</span><span class="k">REPLACE</span><span class="p">(</span><span class="k">name</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span><span class="o">&gt;=</span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a>
-<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a><span class="cm">/*</span>
-<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a><span class="cm">16、查询书名和类型，</span>
-<a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a><span class="cm"> 其中note值为 novel显示小说，law显示法律，medicine显示医药，cartoon显示卡通，joke显示笑话</span>
-<a id="__codelineno-28-31" name="__codelineno-28-31" href="#__codelineno-28-31"></a><span class="cm">*/</span>
-<a id="__codelineno-28-32" name="__codelineno-28-32" href="#__codelineno-28-32"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s2">&quot;书名&quot;</span><span class="w"> </span><span class="p">,</span><span class="n">note</span><span class="p">,</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="n">note</span><span class="w"> </span>
-<a id="__codelineno-28-33" name="__codelineno-28-33" href="#__codelineno-28-33"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;novel&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;小说&#39;</span>
-<a id="__codelineno-28-34" name="__codelineno-28-34" href="#__codelineno-28-34"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;law&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;法律&#39;</span>
-<a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;medicine&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;医药&#39;</span>
-<a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;cartoon&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;卡通&#39;</span>
-<a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;joke&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;笑话&#39;</span>
-<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s2">&quot;类型&quot;</span>
-<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="p">;</span>
-<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a>
-<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a>
-<a id="__codelineno-28-42" name="__codelineno-28-42" href="#__codelineno-28-42"></a><span class="c1"># 17、查询书名、库存，其中num值超过30本的，显示滞销，大于0并低于10的，显示畅销，为0的显示需要无货</span>
-<a id="__codelineno-28-43" name="__codelineno-28-43" href="#__codelineno-28-43"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">name</span><span class="p">,</span><span class="n">num</span><span class="p">,</span><span class="k">CASE</span><span class="w"> </span>
-<a id="__codelineno-28-44" name="__codelineno-28-44" href="#__codelineno-28-44"></a><span class="w">  </span><span class="k">WHEN</span><span class="w"> </span><span class="n">num</span><span class="o">&gt;</span><span class="mi">30</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;滞销&#39;</span>
-<a id="__codelineno-28-45" name="__codelineno-28-45" href="#__codelineno-28-45"></a><span class="w">  </span><span class="k">WHEN</span><span class="w"> </span><span class="n">num</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">num</span><span class="o">&lt;</span><span class="mi">10</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;畅销&#39;</span>
-<a id="__codelineno-28-46" name="__codelineno-28-46" href="#__codelineno-28-46"></a><span class="w">  </span><span class="k">WHEN</span><span class="w"> </span><span class="n">num</span><span class="o">=</span><span class="mi">0</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;无货&#39;</span>
-<a id="__codelineno-28-47" name="__codelineno-28-47" href="#__codelineno-28-47"></a><span class="w">  </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;正常&#39;</span>
-<a id="__codelineno-28-48" name="__codelineno-28-48" href="#__codelineno-28-48"></a><span class="w">  </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s2">&quot;库存状态&quot;</span>
-<a id="__codelineno-28-49" name="__codelineno-28-49" href="#__codelineno-28-49"></a><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="p">;</span>
-<a id="__codelineno-28-50" name="__codelineno-28-50" href="#__codelineno-28-50"></a>
-<a id="__codelineno-28-51" name="__codelineno-28-51" href="#__codelineno-28-51"></a><span class="c1"># 18、统计每一种note的库存量，并合计总量</span>
-<a id="__codelineno-28-52" name="__codelineno-28-52" href="#__codelineno-28-52"></a><span class="k">SELECT</span><span class="w"> </span><span class="nf">IFNULL</span><span class="p">(</span><span class="n">note</span><span class="p">,</span><span class="s1">&#39;合计总库存量&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="nf">SUM</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">ROLLUP</span><span class="p">;</span>
-<a id="__codelineno-28-53" name="__codelineno-28-53" href="#__codelineno-28-53"></a>
-<a id="__codelineno-28-54" name="__codelineno-28-54" href="#__codelineno-28-54"></a><span class="c1"># 19、统计每一种note的数量，并合计总量</span>
-<a id="__codelineno-28-55" name="__codelineno-28-55" href="#__codelineno-28-55"></a><span class="k">SELECT</span><span class="w"> </span><span class="nf">IFNULL</span><span class="p">(</span><span class="n">note</span><span class="p">,</span><span class="s1">&#39;合计总数&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">note</span><span class="p">,</span><span class="nf">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">ROLLUP</span><span class="p">;</span>
-<a id="__codelineno-28-56" name="__codelineno-28-56" href="#__codelineno-28-56"></a>
-<a id="__codelineno-28-57" name="__codelineno-28-57" href="#__codelineno-28-57"></a><span class="c1"># 20、统计库存量前三名的图书</span>
-<a id="__codelineno-28-58" name="__codelineno-28-58" href="#__codelineno-28-58"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">;</span>
-<a id="__codelineno-28-59" name="__codelineno-28-59" href="#__codelineno-28-59"></a>
-<a id="__codelineno-28-60" name="__codelineno-28-60" href="#__codelineno-28-60"></a><span class="c1"># 21、找出最早出版的一本书</span>
-<a id="__codelineno-28-61" name="__codelineno-28-61" href="#__codelineno-28-61"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pubdate</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-28-62" name="__codelineno-28-62" href="#__codelineno-28-62"></a>
-<a id="__codelineno-28-63" name="__codelineno-28-63" href="#__codelineno-28-63"></a><span class="c1"># 22、找出novel中价格最高的一本书</span>
-<a id="__codelineno-28-64" name="__codelineno-28-64" href="#__codelineno-28-64"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;novel&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-28-65" name="__codelineno-28-65" href="#__codelineno-28-65"></a>
-<a id="__codelineno-28-66" name="__codelineno-28-66" href="#__codelineno-28-66"></a><span class="c1"># 23、找出书名中字数最多的一本书，不含空格</span>
-<a id="__codelineno-28-67" name="__codelineno-28-67" href="#__codelineno-28-67"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">books</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="nf">CHAR_LENGTH</span><span class="p">(</span><span class="k">REPLACE</span><span class="p">(</span><span class="k">name</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">#1、创建数据库test01_library
+CREATE DATABASE IF NOT EXISTS test01_library CHARACTER SET 'utf8';
+
+#指定使用哪个数据库
+USE test01_library;
+
+#2、创建表 books
+CREATE TABLE books(
+    id INT,
+    name VARCHAR(50),
+    `authors` VARCHAR(100) ,
+    price FLOAT,
+    pubdate YEAR ,
+    note VARCHAR(100),
+    num INT
+);
+
+#3、向books表中插入记录
+# 1）不指定字段名称，插入第一条记录
+INSERT INTO books 
+VALUES(1,'Tal of AAA','Dickes',23,1995,'novel',11);
+# 2）指定所有字段名称，插入第二记录
+INSERT INTO books (id,name,`authors`,price,pubdate,note,num)
+VALUES(2,'EmmaT','Jane lura',35,1993,'Joke',22);
+# 3）同时插入多条记录（剩下的所有记录）
+INSERT INTO books (id,name,`authors`,price,pubdate,note,num) VALUES
+(3,'Story of Jane','Jane Tim',40,2001,'novel',0),
+(4,'Lovey Day','George Byron',20,2005,'novel',30),
+(5,'Old land','Honore Blade',30,2010,'Law',0),
+(6,'The Battle','Upton Sara',30,1999,'medicine',40),
+(7,'Rose Hood','Richard haggard',28,2008,'cartoon',28);
+
+# 4、将小说类型(novel)的书的价格都增加5。
+UPDATE books SET price=price+5 WHERE note = 'novel';
+
+# 5、将名称为EmmaT的书的价格改为40，并将说明改为drama。
+UPDATE books SET price=40,note='drama' WHERE name='EmmaT';
+
+# 6、删除库存为0的记录。
+DELETE FROM books WHERE num=0;
+</code></pre>
+<pre><code class="language-mysql"># 7、统计书名中包含a字母的书
+SELECT * FROM books WHERE name LIKE '%a%';
+
+# 8、统计书名中包含a字母的书的数量和库存总量
+SELECT COUNT(*),SUM(num) FROM books WHERE name LIKE '%a%';
+
+# 9、找出“novel”类型的书，按照价格降序排列
+SELECT * FROM books WHERE note = 'novel' ORDER BY price DESC;
+
+# 10、查询图书信息，按照库存量降序排列，如果库存量相同的按照note升序排列
+SELECT * FROM books ORDER BY num DESC,note ASC;
+
+# 11、按照note分类统计书的数量
+SELECT note,COUNT(*) FROM books GROUP BY note;
+
+# 12、按照note分类统计书的库存量，显示库存量超过30本的
+SELECT note,SUM(num) FROM books GROUP BY note HAVING SUM(num)&gt;30;
+
+# 13、查询所有图书，每页显示5本，显示第二页
+SELECT * FROM books LIMIT 5,5;
+
+# 14、按照note分类统计书的库存量，显示库存量最多的
+SELECT note,SUM(num) sum_num FROM books GROUP BY note ORDER BY sum_num DESC LIMIT 0,1;
+
+# 15、查询书名达到10个字符的书，不包括里面的空格
+SELECT * FROM books WHERE CHAR_LENGTH(REPLACE(name,' ',''))&gt;=10;
+
+/*
+16、查询书名和类型，
+ 其中note值为 novel显示小说，law显示法律，medicine显示医药，cartoon显示卡通，joke显示笑话
+*/
+SELECT name AS &quot;书名&quot; ,note, CASE note 
+ WHEN 'novel' THEN '小说'
+ WHEN 'law' THEN '法律'
+ WHEN 'medicine' THEN '医药'
+ WHEN 'cartoon' THEN '卡通'
+ WHEN 'joke' THEN '笑话'
+ END AS &quot;类型&quot;
+FROM books;
+
+
+# 17、查询书名、库存，其中num值超过30本的，显示滞销，大于0并低于10的，显示畅销，为0的显示需要无货
+SELECT name,num,CASE 
+  WHEN num&gt;30 THEN '滞销'
+  WHEN num&gt;0 AND num&lt;10 THEN '畅销'
+  WHEN num=0 THEN '无货'
+  ELSE '正常'
+  END AS &quot;库存状态&quot;
+FROM books;
+
+# 18、统计每一种note的库存量，并合计总量
+SELECT IFNULL(note,'合计总库存量') AS note,SUM(num) FROM books GROUP BY note WITH ROLLUP;
+
+# 19、统计每一种note的数量，并合计总量
+SELECT IFNULL(note,'合计总数') AS note,COUNT(*) FROM books GROUP BY note WITH ROLLUP;
+
+# 20、统计库存量前三名的图书
+SELECT * FROM books ORDER BY num DESC LIMIT 0,3;
+
+# 21、找出最早出版的一本书
+SELECT * FROM books ORDER BY pubdate ASC LIMIT 0,1;
+
+# 22、找出novel中价格最高的一本书
+SELECT * FROM books WHERE note = 'novel' ORDER BY price DESC LIMIT 0,1;
+
+# 23、找出书名中字数最多的一本书，不含空格
+SELECT * FROM books ORDER BY CHAR_LENGTH(REPLACE(name,' ','')) DESC LIMIT 0,1;
+</code></pre>
 
 
 

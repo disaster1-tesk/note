@@ -2024,24 +2024,24 @@
 
   <h1>第06章 索引的数据结构</h1>
 
-<h3 id="06">第06章 索引的数据结构<a class="headerlink" href="#06" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>索引及其优缺点</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11"><strong>1.1</strong> <strong>索引概述</strong><a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
+<h3 id="06">第06章 索引的数据结构</h3>
+<h4 id="1"><strong>1.</strong> <strong>索引及其优缺点</strong></h4>
+<h5 id="11"><strong>1.1</strong> <strong>索引概述</strong></h5>
 <p>MySQL官方对索引的定义为：<strong>索引（Index）是帮助MySQL高效获取数据的数据结构</strong>。</p>
-<p>**索引的本质：**索引是数据结构。你可以简单理解为“排好序的快速查找数据结构”，满足特定查找算法。这些数据结构以某种方式指向数据， 这样就可以在这些数据结构的基础上实现<code>高级查找算法</code>。</p>
-<h5 id="12"><strong>1.2</strong> <strong>优点</strong><a class="headerlink" href="#12" title="Permanent link">&para;</a></h5>
+<p><strong>索引的本质：</strong>索引是数据结构。你可以简单理解为“排好序的快速查找数据结构”，满足特定查找算法。这些数据结构以某种方式指向数据， 这样就可以在这些数据结构的基础上实现<code>高级查找算法</code>。</p>
+<h5 id="12"><strong>1.2</strong> <strong>优点</strong></h5>
 <p>（1）类似大学图书馆建书目索引，提高数据检索的效率，降低<code>数据库的IO成本</code>，这也是创建索引最主要的原因。</p>
 <p>（2）通过创建唯一索引，可以保证数据库表中每一行<code>数据的唯一性</code>。</p>
 <p>（3）在实现数据的参考完整性方面，可以<code>加速表和表之间的连接</code>。换句话说，对于有依赖关系的子表和父表联合查询时，可以提高查询速度。</p>
 <p>（4）在使用分组和排序子句进行数据查询时，可以显著<code>减少查询中分组和排序的时间</code>，降低了CPU的消耗。</p>
-<h5 id="13"><strong>1.3</strong> <strong>缺点</strong><a class="headerlink" href="#13" title="Permanent link">&para;</a></h5>
+<h5 id="13"><strong>1.3</strong> <strong>缺点</strong></h5>
 <p>（1）创建索引和维护索引要<code>耗费时间</code>，并且随着数据量的增加，所耗费的时间也会增加。</p>
 <p>（2）索引需要占<code>磁盘空间</code>，除了数据表占数据空间之外，每一个索引还要占一定的物理空间<code>存储在磁盘上</code>，如果有大量的索引，索引文件就可能比数据文件更快达到最大文件尺寸。</p>
 <p>（3）虽然索引大大提高了查询速度，同时却会<code>降低更新表的速度</code>。当对表中的数据进行增加、删除和修改的时候，索引也要动态地维护，这样就降低了数据的维护速度。</p>
-<h4 id="2-innodb"><strong>2. InnoDB中索引的推演</strong><a class="headerlink" href="#2-innodb" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>索引之前的查找</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="err">[</span><span class="n">列名列表</span><span class="err">]</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">列名</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xxx</span><span class="p">;</span>
-</code></pre></div>
+<h4 id="2-innodb"><strong>2. InnoDB中索引的推演</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>索引之前的查找</strong></h5>
+<pre><code class="language-mysql">SELECT [列名列表] FROM 表名 WHERE 列名 = xxx;
+</code></pre>
 <p><strong>1.在一个页中的查找</strong></p>
 <p>假设目前表中的记录比较少，所有的记录都可以被存放在一个页中，在查找记录的时候可以根据搜索条件的不同分为两种情况：</p>
 <ul>
@@ -2057,14 +2057,14 @@
 <li>从所在的页内查找相应的记录。</li>
 </ol>
 <p>在没有索引的情况下，不论是根据主键列或者其他列的值进行查找，由于我们并不能快速的定位到记录所在的页，所以只能<code>从第一个页</code>沿着<code>双向链表</code>一直往下找，在每一个页中根据我们上面的查找方式去查找指定的记录。因为要遍历所有的数据页，所以这种方式显然是<code>超级耗时</code>的。</p>
-<h5 id="22"><strong>2.2</strong> <strong>设计索引</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">index_demo</span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">c1</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">c2</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">c3</span><span class="w"> </span><span class="kt">CHAR</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">ROW_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">Compact</span><span class="p">;</span>
-</code></pre></div>
+<h5 id="22"><strong>2.2</strong> <strong>设计索引</strong></h5>
+<pre><code class="language-mysql">mysql&gt; CREATE TABLE index_demo(
+    -&gt; c1 INT,
+    -&gt; c2 INT,
+    -&gt; c3 CHAR(1),
+    -&gt; PRIMARY KEY(c1)
+    -&gt; ) ROW_FORMAT = Compact;
+</code></pre>
 <p>这个新建的<code>index_demo</code>表中有2个INT类型的列，1个CHAR(1)类型的列，而且我们规定了c1列为主键，这个表使用<code>Compact</code>行格式来实际存储记录的。这里我们简化了index_demo表的行格式示意图：</p>
 <p><img alt="image-20220330095642965" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203300956080.png" /></p>
 <ul>
@@ -2098,13 +2098,13 @@
 <p><strong>① 迭代1次：目录项纪录的页</strong></p>
 <p>我们把前边使用到的目录项放到数据页中的样子就是这样：</p>
 <p><img alt="image-20220330102834658" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301028743.png" /></p>
-<p>从图中可以看出来，我们新分配了一个编号为30的页来专门存储目录项记录。这里再次强调<code>目录项记录</code>和普通的<code>用户记录</code>的**不同点**：</p>
+<p>从图中可以看出来，我们新分配了一个编号为30的页来专门存储目录项记录。这里再次强调<code>目录项记录</code>和普通的<code>用户记录</code>的<strong>不同点</strong>：</p>
 <ul>
 <li><code>目录项记录</code>的<code>record_type</code>值是1，而<code>普通用户记录</code>的<code>record_type</code>值是0。</li>
 <li>目录项记录只有<code>主键值和页的编号</code>两个列，而普通的用户记录的列是用户自己定义的，可能包含<code>很多列</code>，另外还有InnoDB自己添加的隐藏列。</li>
 <li>了解：记录头信息里还有一个叫<code>min_rec_mask</code>的属性，只有在存储<code>目录项记录</code>的页中的主键值最小的<code>目录项记录</code>的<code>min_rec_mask</code>值为<code>1</code>，其他别的记录的<code>min_rec_mask</code>值都是<code>0</code>。</li>
 </ul>
-<p>**相同点：**两者用的是一样的数据页，都会为主键值生成<code>Page Directory</code>（页目录），从而在按照主键值进行查找时可以使用<code>二分法</code>来加快查询速度。</p>
+<p><strong>相同点：</strong>两者用的是一样的数据页，都会为主键值生成<code>Page Directory</code>（页目录），从而在按照主键值进行查找时可以使用<code>二分法</code>来加快查询速度。</p>
 <p>现在以查找主键为<code>20</code>的记录为例，根据某个主键值去查找记录的步骤就可以大致拆分成下边两步：</p>
 <ol>
 <li>
@@ -2148,7 +2148,7 @@
 <li>如果B+树有4层，最多能存放<code>1000×1000×1000×100=1000,0000,0000</code>条记录。相当多的记录！！！</li>
 </ul>
 <p>你的表里能存放<code>100000000000</code>条记录吗？所以一般情况下，我们<code>用到的B+树都不会超过4层</code>，那我们通过主键值去查找某条记录最多只需要做4个页面内的查找（查找3个目录项页和一个用户记录页），又因为在每个页面内有所谓的<code>Page Directory</code>（页目录），所以在页面内也可以通过<code>二分法</code>实现快速定位记录。</p>
-<h5 id="23"><strong>2.3</strong> <strong>常见索引概念</strong><a class="headerlink" href="#23" title="Permanent link">&para;</a></h5>
+<h5 id="23"><strong>2.3</strong> <strong>常见索引概念</strong></h5>
 <p><strong>1.</strong> <strong>聚簇索引</strong></p>
 <p><strong>特点：</strong></p>
 <ol>
@@ -2177,8 +2177,8 @@
 </ul>
 <p><strong>缺点：</strong></p>
 <ul>
-<li><code>插入速度严重依赖于插入顺序</code>，按照主键的顺序插入是最快的方式，否则将会出现页分裂，严重影响性能。因此，对于InnoDB表，我们一般都会定义一个**自增ID列为主键**</li>
-<li><code>更新主键的代价很高</code>，因为将会导致被更新的行移动。因此，对于InnoDB表，我们一般定义**主键为不可更新**</li>
+<li><code>插入速度严重依赖于插入顺序</code>，按照主键的顺序插入是最快的方式，否则将会出现页分裂，严重影响性能。因此，对于InnoDB表，我们一般都会定义一个<strong>自增ID列为主键</strong></li>
+<li><code>更新主键的代价很高</code>，因为将会导致被更新的行移动。因此，对于InnoDB表，我们一般定义<strong>主键为不可更新</strong></li>
 <li><code>二级索引访问需要两次索引查找</code>，第一次找到主键值，第二次根据主键值找到行数据</li>
 </ul>
 <p><strong>2.</strong> <strong>二级索引（辅助索引、非聚簇索引）</strong></p>
@@ -2203,7 +2203,7 @@
 <p>为c2和c3列分别建立索引会分别以c2和c3列的大小为排序规则建立2棵B+树。</p>
 </li>
 </ul>
-<h5 id="24-innodbb"><strong>2.4 InnoDB的B+树索引的注意事项</strong><a class="headerlink" href="#24-innodbb" title="Permanent link">&para;</a></h5>
+<h5 id="24-innodbb"><strong>2.4 InnoDB的B+树索引的注意事项</strong></h5>
 <p><strong>1.</strong> <strong>根页面位置万年不动</strong> </p>
 <p>我们前边介绍B+索引的时候，为了大家理解上的方便，先把存储用户记录的叶子节点都画出来，然后接着画存储目录项记录的内节点，实际上B+树的形成过程是这样的：</p>
 <ul>
@@ -2248,7 +2248,7 @@
 <p>如果二级索引中目录项的内容只是<code>索引号+页号</code>的搭配的话，那么为<code>c2</code>列建立索引后的B+树应该长这样：</p>
 <p><img alt="image-20220330111029120" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301110222.png" /></p>
 <p>如果我们想要新插入一行记录，其中<code>c1</code>、<code>c2</code>、<code>c3</code>的值分别是：<code>9</code>、<code>1</code>、<code>c</code>，那么在修改这个为c2列建立的二级索引对应的B+树时便碰到了个大问题：由于<code>页3</code>中存储的目录项记录是由<code>c2列+页号</code>的值构成的，<code>页3</code>中的两条目录项记录对应的c2列的值都是<code>1</code>，那么我们这条新插入的记录到底应该放在<code>页4</code>中，还是应该放在<code>页5</code>中啊？答案是：对不起，懵了。</p>
-<p>为了让新插入记录能找到自己在哪个页里，我们需要**保证在B+树的同一层内节点的目录项记录除页号这个字段以外是唯一的。**所以对于二级索引的内节点的目录项记录的内容实际上是由三个部分构成的：</p>
+<p>为了让新插入记录能找到自己在哪个页里，我们需要<strong>保证在B+树的同一层内节点的目录项记录除页号这个字段以外是唯一的。</strong>所以对于二级索引的内节点的目录项记录的内容实际上是由三个部分构成的：</p>
 <ul>
 <li>索引列的值</li>
 <li>主键值</li>
@@ -2259,7 +2259,7 @@
 <p>这样我们再插入记录<code>(9, 1, 'c')</code>时，由于<code>页3</code>中存储的目录项记录是由<code>c2列+主键+页号</code>的值构成的，可以先把新记录的<code>c2</code>列的值和<code>页3</code>中各目录项记录的<code>c2</code>列的值作比较，如果<code>c2</code>列的值相同的话，可以接着比较主键值，因为B+树同一层中不同目录项记录的<code>c2列+主键</code>的值肯定是不一样的，所以最后肯定能定位唯一的一条目录项记录，在本例中最后确定新记录应该被插入到<code>页5</code>中。</p>
 <p><strong>3.</strong> <strong>一个页面最少可以存储2条记录</strong></p>
 <p>一个B+树只需要很少的层级就可以轻松存储数亿条记录，查询速度相当不错！这是因为B+树本质上就是一个大的多层级目录，每经过一个目录时都会过滤掉许多无效的子目录，直到最后访问的存储真实数据的目录。那如果一个大的目录中只存放一个子目录是个啥效果呢？那就是目录层级非常非常非常多，而且最后的那个存放真实数据的目录中存放一条记录。费了半天劲只能存放一条真实的用户记录？所以<code>InnoDB的一个数据页至少可以存放两条记录</code></p>
-<h4 id="3-myisam"><strong>3. MyISAM中的索引方案</strong><a class="headerlink" href="#3-myisam" title="Permanent link">&para;</a></h4>
+<h4 id="3-myisam"><strong>3. MyISAM中的索引方案</strong></h4>
 <p><strong>B树索引适用存储引擎如表所示：</strong></p>
 <table>
 <thead>
@@ -2281,9 +2281,9 @@
 </table>
 <p>即使多个存储引擎支持同一种类型的索引，但是他们的实现原理也是不同的。Innodb和MyISAM默认的索引是Btree索引；而Memory默认的索引是Hash索引。</p>
 <p>MyISAM引擎使用<code>B+Tree</code>作为索引结构，叶子节点的data域存放的是<code>数据记录的地址</code>。</p>
-<h5 id="31-myisam"><strong>3.1 MyISAM索引的原理</strong><a class="headerlink" href="#31-myisam" title="Permanent link">&para;</a></h5>
+<h5 id="31-myisam"><strong>3.1 MyISAM索引的原理</strong></h5>
 <p><img alt="image-20220330113307813" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301133907.png" /></p>
-<h5 id="32-myisam-innodb"><strong>3.2 MyISAM</strong> <strong>与</strong> <strong>InnoDB对比</strong><a class="headerlink" href="#32-myisam-innodb" title="Permanent link">&para;</a></h5>
+<h5 id="32-myisam-innodb"><strong>3.2 MyISAM</strong> <strong>与</strong> <strong>InnoDB对比</strong></h5>
 <p><strong>MyISAM的索引方式都是“非聚簇”的，与InnoDB包含1个聚簇索引是不同的。</strong></p>
 <p><strong>小结两种引擎中索引的区别：</strong></p>
 <p>① 在InnoDB存储引擎中，我们只需要根据主键值对<code>聚簇索引</code>进行一次查找就能找到对应的记录，而在<code>MyISAM</code>中却需要进行一次<code>回表</code>操作，意味着MyISAM中建立的索引相当于全部都是<code>二级索引</code>。 </p>
@@ -2291,7 +2291,7 @@
 <p>③ InnoDB的非聚簇索引data域存储相应记录<code>主键的值</code>，而MyISAM索引记录的是<code>地址</code>。换句话说，InnoDB的所有非聚簇索引都引用主键作为data域。</p>
 <p>④ MyISAM的回表操作是十分<code>快速</code>的，因为是拿着地址偏移量直接到文件中取数据的，反观InnoDB是通过获取主键之后再去聚簇索引里找记录，虽然说也不慢，但还是比不上直接用地址去访问。</p>
 <p>⑤ InnoDB要求表<code>必须有主键</code>（<code>MyISAM可以没有</code>）。如果没有显式指定，则MySQL系统会自动选择一个可以非空且唯一标识数据记录的列作为主键。如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整型。</p>
-<h4 id="4"><strong>4.</strong> <strong>索引的代价</strong><a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<h4 id="4"><strong>4.</strong> <strong>索引的代价</strong></h4>
 <p>索引是个好东西，可不能乱建，它在空间和时间上都会有消耗：</p>
 <ul>
 <li><strong>空间上的代价</strong></li>
@@ -2301,17 +2301,17 @@
 <li><strong>时间上的代价</strong></li>
 </ul>
 <p>每次对表中的数据进行<code>增、删、改</code>操作时，都需要去修改各个B+树索引。而且我们讲过，B+树每层节点都是按照索引列的值<code>从小到大的顺序排序</code>而组成了<code>双向链表</code>。不论是叶子节点中的记录，还是内节点中的记录（也就是不论是用户记录还是目录项记录）都是按照索引列的值从小到大的顺序而形成了一个单向链表。而增、删、改操作可能会对节点和记录的排序造成破坏，所以存储引擎需要额外的时间进行一些<code>记录移位</code>，<code>页面分裂</code>、<code>页面回收</code>等操作来维护好节点和记录的排序。如果我们建了许多索引，每个索引对应的B+树都要进行相关的维护操作，会给性能拖后腿。</p>
-<h4 id="5-mysql"><strong>5. MySQL数据结构选择的合理性</strong><a class="headerlink" href="#5-mysql" title="Permanent link">&para;</a></h4>
-<h5 id="51"><strong>5.1</strong> <strong>二叉搜索树</strong><a class="headerlink" href="#51" title="Permanent link">&para;</a></h5>
+<h4 id="5-mysql"><strong>5. MySQL数据结构选择的合理性</strong></h4>
+<h5 id="51"><strong>5.1</strong> <strong>二叉搜索树</strong></h5>
 <p>如果我们利用二叉树作为索引结构，那么磁盘的IO次数和索引树的高度是相关的。</p>
 <p><img alt="image-20220330163602743" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301636830.png" /></p>
 <p>为了提高查询效率，就需要<code>减少磁盘IO数</code>。为了减少磁盘IO的次数，就需要尽量<code>降低树的高度</code>，需要把原来“瘦高”的树结构变的“矮胖”，树的每层的分叉越多越好。</p>
-<h5 id="52-avl"><strong>5.2 AVL树</strong><a class="headerlink" href="#52-avl" title="Permanent link">&para;</a></h5>
+<h5 id="52-avl"><strong>5.2 AVL树</strong></h5>
 <p>如果我们利用二叉树作为索引结构，那么磁盘的IO次数和索引树的高度是相关的。</p>
 <p><img alt="image-20220330163506536" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301635653.png" /></p>
 <p>针对同样的数据，如果我们把二叉树改成<code>M 叉树</code>（M&gt;2）呢？当 M=3 时，同样的 31 个节点可以由下面的三叉树来进行存储：</p>
 <p><img alt="image-20220330163709022" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301637104.png" /></p>
-<h5 id="53-b-tree"><strong>5.3 B-Tree</strong><a class="headerlink" href="#53-b-tree" title="Permanent link">&para;</a></h5>
+<h5 id="53-b-tree"><strong>5.3 B-Tree</strong></h5>
 <p>B 树的结构如下图所示：</p>
 <p><img alt="image-20220330163803905" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301638995.png" /></p>
 <p>一个 M 阶的 B 树（M&gt;2）有以下的特性：</p>
@@ -2348,7 +2348,7 @@
 <p>你能看出来在 B 树的搜索过程中，我们比较的次数并不少，但如果把数据读取出来然后在内存中进行比较，这个时间就是可以忽略不计的。而读取磁盘块本身需要进行 I/O 操作，消耗的时间比在内存中进行比较所需要的时间要多，是数据查找用时的重要因素。<code>B 树相比于平衡二叉树来说磁盘 I/O 操作要少</code>，在数据查询中比平衡二叉树效率要高。所以<code>只要树的高度足够低，IO次数足够少，就可以提高查询性能</code>。</p>
 <p><strong>再举例1：</strong></p>
 <p><img alt="image-20220330164411665" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203301644761.png" /></p>
-<h5 id="54-btree"><strong>5.4 B+Tree</strong><a class="headerlink" href="#54-btree" title="Permanent link">&para;</a></h5>
+<h5 id="54-btree"><strong>5.4 B+Tree</strong></h5>
 <p><strong>B+</strong> <strong>树和</strong> <strong>B</strong> <strong>树的差异：</strong></p>
 <ol>
 <li>
@@ -2375,7 +2375,7 @@
 </blockquote>
 <p><strong>思考题：B+树的存储能力如何？为何说一般查找行记录，最多只需1~3次磁盘IO</strong></p>
 <blockquote>
-<p>InnoDB存储引擎中页的大小为16KB，一般表的主键类型为INT(占用4个字节)或BIGINT(占用8个字节)，指针类型也一般为4或8个字节，也就是说一个页（B+Tree中的一个节点）中大概存储16KB/(8B+8B)=1K个键值，因为是估算，为了方便计算，这里的K取值为10<sup>3。也就是说一个深度为3的B+Tree索引可以维护10</sup>3 * 10^3 * 10^3 = 10亿条记录。（这里假定一个数据页也存储10^3条行记录数据了）</p>
+<p>InnoDB存储引擎中页的大小为16KB，一般表的主键类型为INT(占用4个字节)或BIGINT(占用8个字节)，指针类型也一般为4或8个字节，也就是说一个页（B+Tree中的一个节点）中大概存储16KB/(8B+8B)=1K个键值，因为是估算，为了方便计算，这里的K取值为10^3。也就是说一个深度为3的B+Tree索引可以维护10^3 * 10^3 * 10^3 = 10亿条记录。（这里假定一个数据页也存储10^3条行记录数据了）</p>
 <p>实际情况中每个节点可能不能填充满，因此在数据库中，<code>B+Tree的高度一般都在2~4层</code>。MySQL的InnoDB存储引擎在设计时是将根节点常驻内存的，也就是说查找某一键值的行记录时最多只需要1~3次磁盘I/O操作</p>
 </blockquote>
 <p><strong>思考题：为什么说B+树比B-树更适合实际应用中操作系统的文件索引和数据库索引？</strong></p>
@@ -2392,7 +2392,7 @@
 <p>3、Hash索引<code>不支持 ORDER BY 排序</code>，因为Hash索引指向的数据是无序的，因此无法起到排序优化的作用，而B+树索引数据是有序的，可以起到对该字段ORDER BY 排序优化的作用。同理，我们也无法用Hash索引进行<code>模糊查询</code>，而B+树使用LIKE进行模糊查询的时候，LIKE后面后模糊查询（比如%结尾）的话就可以起到优化作用。</p>
 <p>4、<code>InnoDB不支持哈希索引</code></p>
 </blockquote>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<h3 id="_1"></h3>
 
 
 

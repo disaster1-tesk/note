@@ -1914,17 +1914,17 @@
 
   <h1>第18章 主从复制</h1>
 
-<h3 id="18">第18章 主从复制<a class="headerlink" href="#18" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>主从复制概述</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11"><strong>1.1</strong> <strong>如何提升数据库并发能力</strong><a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
+<h3 id="18">第18章 主从复制</h3>
+<h4 id="1"><strong>1.</strong> <strong>主从复制概述</strong></h4>
+<h5 id="11"><strong>1.1</strong> <strong>如何提升数据库并发能力</strong></h5>
 <p>一般应用对数据库而言都是“<code>读多写少</code>”，也就说对数据库读取数据的压力比较大，有一个思路就是采用数据库集群的方案，做<code>主从架构</code>、进行<code>读写分离</code>，这样同样可以提升数据库的并发处理能力。但并不是所有的应用都需要对数据库进行主从架构的设置，毕竟设置架构本身是有成本的。</p>
 <p>如果我们的目的在于提升数据库高并发访问的效率，那么首先考虑的是如何<code>优化SQL和索引</code>，这种方式简单有效；其次才是采用<code>缓存的策略</code>，比如使用 Redis将热点数据保存在内存数据库中，提升读取的效率；最后才是对数据库采用<code>主从架构</code>，进行读写分离。</p>
-<h5 id="12"><strong>1.2</strong> <strong>主从复制的作用</strong><a class="headerlink" href="#12" title="Permanent link">&para;</a></h5>
+<h5 id="12"><strong>1.2</strong> <strong>主从复制的作用</strong></h5>
 <p><strong>第1个作用：读写分离。</strong></p>
 <p><strong>第2个作用就是数据备份。</strong></p>
 <p><strong>第3个作用是具有高可用性。</strong></p>
-<h4 id="2"><strong>2.</strong> <strong>主从复制的原理</strong><a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>原理剖析</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
+<h4 id="2"><strong>2.</strong> <strong>主从复制的原理</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>原理剖析</strong></h5>
 <p><strong>三个线程</strong></p>
 <p>实际上主从同步的原理就是基于 binlog 进行数据同步的。在主从复制过程中，会基于<code>3 个线程</code>来操作，一个主库线程，两个从库线程。</p>
 <p><img alt="image-20220405164559961" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051646097.png" /></p>
@@ -1938,7 +1938,7 @@
 <p>步骤3：<code>Slave</code>重做中继日志中的事件，将改变应用到自己的数据库中。 MySQL复制是异步的且串行化的，而且重启后从<code>接入点</code>开始复制。</p>
 <p><strong>复制的问题</strong></p>
 <p>复制的最大问题：<code>延时</code></p>
-<h5 id="22"><strong>2.2</strong> <strong>复制的基本原则</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
+<h5 id="22"><strong>2.2</strong> <strong>复制的基本原则</strong></h5>
 <ul>
 <li>
 <p>每个<code>Slave</code>只有一个<code>Master</code></p>
@@ -1950,7 +1950,7 @@
 <p>每个<code>Master</code>可以有多个<code>Slave</code></p>
 </li>
 </ul>
-<h4 id="3"><strong>3.</strong> <strong>同步数据一致性问题</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<h4 id="3"><strong>3.</strong> <strong>同步数据一致性问题</strong></h4>
 <p><strong>主从同步的要求：</strong></p>
 <ul>
 <li>
@@ -1963,15 +1963,15 @@
 <p>读数据必须到读库(不一定)；</p>
 </li>
 </ul>
-<h5 id="31"><strong>3.1</strong> <strong>理解主从延迟问题</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
+<h5 id="31"><strong>3.1</strong> <strong>理解主从延迟问题</strong></h5>
 <p>进行主从同步的内容是二进制日志，它是一个文件，在进行<code>网络传输</code>的过程中就一定会<code>存在主从延迟</code>（比如 500ms），这样就可能造成用户在从库上读取的数据不是最新的数据，也就是主从同步中的<code>数据不一致性</code>问题。</p>
-<h5 id="32"><strong>3.2</strong> <strong>主从延迟问题原因</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
+<h5 id="32"><strong>3.2</strong> <strong>主从延迟问题原因</strong></h5>
 <p>在网络正常的时候，日志从主库传给从库所需的时间是很短的，即T2-T1的值是非常小的。即，网络正常情况下，主备延迟的主要来源是备库接收完binlog和执行完这个事务之间的时间差。</p>
-<p>**主备延迟最直接的表现是，从库消费中继日志（relay log）的速度，比主库生产binlog的速度要慢。**造成原因：</p>
+<p><strong>主备延迟最直接的表现是，从库消费中继日志（relay log）的速度，比主库生产binlog的速度要慢。</strong>造成原因：</p>
 <p>1、从库的机器性能比主库要差</p>
 <p>2、从库的压力大</p>
 <p>3、大事务的执行</p>
-<h5 id="33"><strong>3.3</strong> <strong>如何减少主从延迟</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
+<h5 id="33"><strong>3.3</strong> <strong>如何减少主从延迟</strong></h5>
 <p>若想要减少主从延迟的时间，可以采取下面的办法：</p>
 <ol>
 <li>
@@ -1990,7 +1990,7 @@
 <p>实时性要求的业务读强制走主库，从库只做灾备，备份。</p>
 </li>
 </ol>
-<h5 id="34"><strong>3.4</strong> <strong>如何解决一致性问题</strong><a class="headerlink" href="#34" title="Permanent link">&para;</a></h5>
+<h5 id="34"><strong>3.4</strong> <strong>如何解决一致性问题</strong></h5>
 <p>读写分离情况下，解决主从同步中数据不一致的问题， 就是解决主从之间 数据复制方式 的问题，如果按照数据一致性 从弱到强 来进行划分，有以下 3 种复制方式。</p>
 <p><strong>方法</strong> <strong>1：异步复制</strong></p>
 <p><img alt="image-20220405165455998" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051654133.png" /></p>
@@ -1999,7 +1999,7 @@
 <p><strong>方法</strong> <strong>3：组复制</strong></p>
 <p>首先我们将多个节点共同组成一个复制组，在<code>执行读写（RW）事务</code>的时候，需要通过一致性协议层（Consensus 层）的同意，也就是读写事务想要进行提交，必须要经过组里“大多数人”（对应 Node 节点）的同意，大多数指的是同意的节点数量需要大于 （N/2+1），这样才可以进行提交，而不是原发起方一个说了算。而针对<code>只读（RO）事务</code>则不需要经过组内同意，直接 COMMIT 即可。</p>
 <p><img alt="image-20220405165650425" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051656560.png" /></p>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<h3 id="_1"></h3>
 
 
 

@@ -1928,10 +1928,10 @@
 
   <h1>第04章 逻辑架构</h1>
 
-<h3 id="04">第04章 逻辑架构<a class="headerlink" href="#04" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>逻辑架构剖析</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<h3 id="04">第04章 逻辑架构</h3>
+<h4 id="1"><strong>1.</strong> <strong>逻辑架构剖析</strong></h4>
 <p><img alt="MySQL服务器端的逻辑架构说明" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291130782.png" /></p>
-<h5 id="11-1"><strong>1.1</strong> <strong>第1层：连接层</strong><a class="headerlink" href="#11-1" title="Permanent link">&para;</a></h5>
+<h5 id="11-1"><strong>1.1</strong> <strong>第1层：连接层</strong></h5>
 <p>系统（客户端）访问<code>MySQL</code>服务器前，做的第一件事就是建立<code>TCP</code>连接。</p>
 <p>经过三次握手建立连接成功后，<code>MySQL</code>服务器对<code>TCP</code>传输过来的账号密码做身份认证、权限获取。</p>
 <ul>
@@ -1939,7 +1939,7 @@
 <li><strong>用户名密码认证通过，会从权限表查出账号拥有的权限与连接关联，之后的权限判断逻辑，都将依赖于此时读到的权限</strong></li>
 </ul>
 <p><code>TCP</code>连接收到请求后，必须要分配给一个线程专门与这个客户端的交互。所以还会有个线程池，去走后面的流程。每一个连接从线程池中获取线程，省去了创建和销毁线程的开销。</p>
-<h5 id="12-2"><strong>1.2</strong> <strong>第2层：服务层</strong><a class="headerlink" href="#12-2" title="Permanent link">&para;</a></h5>
+<h5 id="12-2"><strong>1.2</strong> <strong>第2层：服务层</strong></h5>
 <ul>
 <li>
 <p><strong>SQL Interface: SQL接口</strong></p>
@@ -1968,8 +1968,8 @@
 <li>这个执行计划表明应该<code>使用哪些索引</code>进行查询（全表检索还是使用索引检索），表之间的连接顺序如何，最后会按照执行计划中的步骤调用存储引擎提供的方法来真正的执行查询，并将查询结果返回给用户。</li>
 <li>它使用“<code>选取-投影-连接</code>”策略进行查询。例如：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;女&#39;</span><span class="p">;</span>
-</code></pre></div>
+<p><code>mysql
+  SELECT id,name FROM student WHERE gender = '女';</code></p>
 <p>这个SELECT查询先根据WHERE语句进行<code>选取</code>，而不是将表全部查询出来以后再进行gender过滤。 这个SELECT查询先根据id和name进行属性<code>投影</code>，而不是将属性全部取出以后再进行过滤，将这两个查询条件<code>连接</code>起来生成最终查询结果。</p>
 <ul>
 <li>
@@ -1982,9 +1982,9 @@
 <li>这个查询缓存可以在<code>不同客户端之间共享</code>。 </li>
 <li>从MySQL 5.7.20开始，不推荐使用查询缓存，并在<code>MySQL 8.0中删除</code>。</li>
 </ul>
-<h5 id="13-3"><strong>1.3</strong> <strong>第3层：引擎层</strong><a class="headerlink" href="#13-3" title="Permanent link">&para;</a></h5>
+<h5 id="13-3"><strong>1.3</strong> <strong>第3层：引擎层</strong></h5>
 <p>插件式存储引擎层（ Storage Engines），<strong>真正的负责了MySQL中数据的存储和提取，对物理服务器级别维护的底层数据执行操作</strong>，服务层通过API与存储引擎进行通信。</p>
-<h5 id="14"><strong>1.4</strong> <strong>小结</strong><a class="headerlink" href="#14" title="Permanent link">&para;</a></h5>
+<h5 id="14"><strong>1.4</strong> <strong>小结</strong></h5>
 <p><img alt="image-20220329113126234" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291131321.png" /></p>
 <p>简化为三层结构：</p>
 <ol>
@@ -1998,8 +1998,8 @@
 <p>存储引擎层：与数据库文件打交道，负责数据的存储和读取。</p>
 </li>
 </ol>
-<h4 id="2-sql"><strong>2. SQL执行流程</strong><a class="headerlink" href="#2-sql" title="Permanent link">&para;</a></h4>
-<h5 id="21-mysql-sql"><strong>2.1 MySQL</strong> <strong>中的</strong> <strong>SQL执行流程</strong><a class="headerlink" href="#21-mysql-sql" title="Permanent link">&para;</a></h5>
+<h4 id="2-sql"><strong>2. SQL执行流程</strong></h4>
+<h5 id="21-mysql-sql"><strong>2.1 MySQL</strong> <strong>中的</strong> <strong>SQL执行流程</strong></h5>
 <p><img alt="image-20220329113337008" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291133116.png" /></p>
 <p><strong>MySQL的查询流程：</strong></p>
 <p><strong>1.</strong> <strong>查询缓存</strong>：Server 如果在查询缓存中发现了这条 SQL 语句，就会直接将结果返回给客户端；如果没有，就进入到解析器阶段。需要说明的是，因为查询缓存往往效率不高，所以在 MySQL8.0 之后就抛弃了这个功能。</p>
@@ -2013,10 +2013,10 @@
 <p><strong>4.</strong> <strong>执行器</strong>：在执行之前需要判断该用户是否<code>具备权限</code>。如果没有，就会返回权限错误。如果具备权限，就执行 SQL查询并返回结果。在 MySQL8.0 以下的版本，如果设置了查询缓存，这时会将查询结果进行缓存。</p>
 <p><img alt="image-20220329114541991" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291145074.png" /></p>
 <p>SQL 语句在 MySQL 中的流程是： SQL语句→查询缓存→解析器→优化器→执行器 。</p>
-<h4 id="3-buffer-pool"><strong>3.</strong> <strong>数据库缓冲池(buffer pool)</strong><a class="headerlink" href="#3-buffer-pool" title="Permanent link">&para;</a></h4>
+<h4 id="3-buffer-pool"><strong>3.</strong> <strong>数据库缓冲池(buffer pool)</strong></h4>
 <p><code>InnoDB</code>存储引擎是以页为单位来管理存储空间的，我们进行的增删改查操作其实本质上都是在访问页面（包括读页面、写页面、创建新页面等操作）。而磁盘 I/O 需要消耗的时间很多，而在内存中进行操作，效率则会高很多，为了能让数据表或者索引中的数据随时被我们所用，DBMS 会申请<code>占用内存来作为数据缓冲池</code>，在真正访问页面之前，需要把在磁盘上的页缓存到内存中的<code>Buffer Pool</code>之后才可以访问。</p>
 <p>这样做的好处是可以让磁盘活动最小化，从而<code>减少与磁盘直接进行 I/O 的时间</code>。要知道，这种策略对提升 SQL 语句的查询性能来说至关重要。如果索引的数据在缓冲池里，那么访问的成本就会降低很多。</p>
-<h5 id="31-vs"><strong>3.1</strong> <strong>缓冲池</strong> <strong>vs</strong> <strong>查询缓存</strong><a class="headerlink" href="#31-vs" title="Permanent link">&para;</a></h5>
+<h5 id="31-vs"><strong>3.1</strong> <strong>缓冲池</strong> <strong>vs</strong> <strong>查询缓存</strong></h5>
 <p><strong>1.</strong> <strong>缓冲池（Buffer Pool）</strong></p>
 <p><img alt="image-20220329115517901" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291155004.png" /></p>
 <p>从图中，你能看到 InnoDB 缓冲池包括了数据页、索引页、插入缓冲、锁信息、自适应 Hash 和数据字典信息等。</p>
@@ -2026,31 +2026,31 @@
 <p>其次，频次决定优先级顺序。因为缓冲池的大小是有限的，比如磁盘有 200G，但是内存只有 16G，缓冲池大小只有 1G，就无法将所有数据都加载到缓冲池里，这时就涉及到优先级顺序，会<code>优先对使用频次高的热数据进行加载</code>。</p>
 <p><strong>2.</strong> <strong>查询缓存</strong></p>
 <p>查询缓存是提前把<code>查询结果缓存</code>起来，这样下次不需要执行就可以直接拿到结果。需要说明的是，在MySQL 中的查询缓存，不是缓存查询计划，而是查询对应的结果。因为命中条件苛刻，而且只要数据表发生变化，查询缓存就会失效，因此命中率低。</p>
-<h5 id="32"><strong>3.2</strong> <strong>缓冲池如何读取数据</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
+<h5 id="32"><strong>3.2</strong> <strong>缓冲池如何读取数据</strong></h5>
 <p>缓冲池管理器会尽量将经常使用的数据保存起来，在数据库进行页面读操作的时候，首先会判断该页面是否在缓冲池中，如果存在就直接读取，如果不存在，就会通过内存或磁盘将页面存放到缓冲池中再进行读取。</p>
 <p><img alt="image-20220329115958009" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202203291159111.png" /></p>
-<h5 id="33"><strong>3.3</strong> <strong>查看/设置缓冲池的大小</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
+<h5 id="33"><strong>3.3</strong> <strong>查看/设置缓冲池的大小</strong></h5>
 <p>查看缓冲池的大小</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;innodb_buffer_pool_size&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show variables like 'innodb_buffer_pool_size';
+</code></pre>
 <p>设置缓冲池的大小</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">innodb_buffer_pool_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">268435456</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">set global innodb_buffer_pool_size = 268435456;
+</code></pre>
 <p>或者</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">[server]</span><span class="w"> </span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="na">innodb_buffer_pool_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">268435456</span>
-</code></pre></div>
-<h5 id="34-buffer-pool"><strong>3.4</strong> <strong>多个Buffer Pool实例</strong><a class="headerlink" href="#34-buffer-pool" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">[server]</span><span class="w"> </span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="na">innodb_buffer_pool_instances</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
-</code></pre></div>
+<pre><code class="language-ini">[server] 
+innodb_buffer_pool_size = 268435456
+</code></pre>
+<h5 id="34-buffer-pool"><strong>3.4</strong> <strong>多个Buffer Pool实例</strong></h5>
+<pre><code class="language-ini">[server] 
+innodb_buffer_pool_instances = 2
+</code></pre>
 <p>何查看缓冲池的个数</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;innodb_buffer_pool_instances&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show variables like 'innodb_buffer_pool_instances';
+</code></pre>
 <p>每个<code>Buffer Pool</code>实例实际占内存空间</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>innodb_buffer_pool_size/innodb_buffer_pool_instances
-</code></pre></div>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<pre><code>innodb_buffer_pool_size/innodb_buffer_pool_instances
+</code></pre>
+<h3 id="_1"></h3>
 
 
 

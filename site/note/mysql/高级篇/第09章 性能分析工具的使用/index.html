@@ -1970,10 +1970,10 @@
 
   <h1>第09章 性能分析工具的使用</h1>
 
-<h3 id="09">第09章 性能分析工具的使用<a class="headerlink" href="#09" title="Permanent link">&para;</a></h3>
-<h4 id="1-sqllast_query_cost"><strong>1.</strong> <strong>统计SQL的查询成本：last_query_cost</strong><a class="headerlink" href="#1-sqllast_query_cost" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;last_query_cost&#39;</span><span class="p">;</span>
-</code></pre></div>
+<h3 id="09">第09章 性能分析工具的使用</h3>
+<h4 id="1-sqllast_query_cost"><strong>1.</strong> <strong>统计SQL的查询成本：last_query_cost</strong></h4>
+<pre><code class="language-mysql">SHOW STATUS LIKE 'last_query_cost';
+</code></pre>
 <p>使用场景：它对于比较开销是非常有用的，特别是我们有好几种查询方式可选的时候。</p>
 <blockquote>
 <p>SQL 查询是一个动态的过程，从页加载的角度来看，我们可以得到以下两点结论：</p>
@@ -1983,64 +1983,64 @@
 </ol>
 <p>所以说，遇到I/O并不用担心，方法找对了，效率还是很高的。我们首先要考虑数据存放的位置，如果是经常使用的数据就要尽量放到<code>缓冲池</code>中，其次我们可以充分利用磁盘的吞吐能力，一次性批量读取数据，这样单个页的读取效率也就得到了提升。</p>
 </blockquote>
-<h4 id="2-sql"><strong>2.</strong> <strong>定位执行慢的SQL：慢查询日志</strong><a class="headerlink" href="#2-sql" title="Permanent link">&para;</a></h4>
+<h4 id="2-sql"><strong>2.</strong> <strong>定位执行慢的SQL：慢查询日志</strong></h4>
 <p>MySQL的慢查询日志，用来记录在MySQL中<code>响应时间超过阈值</code>的语句，具体指运行时间超过<code>long_query_time</code>的值的SQL，则会被记录到慢查询日志中。long_query_time的默认值为<code>10</code>，意思是运行10秒以上（不含10秒）的语句，认为是超出了我们的最大忍耐时间值。</p>
 <p>默认情况下，MySQL数据库<code>没有开启慢查询日志</code>，需要我们手动来设置这个参数。<code>如果不是调优需要的话，一般不建议启动该参数</code>，因为开启慢查询日志会或多或少带来一定的性能影响。</p>
-<h5 id="21"><strong>2.1</strong> <strong>开启慢查询日志参数</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
+<h5 id="21"><strong>2.1</strong> <strong>开启慢查询日志参数</strong></h5>
 <p><strong>1.</strong> <strong>开启slow_query_log</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">slow_query_log</span><span class="o">=</span><span class="s1">&#39;ON&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">set global slow_query_log='ON';
+</code></pre>
 <p>查看下慢查询日志是否开启，以及慢查询日志文件的位置：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="n n-Quoted">`%slow_query_log%`</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show variables like `%slow_query_log%`;
+</code></pre>
 <p><strong>2.</strong> <strong>修改long_query_time阈值</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%long_query_time%&#39;</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">#测试发现：设置global的方式对当前session的long_query_time失效。对新连接的客户端有效。所以可以一并 执行下述语句 </span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">mysql</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="n">long_query_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">global</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%long_query_time%&#39;</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">long_query_time</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%long_query_time%&#39;</span><span class="p">;</span>
-</code></pre></div>
-<h5 id="22"><strong>2.2</strong> <strong>查看慢查询数目</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="k">STATUS</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%Slow_queries%&#39;</span><span class="p">;</span>
-</code></pre></div>
-<h5 id="23-mysqldumpslow"><strong>2.3</strong> <strong>慢查询日志分析工具：mysqldumpslow</strong><a class="headerlink" href="#23-mysqldumpslow" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">#得到返回记录集最多的10个SQL </span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>mysqldumpslow<span class="w"> </span>-s<span class="w"> </span>r<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>/var/lib/mysql/atguigu-slow.log<span class="w"> </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1">#得到访问次数最多的10个SQL </span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>mysqldumpslow<span class="w"> </span>-s<span class="w"> </span>c<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>/var/lib/mysql/atguigu-slow.log
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">#得到按照时间排序的前10条里面含有左连接的查询语句 </span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>mysqldumpslow<span class="w"> </span>-s<span class="w"> </span>t<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>-g<span class="w"> </span><span class="s2">&quot;left join&quot;</span><span class="w"> </span>/var/lib/mysql/atguigu-slow.log<span class="w"> </span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">#另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现爆屏情况 </span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>mysqldumpslow<span class="w"> </span>-s<span class="w"> </span>r<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>/var/lib/mysql/atguigu-slow.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>more
-</code></pre></div>
-<h5 id="24"><strong>2.4</strong> <strong>关闭慢查询日志</strong><a class="headerlink" href="#24" title="Permanent link">&para;</a></h5>
+<pre><code class="language-mysql">show variables like '%long_query_time%';
+</code></pre>
+<pre><code class="language-mysql">#测试发现：设置global的方式对当前session的long_query_time失效。对新连接的客户端有效。所以可以一并 执行下述语句 
+mysql &gt; set global long_query_time = 1; 
+mysql&gt; show global variables like '%long_query_time%'; 
+
+mysql&gt; set long_query_time=1; 
+mysql&gt; show variables like '%long_query_time%';
+</code></pre>
+<h5 id="22"><strong>2.2</strong> <strong>查看慢查询数目</strong></h5>
+<pre><code class="language-mysql">SHOW GLOBAL STATUS LIKE '%Slow_queries%';
+</code></pre>
+<h5 id="23-mysqldumpslow"><strong>2.3</strong> <strong>慢查询日志分析工具：mysqldumpslow</strong></h5>
+<pre><code class="language-shell">#得到返回记录集最多的10个SQL 
+mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log 
+#得到访问次数最多的10个SQL 
+mysqldumpslow -s c -t 10 /var/lib/mysql/atguigu-slow.log
+#得到按照时间排序的前10条里面含有左连接的查询语句 
+mysqldumpslow -s t -t 10 -g &quot;left join&quot; /var/lib/mysql/atguigu-slow.log 
+#另外建议在使用这些命令时结合 | 和more 使用 ，否则有可能出现爆屏情况 
+mysqldumpslow -s r -t 10 /var/lib/mysql/atguigu-slow.log | more
+</code></pre>
+<h5 id="24"><strong>2.4</strong> <strong>关闭慢查询日志</strong></h5>
 <p><strong>方式1：永久性方式</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">[mysqld]</span><span class="w"> </span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="na">slow_query_log</span><span class="o">=</span><span class="s">OFF</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1">#或</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">[mysqld]</span><span class="w"> </span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1">#slow_query_log =OFF</span>
-</code></pre></div>
+<pre><code class="language-ini">[mysqld] 
+slow_query_log=OFF
+#或
+[mysqld] 
+#slow_query_log =OFF
+</code></pre>
 <p><strong>方式2：临时性方式</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SET</span><span class="w"> </span><span class="k">GLOBAL</span><span class="w"> </span><span class="n">slow_query_log</span><span class="o">=</span><span class="k">off</span><span class="p">;</span>
-</code></pre></div>
-<h4 id="3-sql-show-profile"><strong>3.</strong> <strong>查看</strong> <strong>SQL</strong> <strong>执行成本：SHOW PROFILE</strong><a class="headerlink" href="#3-sql-show-profile" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;profiling&#39;</span><span class="p">;</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1">#开启</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">set</span><span class="w"> </span><span class="n">profiling</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ON&#39;</span><span class="p">;</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1">#查看</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">show</span><span class="w"> </span><span class="k">profiles</span><span class="p">;</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">show</span><span class="w"> </span><span class="k">profile</span><span class="w"> </span><span class="k">cpu</span><span class="p">,</span><span class="k">block</span><span class="w"> </span><span class="k">io</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">query</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-</code></pre></div>
-<h4 id="4-explain"><strong>4.</strong> <strong>分析查询语句：EXPLAIN</strong><a class="headerlink" href="#4-explain" title="Permanent link">&para;</a></h4>
-<h5 id="41"><strong>4.1</strong> <strong>基本语法</strong><a class="headerlink" href="#41" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">select_options</span><span class="w"> </span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1">#或者</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">DESCRIBE</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">select_options</span>
-</code></pre></div>
+<pre><code class="language-mysql">SET GLOBAL slow_query_log=off;
+</code></pre>
+<h4 id="3-sql-show-profile"><strong>3.</strong> <strong>查看</strong> <strong>SQL</strong> <strong>执行成本：SHOW PROFILE</strong></h4>
+<pre><code class="language-mysql">show variables like 'profiling';
+#开启
+set profiling = 'ON';
+#查看
+show profiles;
+show profile cpu,block io for query 2;
+</code></pre>
+<h4 id="4-explain"><strong>4.</strong> <strong>分析查询语句：EXPLAIN</strong></h4>
+<h5 id="41"><strong>4.1</strong> <strong>基本语法</strong></h5>
+<pre><code class="language-mysql">EXPLAIN SELECT select_options 
+#或者
+DESCRIBE SELECT select_options
+</code></pre>
 <p>EXPLAIN 语句输出的各个列的作用如下：</p>
 <table>
 <thead>
@@ -2100,9 +2100,9 @@
 </tr>
 </tbody>
 </table>
-<h5 id="42-explain"><strong>4.2 EXPLAIN各列作用</strong><a class="headerlink" href="#42-explain" title="Permanent link">&para;</a></h5>
+<h5 id="42-explain"><strong>4.2 EXPLAIN各列作用</strong></h5>
 <p><strong>1. table</strong></p>
-<p>不论我们的查询语句有多复杂，包含了多少个表 ，到最后也是需要对每个表进行<code>单表访问</code>的，所以MySQL规定**EXPLAIN语句输出的每条记录都对应着某个单表的访问方法**，该条记录的table列代表着该表的表名（有时不是真实的表名字，可能是简称）。</p>
+<p>不论我们的查询语句有多复杂，包含了多少个表 ，到最后也是需要对每个表进行<code>单表访问</code>的，所以MySQL规定<strong>EXPLAIN语句输出的每条记录都对应着某个单表的访问方法</strong>，该条记录的table列代表着该表的表名（有时不是真实的表名字，可能是简称）。</p>
 <p><strong>2. id</strong></p>
 <ul>
 <li><strong>id如果相同，可以认为是一组，从上往下顺序执行</strong></li>
@@ -2117,21 +2117,21 @@
 <p><strong>6. possible_keys和key</strong></p>
 <p><strong>7. key_len（重点）</strong></p>
 <p><strong>key_len的长度计算公式：</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>varchar(10)变长字段且允许NULL = 10 * ( character set： utf8=3,gbk=2,latin1=1)+1(NULL)+2(变长字段) 
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>varchar(10)变长字段且不允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)+2(变长字段)
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>char(10)固定字段且允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)+1(NULL) 
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>char(10)固定字段且不允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)
-</code></pre></div>
+<pre><code>varchar(10)变长字段且允许NULL = 10 * ( character set： utf8=3,gbk=2,latin1=1)+1(NULL)+2(变长字段) 
+
+varchar(10)变长字段且不允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)+2(变长字段)
+
+char(10)固定字段且允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)+1(NULL) 
+
+char(10)固定字段且不允许NULL = 10 * ( character set：utf8=3,gbk=2,latin1=1)
+</code></pre>
 <p><strong>8. ref</strong> </p>
 <p><strong>9. rows（重点）</strong></p>
 <p>预估的需要读取的记录条数</p>
 <p><strong>10. filtered</strong></p>
 <p><strong>11. Extra</strong></p>
-<h4 id="5-explain"><strong>5. EXPLAIN的进一步使用</strong><a class="headerlink" href="#5-explain" title="Permanent link">&para;</a></h4>
-<h5 id="51-explain"><strong>5.1 EXPLAIN四种输出格式</strong><a class="headerlink" href="#51-explain" title="Permanent link">&para;</a></h5>
+<h4 id="5-explain"><strong>5. EXPLAIN的进一步使用</strong></h4>
+<h5 id="51-explain"><strong>5.1 EXPLAIN四种输出格式</strong></h5>
 <p>这里谈谈EXPLAIN的输出格式。EXPLAIN可以输出四种格式：<code>传统格式</code>，<code>JSON格式</code>，<code>TREE格式</code>以及<code>可视化输出</code>。用户可以根据需要选择适用于自己的格式。</p>
 <p><strong>1.</strong> <strong>传统格式</strong></p>
 <p><strong>2. JSON格式</strong> </p>
@@ -2140,59 +2140,59 @@
 <p>TREE格式是8.0.16版本之后引入的新格式，主要根据查询的<code>各个部分之间的关系</code>和<code>各部分的执行顺序</code>来描述如何查询。</p>
 <p><strong>4.</strong> <strong>可视化输出</strong></p>
 <p>可视化输出，可以通过MySQL Workbench可视化查看MySQL的执行计划。</p>
-<h5 id="52-show-warnings"><strong>5.2 SHOW WARNINGS的使用</strong><a class="headerlink" href="#52-show-warnings" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">key1</span><span class="p">,</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">key1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s1</span><span class="p">.</span><span class="n">key1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">key1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="n">common_field</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">;</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># 查看优化后的执行语句</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SHOW</span><span class="w"> </span><span class="k">WARNINGS</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
-<h4 id="6-trace"><strong>6.</strong> <strong>分析优化器执行计划：trace</strong><a class="headerlink" href="#6-trace" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># 开启</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">SET</span><span class="w"> </span><span class="n">optimizer_trace</span><span class="o">=</span><span class="s2">&quot;enabled=on&quot;</span><span class="p">,</span><span class="n">end_markers_in_json</span><span class="o">=</span><span class="k">on</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># 设置大小</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">set</span><span class="w"> </span><span class="n">optimizer_trace_max_mem_size</span><span class="o">=</span><span class="mi">1000000</span><span class="p">;</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># 使用</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">optimizer_trace</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
-<h4 id="7-mysql-sys-schema"><strong>7. MySQL监控分析视图-sys schema</strong><a class="headerlink" href="#7-mysql-sys-schema" title="Permanent link">&para;</a></h4>
+<h5 id="52-show-warnings"><strong>5.2 SHOW WARNINGS的使用</strong></h5>
+<pre><code class="language-mysql">mysql&gt; EXPLAIN SELECT s1.key1, s2.key1 FROM s1 LEFT JOIN s2 ON s1.key1 = s2.key1 WHERE s2.common_field IS NOT NULL;
+# 查看优化后的执行语句
+mysql&gt; SHOW WARNINGS\G
+</code></pre>
+<h4 id="6-trace"><strong>6.</strong> <strong>分析优化器执行计划：trace</strong></h4>
+<pre><code class="language-mysql"># 开启
+SET optimizer_trace=&quot;enabled=on&quot;,end_markers_in_json=on; 
+# 设置大小
+set optimizer_trace_max_mem_size=1000000;
+# 使用
+select * from student where id &lt; 10;
+select * from information_schema.optimizer_trace\G
+</code></pre>
+<h4 id="7-mysql-sys-schema"><strong>7. MySQL监控分析视图-sys schema</strong></h4>
 <p><strong>7.1 Sys schema视图使用场景</strong></p>
 <p><strong>索引情况</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">#1. 查询冗余索引 </span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_redundant_indexes</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1">#2. 查询未使用过的索引 </span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_unused_indexes</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1">#3. 查询索引的使用情况 </span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="k">select</span><span class="w"> </span><span class="n">index_name</span><span class="p">,</span><span class="n">rows_selected</span><span class="p">,</span><span class="n">rows_inserted</span><span class="p">,</span><span class="n">rows_updated</span><span class="p">,</span><span class="n">rows_deleted</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_index_statistics</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">table_schema</span><span class="o">=</span><span class="s1">&#39;dbname&#39;</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">#1. 查询冗余索引 
+select * from sys.schema_redundant_indexes; 
+#2. 查询未使用过的索引 
+select * from sys.schema_unused_indexes; 
+#3. 查询索引的使用情况 
+select index_name,rows_selected,rows_inserted,rows_updated,rows_deleted from sys.schema_index_statistics where table_schema='dbname' ;
+</code></pre>
 <p><strong>表相关</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># 1. 查询表的访问量 </span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">select</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="k">table_name</span><span class="p">,</span><span class="nf">sum</span><span class="p">(</span><span class="n">io_read_requests</span><span class="o">+</span><span class="n">io_write_requests</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">io</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">schema_table_statistics</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="k">table_name</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="k">io</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># 2. 查询占用bufferpool较多的表 </span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="k">select</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span><span class="n">object_name</span><span class="p">,</span><span class="n">allocated</span><span class="p">,</span><span class="k">data</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">innodb_buffer_stats_by_table</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">allocated</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1"># 3. 查看表的全表扫描情况 </span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">statements_with_full_table_scans</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">db</span><span class="o">=</span><span class="s1">&#39;dbname&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql"># 1. 查询表的访问量 
+select table_schema,table_name,sum(io_read_requests+io_write_requests) as io from sys.schema_table_statistics group by table_schema,table_name order by io desc; 
+# 2. 查询占用bufferpool较多的表 
+select object_schema,object_name,allocated,data
+from sys.innodb_buffer_stats_by_table order by allocated limit 10; 
+# 3. 查看表的全表扫描情况 
+select * from sys.statements_with_full_table_scans where db='dbname';
+</code></pre>
 <p><strong>语句相关</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">#1. 监控SQL执行的频率 </span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">select</span><span class="w"> </span><span class="n">db</span><span class="p">,</span><span class="n">exec_count</span><span class="p">,</span><span class="k">query</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">statement_analysis</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">exec_count</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1">#2. 监控使用了排序的SQL </span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="k">select</span><span class="w"> </span><span class="n">db</span><span class="p">,</span><span class="n">exec_count</span><span class="p">,</span><span class="n">first_seen</span><span class="p">,</span><span class="n">last_seen</span><span class="p">,</span><span class="k">query</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">statements_with_sorting</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1">#3. 监控使用了临时表或者磁盘临时表的SQL </span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">select</span><span class="w"> </span><span class="n">db</span><span class="p">,</span><span class="n">exec_count</span><span class="p">,</span><span class="n">tmp_tables</span><span class="p">,</span><span class="n">tmp_disk_tables</span><span class="p">,</span><span class="k">query</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">statement_analysis</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">tmp_tables</span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">tmp_disk_tables</span><span class="w"> </span><span class="o">&gt;</span><span class="mi">0</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="p">(</span><span class="n">tmp_tables</span><span class="o">+</span><span class="n">tmp_disk_tables</span><span class="p">)</span><span class="w"> </span><span class="k">desc</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">#1. 监控SQL执行的频率 
+select db,exec_count,query from sys.statement_analysis order by exec_count desc; 
+#2. 监控使用了排序的SQL 
+select db,exec_count,first_seen,last_seen,query
+from sys.statements_with_sorting limit 1; 
+#3. 监控使用了临时表或者磁盘临时表的SQL 
+select db,exec_count,tmp_tables,tmp_disk_tables,query
+from sys.statement_analysis where tmp_tables&gt;0 or tmp_disk_tables &gt;0 order by (tmp_tables+tmp_disk_tables) desc;
+</code></pre>
 <p><strong>IO相关</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1">#1. 查看消耗磁盘IO的文件 </span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">select</span><span class="w"> </span><span class="k">file</span><span class="p">,</span><span class="n">avg_read</span><span class="p">,</span><span class="n">avg_write</span><span class="p">,</span><span class="n">avg_read</span><span class="o">+</span><span class="n">avg_write</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">avg_io</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">io_global_by_file_by_bytes</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">avg_read</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">#1. 查看消耗磁盘IO的文件 
+select file,avg_read,avg_write,avg_read+avg_write as avg_io
+from sys.io_global_by_file_by_bytes order by avg_read limit 10;
+</code></pre>
 <p><strong>Innodb</strong> <strong>相关</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">#1. 行锁阻塞情况 </span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">innodb_lock_waits</span><span class="p">;</span>
-</code></pre></div>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-mysql">#1. 行锁阻塞情况 
+select * from sys.innodb_lock_waits;
+</code></pre>
+<h3 id="_1"></h3>
 
 
 

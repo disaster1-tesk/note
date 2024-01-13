@@ -909,20 +909,20 @@
   
 
 
-<h1 id="_1">执行引擎<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">执行引擎概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h1 id="_1">执行引擎</h1>
+<h2 id="_2">执行引擎概述</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0001.png"></p>
-<h3 id="_3">执行引擎概述<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h3 id="_3">执行引擎概述</h3>
 <ol>
 <li>执行引擎是Java虚拟机核心的组成部分之一。</li>
-<li>“虚拟机”是一个相对于“物理机”的概念，这两种机器都有代码执行能力，其区别是物理机的执行引擎是直接建立在处理器、缓存、指令集和操作系统层面上的，而**虚拟机的执行引擎则是由软件自行实现的**，因此可以不受物理条件制约地定制指令集与执行引擎的结构体系，<strong>能够执行那些不被硬件直接支持的指令集格式</strong>。</li>
-<li>JVM的主要任务是负责**装载字节码到其内部**，但字节码并不能够直接运行在操作系统之上，因为字节码指令并非等价于本地机器指令，它内部包含的仅仅只是一些能够被JVM所识别的字节码指令、符号表，以及其他辅助信息。</li>
-<li>那么，如果想要让一个Java程序运行起来，执行引擎（Execution Engine）的任务就是**将字节码指令解释/编译为对应平台上的本地机器指令才可以**。简单来说，JVM中的执行引擎充当了将高级语言翻译为机器语言的译者。</li>
+<li>“虚拟机”是一个相对于“物理机”的概念，这两种机器都有代码执行能力，其区别是物理机的执行引擎是直接建立在处理器、缓存、指令集和操作系统层面上的，而<strong>虚拟机的执行引擎则是由软件自行实现的</strong>，因此可以不受物理条件制约地定制指令集与执行引擎的结构体系，<strong>能够执行那些不被硬件直接支持的指令集格式</strong>。</li>
+<li>JVM的主要任务是负责<strong>装载字节码到其内部</strong>，但字节码并不能够直接运行在操作系统之上，因为字节码指令并非等价于本地机器指令，它内部包含的仅仅只是一些能够被JVM所识别的字节码指令、符号表，以及其他辅助信息。</li>
+<li>那么，如果想要让一个Java程序运行起来，执行引擎（Execution Engine）的任务就是<strong>将字节码指令解释/编译为对应平台上的本地机器指令才可以</strong>。简单来说，JVM中的执行引擎充当了将高级语言翻译为机器语言的译者。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0002.png"></p>
 <p>1、前端编译：从Java程序员-字节码文件的这个过程叫前端编译</p>
 <p>2、执行引擎这里有两种行为：一种是解释执行，一种是编译执行（这里的是后端编译）。</p>
-<h3 id="_4">执行引擎工作过程<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_4">执行引擎工作过程</h3>
 <blockquote>
 <p><strong>执行引擎工作过程</strong></p>
 </blockquote>
@@ -933,8 +933,8 @@
 <li>从外观上来看，所有的Java虚拟机的执行引擎输入、处理、输出都是一致的：输入的是字节码二进制流，处理过程是字节码解析执行、即时编译的等效过程，输出的是执行过程。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0003.png"></p>
-<h2 id="java">Java代码编译和执行过程<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
-<h3 id="_5">解释执行和即时编译<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<h2 id="java">Java代码编译和执行过程</h2>
+<h3 id="_5">解释执行和即时编译</h3>
 <p>大部分的程序代码转换成物理机的目标代码或虚拟机能执行的指令集之前，都需要经过下图中的各个步骤：</p>
 <ol>
 <li>
@@ -955,10 +955,10 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0006.png"></p>
 </li>
 </ol>
-<h3 id="jit">什么是解释器？什么是JIT编译器？<a class="headerlink" href="#jit" title="Permanent link">&para;</a></h3>
+<h3 id="jit">什么是解释器？什么是JIT编译器？</h3>
 <ol>
-<li>解释器：当Java虚拟机启动时会根据预定义的规范对字节码采用**逐行**解释的方式**执行**，将每条字节码文件中的内容“翻译”为对应平台的本地机器指令执行。</li>
-<li>JIT（Just In Time Compiler）编译器：就是虚拟机将源代码**一次性直接**编译成和本地机器平台相关的机器语言，<strong>但并不是马上执行</strong>。</li>
+<li>解释器：当Java虚拟机启动时会根据预定义的规范对字节码采用<strong>逐行</strong>解释的方式<strong>执行</strong>，将每条字节码文件中的内容“翻译”为对应平台的本地机器指令执行。</li>
+<li>JIT（Just In Time Compiler）编译器：就是虚拟机将源代码<strong>一次性直接</strong>编译成和本地机器平台相关的机器语言，<strong>但并不是马上执行</strong>。</li>
 </ol>
 <p><strong>为什么Java是半编译半解释型语言？</strong></p>
 <ol>
@@ -968,15 +968,15 @@
 </ol>
 <p><strong>用图总结一下</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0007.png"></p>
-<h2 id="_6">机器码 指令 汇编语言<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<h3 id="_7">机器码<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h2 id="_6">机器码 指令 汇编语言</h2>
+<h3 id="_7">机器码</h3>
 <ol>
 <li>各种用二进制编码方式表示的指令，叫做机器指令码。开始，人们就用它采编写程序，这就是机器语言。</li>
 <li>机器语言虽然能够被计算机理解和接受，但和人们的语言差别太大，不易被人们理解和记忆，并且用它编程容易出差错。</li>
 <li>用它编写的程序一经输入计算机，CPU直接读取运行，因此和其他语言编的程序相比，执行速度最快。</li>
 <li>机器指令与CPU紧密相关，所以不同种类的CPU所对应的机器指令也就不同。</li>
 </ol>
-<h3 id="_8">指令和指令集<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<h3 id="_8">指令和指令集</h3>
 <p><strong>指令</strong></p>
 <ol>
 <li>
@@ -995,14 +995,14 @@
 <li>x86指令集，对应的是x86架构的平台</li>
 <li>ARM指令集，对应的是ARM架构的平台</li>
 </ol>
-<h3 id="_9">汇编语言<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<h3 id="_9">汇编语言</h3>
 <ol>
 <li>由于指令的可读性还是太差，于是人们又发明了汇编语言。</li>
 <li>在汇编语言中，用助记符（Mnemonics）代替机器指令的操作码，用地址符号（Symbol）或标号（Label）代替指令或操作数的地址。</li>
 <li>在不同的硬件平台，汇编语言对应着不同的机器语言指令集，通过汇编过程转换成机器指令。</li>
 <li>由于计算机只认识指令码，所以用汇编语言编写的程序还必须翻译（汇编）成机器指令码，计算机才能识别和执行。</li>
 </ol>
-<h3 id="_10">高级语言<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<h3 id="_10">高级语言</h3>
 <ol>
 <li>
 <p>为了使计算机用户编程序更容易些，后来就出现了各种高级计算机语言。高级语言比机器语言、汇编语言更接近人的语言</p>
@@ -1012,7 +1012,7 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0008.png"></p>
-<h3 id="_11">字节码<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h3 id="_11">字节码</h3>
 <ol>
 <li>
 <p>字节码是一种中间状态（中间码）的二进制代码（文件），它比机器码更抽象，需要直译器转译后才能成为机器码</p>
@@ -1027,7 +1027,7 @@
 <p>字节码典型的应用为：Java bytecode</p>
 </li>
 </ol>
-<h3 id="cc">C、C++源程序执行过程<a class="headerlink" href="#cc" title="Permanent link">&para;</a></h3>
+<h3 id="cc">C、C++源程序执行过程</h3>
 <p><strong>编译过程又可以分成两个阶段：编译和汇编。</strong></p>
 <ol>
 <li>
@@ -1038,11 +1038,11 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0009.png"></p>
-<h2 id="_12">解释器<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
-<h3 id="_13">为什么要有解释器<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<h2 id="_12">解释器</h2>
+<h3 id="_13">为什么要有解释器</h3>
 <ol>
 <li>
-<p>JVM设计者们的初衷仅仅只是单纯地为了满足Java程序实现跨平台特性，因此避免采用静态编译的方式由高级语言直接生成本地机器指令，从而诞生了实现解释器在运行时采用逐行解释字节码执行程序的想法（也就是产生了一个中间产品**字节码**）。</p>
+<p>JVM设计者们的初衷仅仅只是单纯地为了满足Java程序实现跨平台特性，因此避免采用静态编译的方式由高级语言直接生成本地机器指令，从而诞生了实现解释器在运行时采用逐行解释字节码执行程序的想法（也就是产生了一个中间产品<strong>字节码</strong>）。</p>
 </li>
 <li>
 <p>解释器真正意义上所承担的角色就是一个运行时“翻译者”，将字节码文件中的内容“翻译”为对应平台的本地机器指令执行。</p>
@@ -1052,9 +1052,9 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0010.png"></p>
-<h3 id="_14">解释器的分类<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h3 id="_14">解释器的分类</h3>
 <ol>
-<li>在Java的发展历史里，一共有两套解释执行器，即古老的**字节码解释器**、现在普遍使用的**模板解释器**。<ul>
+<li>在Java的发展历史里，一共有两套解释执行器，即古老的<strong>字节码解释器</strong>、现在普遍使用的<strong>模板解释器</strong>。<ul>
 <li>字节码解释器在执行时通过纯软件代码模拟字节码的执行，效率非常低下。</li>
 <li>而模板解释器将每一条字节码和一个模板函数相关联，模板函数中直接产生这条字节码执行时的机器码，从而很大程度上提高了解释器的性能。</li>
 </ul>
@@ -1065,7 +1065,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="_15">解释器的现状<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<h3 id="_15">解释器的现状</h3>
 <ol>
 <li>
 <p>由于解释器在设计和实现上非常简单，因此除了Java语言之外，还有许多高级语言同样也是基于解释器执行的，比如Python、Perl、Ruby等。但是在今天，基于解释器执行已经沦落为低效的代名词，并且时常被一些C/C++程序员所调侃。</p>
@@ -1077,8 +1077,8 @@
 <p>不过无论如何，基于解释器的执行模式仍然为中间语言的发展做出了不可磨灭的贡献。</p>
 </li>
 </ol>
-<h2 id="jit_1">JIT编译器<a class="headerlink" href="#jit_1" title="Permanent link">&para;</a></h2>
-<h3 id="java_1">Java 代码执行的分类<a class="headerlink" href="#java_1" title="Permanent link">&para;</a></h3>
+<h2 id="jit_1">JIT编译器</h2>
+<h3 id="java_1">Java 代码执行的分类</h3>
 <ol>
 <li>
 <p>第一种是将源代码编译成字节码文件，然后在运行时通过解释器将字节码文件转为机器码执行</p>
@@ -1091,7 +1091,7 @@
 </li>
 <li>在今天，Java程序的运行性能早已脱胎换骨，已经达到了可以和C/C++ 程序一较高下的地步。</li>
 </ol>
-<h3 id="_16">为啥我们还需要解释器呢？<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<h3 id="_16">为啥我们还需要解释器呢？</h3>
 <ol>
 <li>
 <p>有些开发人员会感觉到诧异，既然HotSpot VM中已经内置JIT编译器了，那么为什么还需要再使用解释器来“拖累”程序的执行性能呢？比如JRockit VM内部就不包含解释器，字节码全部都依靠即时编译器编译后执行。</p>
@@ -1111,7 +1111,7 @@
 <li>在此模式下，在Java虚拟器启动时，解释器可以首先发挥作用，而不必等待即时编译器全部编译完成后再执行，这样可以省去许多不必要的编译时间。随着时间的推移，编译器发挥作用，把越来越多的代码编译成本地代码，获得更高的执行效率。</li>
 <li>同时，解释执行在编译器进行激进优化不成立的时候，作为编译器的“逃生门”（后备方案）。</li>
 </ol>
-<h3 id="_17">案例<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<h3 id="_17">案例</h3>
 <ul>
 <li>
 <p>当虚拟机启动的时候，解释器可以首先发挥作用，而不必等待即时编译器全部编译完成再执行，这样可以省去许多不必要的编译时间。随着程序运行时间的推移，即时编译器逐渐发挥作用，根据热点探测功能，将有价值的字节码编译为本地机器指令，以换取更高的程序执行效率。</p>
@@ -1120,30 +1120,30 @@
 <p>注意解释执行与编译执行在线上环境微妙的辩证关系。<strong>机器在热机状态（已经运行了一段时间叫热机状态）可以承受的负载要大于冷机状态（刚启动的时候叫冷机状态）</strong>。如果以热机状态时的流量进行切流，可能使处于冷机状态的服务器因无法承载流量而假死。</p>
 </li>
 <li>
-<p>在生产环境发布过程中，以分批的方式进行发布，根据机器数量划分成多个批次，每个批次的机器数至多占到整个集群的&#8539;。曾经有这样的故障案例：某程序员在发布平台进行分批发布，在输入发布总批数时，误填写成分为两批发布。如果是热机状态，在正常情况下一半的机器可以勉强承载流量，但由于刚启动的JVM均是解释执行，还没有进行热点代码统计和JIT动态编译，导致机器启动之后，当前&frac12;发布成功的服务器马上全部宕机，此故障说明了JIT的存在。—<strong>阿里团队</strong></p>
+<p>在生产环境发布过程中，以分批的方式进行发布，根据机器数量划分成多个批次，每个批次的机器数至多占到整个集群的1/8。曾经有这样的故障案例：某程序员在发布平台进行分批发布，在输入发布总批数时，误填写成分为两批发布。如果是热机状态，在正常情况下一半的机器可以勉强承载流量，但由于刚启动的JVM均是解释执行，还没有进行热点代码统计和JIT动态编译，导致机器启动之后，当前1/2发布成功的服务器马上全部宕机，此故障说明了JIT的存在。—<strong>阿里团队</strong></p>
 </li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0011.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JITTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">            </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;让天下没有难学的技术&quot;</span><span class="p">);</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">                </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class JITTest {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; list = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; 1000; i++) {
+            list.add(&quot;让天下没有难学的技术&quot;);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+}
+</code></pre>
 <p>通过 JVisualVM 查看 JIT 编译器执行的编译次数</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0012.png"></p>
-<h3 id="jit_2">JIT编译器相关概念<a class="headerlink" href="#jit_2" title="Permanent link">&para;</a></h3>
+<h3 id="jit_2">JIT编译器相关概念</h3>
 <ol>
 <li>Java 语言的“编译期”其实是一段“不确定”的操作过程，因为它可能是指一个前端编译器（其实叫“编译器的前端”更准确一些）把.java文件转变成.class文件的过程。</li>
 <li>也可能是指虚拟机的后端运行期编译器（JIT编译器，Just In Time Compiler）把字节码转变成机器码的过程。</li>
@@ -1155,10 +1155,10 @@
 <li>JIT编译器：HotSpot VM的C1、C2编译器。</li>
 <li>AOT 编译器：GNU Compiler for the Java（GCJ）、Excelsior JET。</li>
 </ol>
-<h3 id="_18">热点代码及探测方式<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<h3 id="_18">热点代码及探测方式</h3>
 <ol>
-<li>当然是否需要启动JIT编译器将字节码直接编译为对应平台的本地机器指令，则需要根据代码被调用**执行的频率**而定。</li>
-<li>关于那些需要被编译为本地代码的字节码，也被称之为**“热点代码”<strong>，JIT编译器在运行时会针对那些频繁被调用的“热点代码”做出**深度优化</strong>，将其直接编译为对应平台的本地机器指令，以此提升Java程序的执行性能。</li>
+<li>当然是否需要启动JIT编译器将字节码直接编译为对应平台的本地机器指令，则需要根据代码被调用<strong>执行的频率</strong>而定。</li>
+<li>关于那些需要被编译为本地代码的字节码，也被称之为<strong>“热点代码”</strong>，JIT编译器在运行时会针对那些频繁被调用的“热点代码”做出<strong>深度优化</strong>，将其直接编译为对应平台的本地机器指令，以此提升Java程序的执行性能。</li>
 <li>一个被多次调用的方法，或者是一-个方法体内部循环次数较多的循环体都可以被称之为“热点代码”，因此都可以通过JIT编译器编译为本地机器指令。由于这种编译方式发生在方法的执行过程中，因此也被称之为栈上替换，或简称为OSR (On StackReplacement)编译。</li>
 <li>一个方法究竟要被调用多少次，或者一个循环体究竟需要执行多少次循环才可以达到这个标准？必然需要一个明确的阈值，JIT编译器才会将这些“热点代码”编译为本地机器指令执行。这里主要依靠热点探测功能。</li>
 <li><strong>目前HotSpot VM所采用的热点探测方式是基于计数器的热点探测</strong>。</li>
@@ -1168,7 +1168,7 @@
 </ol>
 </li>
 </ol>
-<h4 id="_19">方法调用计数器<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<h4 id="_19">方法调用计数器</h4>
 <ol>
 <li>
 <p>这个计数器就用于统计方法被调用的次数，它的默认阀值在Client模式下是1500次，在Server模式下是10000次。超过这个阈值，就会触发JIT编译。</p>
@@ -1189,16 +1189,16 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0013.png"></p>
-<h4 id="_20">热度衰减<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<h4 id="_20">热度衰减</h4>
 <ol>
-<li>如果不做任何设置，方法调用计数器统计的并不是方法被调用的绝对次数，而是一个相对的执行频率，即**一段时间之内方法被调用的次数**。当超过一定的时间限度，如果方法的调用次数仍然不足以让它提交给即时编译器编译，那这个方法的调用计数器就会被减少一半，这个过程称为方法调用计数器热度的衰减（Counter Decay），而这段时间就称为此方法统计的半衰周期（Counter Half Life Time）（半衰周期是化学中的概念，比如出土的文物通过查看C60来获得文物的年龄）</li>
+<li>如果不做任何设置，方法调用计数器统计的并不是方法被调用的绝对次数，而是一个相对的执行频率，即<strong>一段时间之内方法被调用的次数</strong>。当超过一定的时间限度，如果方法的调用次数仍然不足以让它提交给即时编译器编译，那这个方法的调用计数器就会被减少一半，这个过程称为方法调用计数器热度的衰减（Counter Decay），而这段时间就称为此方法统计的半衰周期（Counter Half Life Time）（半衰周期是化学中的概念，比如出土的文物通过查看C60来获得文物的年龄）</li>
 <li>进行热度衰减的动作是在虚拟机进行垃圾收集时顺便进行的，可以使用虚拟机参数 -XX:-UseCounterDecay 来关闭热度衰减，让方法计数器统计方法调用的绝对次数，这样的话，只要系统运行时间足够长，绝大部分方法都会被编译成本地代码。</li>
 <li>另外，可以使用-XX:CounterHalfLifeTime参数设置半衰周期的时间，单位是秒。</li>
 </ol>
-<h4 id="_21">回边计数器<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
+<h4 id="_21">回边计数器</h4>
 <p>它的作用是统计一个方法中循环体代码执行的次数，在字节码中遇到控制流向后跳转的指令称为“回边”（Back Edge）。显然，建立回边计数器统计的目的就是为了触发OSR编译。</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0014.png"></p>
-<h3 id="hotspotvm">HotSpotVM可以设置程序执行方法<a class="headerlink" href="#hotspotvm" title="Permanent link">&para;</a></h3>
+<h3 id="hotspotvm">HotSpotVM可以设置程序执行方法</h3>
 <p>缺省情况下HotSpot VM是采用解释器与即时编译器并存的架构，当然开发人员可以根据具体的应用场景，通过命令显式地为Java虚拟机指定在运行时到底是完全采用解释器执行，还是完全采用即时编译器执行。如下所示：</p>
 <ol>
 <li>-Xint：完全采用解释器模式执行程序；</li>
@@ -1207,43 +1207,44 @@
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_008/0015.png"></p>
 <p><strong>代码测试</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cm">/**</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="cm"> * 测试解释器模式和JIT编译模式</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="cm"> *  -Xint  : 6520ms</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="cm"> *  -Xcomp : 950ms</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="cm"> *  -Xmixed : 936ms</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="cm"> */</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntCompTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="n">testPrimeNumber</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="kt">long</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;花费的时间为：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">));</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testPrimeNumber</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">){</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">            </span><span class="c1">//计算100以内的质数</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">            </span><span class="n">label</span><span class="p">:</span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">                </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">sqrt</span><span class="p">(</span><span class="n">j</span><span class="p">);</span><span class="n">k</span><span class="o">++</span><span class="p">){</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">                    </span><span class="k">if</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">                        </span><span class="k">continue</span><span class="w"> </span><span class="n">label</span><span class="p">;</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">                    </span><span class="p">}</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">                </span><span class="p">}</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">                </span><span class="c1">//System.out.println(j);</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 测试解释器模式和JIT编译模式
+ *  -Xint  : 6520ms
+ *  -Xcomp : 950ms
+ *  -Xmixed : 936ms
+ */
+public class IntCompTest {
+    public static void main(String[] args) {
+
+        long start = System.currentTimeMillis();
+
+        testPrimeNumber(1000000);
+
+        long end = System.currentTimeMillis();
+
+        System.out.println(&quot;花费的时间为：&quot; + (end - start));
+
+    }
+
+    public static void testPrimeNumber(int count){
+        for (int i = 0; i &lt; count; i++) {
+            //计算100以内的质数
+            label:for(int j = 2;j &lt;= 100;j++){
+                for(int k = 2;k &lt;= Math.sqrt(j);k++){
+                    if(j % k == 0){
+                        continue label;
+                    }
+                }
+                //System.out.println(j);
+            }
+
+        }
+    }
+}
+
+</code></pre>
 <p>结论：只用解释器执行是真的慢</p>
-<h3 id="hotspotvm-jit">HotSpotVM JIT 分类<a class="headerlink" href="#hotspotvm-jit" title="Permanent link">&para;</a></h3>
+<h3 id="hotspotvm-jit">HotSpotVM JIT 分类</h3>
 <p>在HotSpot VM中内嵌有两个JIT编译器，分别为Client Compiler和Server Compiler，但大多数情况下我们简称为C1编译器 和 C2编译器。开发人员可以通过如下命令显式指定Java虚拟机在运行时到底使用哪一种即时编译器，如下所示：</p>
 <ol>
 <li>-client：指定Java虚拟机运行在Client模式下，并使用C1编译器；<ul>
@@ -1255,7 +1256,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="c1c2">C1和C2编译器不同的优化策略<a class="headerlink" href="#c1c2" title="Permanent link">&para;</a></h3>
+<h3 id="c1c2">C1和C2编译器不同的优化策略</h3>
 <ol>
 <li>在不同的编译器上有不同的优化策略，C1编译器上主要有方法内联，去虚拟化、元余消除。<ul>
 <li>方法内联：将引用的函数代码编译到引用点处，这样可以减少栈帧的生成，减少参数传递以及跳转过程</li>
@@ -1273,7 +1274,7 @@
 <blockquote>
 <p>也就是说之前的逃逸分析，只有在C2（server模式下）才会触发。那是否说明C1就用不了了？</p>
 </blockquote>
-<h3 id="_22">分层编译策略<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<h3 id="_22">分层编译策略</h3>
 <ol>
 <li>
 <p>分层编译（Tiered Compilation）策略：程序解释执行（不开启性能监控）可以触发C1编译，将字节码编译成机器码，可以进行简单优化，也可以加上性能监控，C2编译会根据性能监控信息进行激进优化。</p>
@@ -1286,7 +1287,7 @@
 </li>
 <li>C2编译器启动时长比C1慢，系统稳定执行以后，C2编译器执行速度远快于C1编译器</li>
 </ol>
-<h4 id="graal">Graal 编译器<a class="headerlink" href="#graal" title="Permanent link">&para;</a></h4>
+<h4 id="graal">Graal 编译器</h4>
 <ul>
 <li>自JDK10起，HotSpot又加入了一个全新的即时编译器：Graal编译器</li>
 <li>编译效果短短几年时间就追平了G2编译器，未来可期（对应还出现了Graal虚拟机，是有可能替代Hotspot的虚拟机的）</li>
@@ -1295,7 +1296,7 @@
 <p>-XX:+UnlockExperimentalvMOptions -XX:+UseJVMCICompiler</p>
 </li>
 </ul>
-<h4 id="aot">AOT编译器<a class="headerlink" href="#aot" title="Permanent link">&para;</a></h4>
+<h4 id="aot">AOT编译器</h4>
 <ol>
 <li>
 <p>jdk9引入了AoT编译器（静态提前编译器，Ahead of Time Compiler）</p>
@@ -1304,7 +1305,7 @@
 <p>Java 9引入了实验性AOT编译工具jaotc。它借助了Graal编译器，将所输入的Java类文件转换为机器码，并存放至生成的动态共享库之中。</p>
 </li>
 <li>
-<p>所谓AOT编译，是与即时编译相对立的一个概念。我们知道，即时编译指的是**在程序的运行过程中**，将字节码转换为可在硬件上直接运行的机器码，并部署至托管环境中的过程。而AOT编译指的则是，<strong>在程序运行之前</strong>，便将字节码转换为机器码的过程。</p>
+<p>所谓AOT编译，是与即时编译相对立的一个概念。我们知道，即时编译指的是<strong>在程序的运行过程中</strong>，将字节码转换为可在硬件上直接运行的机器码，并部署至托管环境中的过程。而AOT编译指的则是，<strong>在程序运行之前</strong>，便将字节码转换为机器码的过程。</p>
 <p>.java -&gt; .class -&gt; (使用jaotc) -&gt; .so</p>
 </li>
 </ol>

@@ -684,8 +684,8 @@
   
 
 
-<h1 id="_1">对象的实例化内存布局与访问定位<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">对象的实例化<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h1 id="_1">对象的实例化内存布局与访问定位</h1>
+<h2 id="_2">对象的实例化</h2>
 <p><strong>大厂面试题</strong></p>
 <p>美团：</p>
 <ol>
@@ -695,7 +695,7 @@
 <p>蚂蚁金服：</p>
 <p>二面：<code>java</code>对象头里有什么</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_007/0001.png"></p>
-<h3 id="_3">对象创建的方式<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h3 id="_3">对象创建的方式</h3>
 <ol>
 <li>new：最常见的方式、单例类中调用getInstance的静态类方法，XXXFactory的静态方法</li>
 <li>Class的newInstance方法：在JDK9里面被标记为过时的方法，因为只能调用空参构造器，并且权限必须为 public</li>
@@ -704,35 +704,35 @@
 <li>使用序列化：从文件中，从网络中获取一个对象的二进制流，序列化一般用于Socket的网络传输</li>
 <li>第三方库 Objenesis</li>
 </ol>
-<h3 id="_4">对象创建的步骤<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="_4">对象创建的步骤</h3>
 <blockquote>
 <p><strong>从字节码看待对象的创建过程</strong></p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ObjectTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a> public static void main(java.lang.String[]);
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    descriptor: ([Ljava/lang/String;)V
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    flags: ACC_PUBLIC, ACC_STATIC
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    Code:
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      stack=2, locals=2, args_size=1
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>         0: new           #2                  // class java/lang/Object
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>         3: dup           
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>         4: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>         7: astore_1
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>         8: return
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>      LineNumberTable:
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        line 9: 0
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        line 10: 8
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>      LocalVariableTable:
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        Start  Length  Slot  Name   Signature
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>            0       9     0  args   [Ljava/lang/String;
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>            8       1     1   obj   Ljava/lang/Object;
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>}
-</code></pre></div>
+<pre><code class="language-java">public class ObjectTest {
+    public static void main(String[] args) {
+        Object obj = new Object();
+    }
+}
+</code></pre>
+<pre><code> public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=2, args_size=1
+         0: new           #2                  // class java/lang/Object
+         3: dup           
+         4: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+         7: astore_1
+         8: return
+      LineNumberTable:
+        line 9: 0
+        line 10: 8
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       9     0  args   [Ljava/lang/String;
+            8       1     1   obj   Ljava/lang/Object;
+}
+</code></pre>
 <p><strong>1、判断对象对应的类是否加载、链接、初始化</strong></p>
 <ol>
 <li>虚拟机遇到一条new指令，首先去检查这个指令的参数能否在Metaspace的常量池中定位到一个类的符号引用，并且检查这个符号引用代表的类是否已经被加载，解析和初始化。（即判断类元信息是否存在）。</li>
@@ -790,49 +790,49 @@
 <blockquote>
 <p><strong>从字节码角度看 init 方法</strong></p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cm">/**</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm"> * 测试对象实例化的过程</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm"> *  ① 加载类元信息 - ② 为对象分配内存 - ③ 处理并发问题  - ④ 属性的默认初始化（零值初始化）</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="cm"> *  - ⑤ 设置对象头的信息 - ⑥ 属性的显式初始化、代码块中初始化、构造器中初始化</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="cm"> *</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="cm"> *</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="cm"> *  给对象的属性赋值的操作：</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="cm"> *  ① 属性的默认初始化 - ② 显式初始化 / ③ 代码块中初始化 - ④ 构造器中初始化</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="cm"> */</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Customer</span><span class="p">{</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1001</span><span class="p">;</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="n">Account</span><span class="w"> </span><span class="n">acct</span><span class="p">;</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="p">{</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;匿名客户&quot;</span><span class="p">;</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Customer</span><span class="p">(){</span>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="n">acct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Account</span><span class="p">();</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="p">}</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="kd">class</span> <span class="nc">Account</span><span class="p">{</span>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">/**
+ * 测试对象实例化的过程
+ *  ① 加载类元信息 - ② 为对象分配内存 - ③ 处理并发问题  - ④ 属性的默认初始化（零值初始化）
+ *  - ⑤ 设置对象头的信息 - ⑥ 属性的显式初始化、代码块中初始化、构造器中初始化
+ *
+ *
+ *  给对象的属性赋值的操作：
+ *  ① 属性的默认初始化 - ② 显式初始化 / ③ 代码块中初始化 - ④ 构造器中初始化
+ */
+
+public class Customer{
+    int id = 1001;
+    String name;
+    Account acct;
+
+    {
+        name = &quot;匿名客户&quot;;
+    }
+    public Customer(){
+        acct = new Account();
+    }
+
+}
+class Account{
+
+}
+</code></pre>
 <p><strong>Customer类的字节码</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span><span class="p">.</span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;&gt;</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">sipush</span><span class="w"> </span><span class="mi">1001</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">putfield</span><span class="w"> </span><span class="err">#</span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">Customer</span><span class="p">.</span><span class="na">id</span><span class="o">&gt;</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="mi">11</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="mi">12</span><span class="w"> </span><span class="n">ldc</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;</span><span class="n">匿名客户</span><span class="o">&gt;</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="mi">14</span><span class="w"> </span><span class="n">putfield</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">Customer</span><span class="p">.</span><span class="na">name</span><span class="o">&gt;</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="mi">17</span><span class="w"> </span><span class="n">aload_0</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="mi">18</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">Account</span><span class="o">&gt;</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="mi">21</span><span class="w"> </span><span class="n">dup</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="mi">22</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">6</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">Account</span><span class="p">.</span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;&gt;</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="mi">25</span><span class="w"> </span><span class="n">putfield</span><span class="w"> </span><span class="err">#</span><span class="mi">7</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">Customer</span><span class="p">.</span><span class="na">acct</span><span class="o">&gt;</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="mi">28</span><span class="w"> </span><span class="k">return</span>
-</code></pre></div>
+<pre><code class="language-java"> 0 aload_0
+ 1 invokespecial #1 &lt;java/lang/Object.&lt;init&gt;&gt;
+ 4 aload_0
+ 5 sipush 1001
+ 8 putfield #2 &lt;com/atguigu/java/Customer.id&gt;
+11 aload_0
+12 ldc #3 &lt;匿名客户&gt;
+14 putfield #4 &lt;com/atguigu/java/Customer.name&gt;
+17 aload_0
+18 new #5 &lt;com/atguigu/java/Account&gt;
+21 dup
+22 invokespecial #6 &lt;com/atguigu/java/Account.&lt;init&gt;&gt;
+25 putfield #7 &lt;com/atguigu/java/Customer.acct&gt;
+28 return
+</code></pre>
 <ul>
 <li>init() 方法的字节码指令：<ul>
 <li>属性的默认值初始化：<code>id = 1001;</code></li>
@@ -841,33 +841,33 @@
 </ul>
 </li>
 </ul>
-<h2 id="_5">对象的内存布局<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h2 id="_5">对象的内存布局</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_007/0002.png"></p>
 <blockquote>
 <p><strong>内存布局总结</strong></p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Customer</span><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1001</span><span class="p">;</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="n">Account</span><span class="w"> </span><span class="n">acct</span><span class="p">;</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="p">{</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;匿名客户&quot;</span><span class="p">;</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Customer</span><span class="p">(){</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="n">acct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Account</span><span class="p">();</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="n">Customer</span><span class="w"> </span><span class="n">cust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Customer</span><span class="p">();</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="kd">class</span> <span class="nc">Account</span><span class="p">{</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class Customer{
+    int id = 1001;
+    String name;
+    Account acct;
+
+    {
+        name = &quot;匿名客户&quot;;
+    }
+    public Customer(){
+        acct = new Account();
+    }
+    public static void main(String[] args) {
+        Customer cust = new Customer();
+    }
+}
+class Account{
+
+}
+</code></pre>
 <p>图解内存布局</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_007/0003.png"></p>
-<h2 id="_6">对象的访问定位<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h2 id="_6">对象的访问定位</h2>
 <p><strong>JVM是如何通过栈帧中的对象引用访问到其内部的对象实例呢？</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_007/0004.png"></p>
 <p>定位，通过栈上reference访问</p>

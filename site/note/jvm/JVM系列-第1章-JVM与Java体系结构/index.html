@@ -984,12 +984,12 @@
 
 <blockquote>
 <p>1、本系列博客，主要是面向Java8的虚拟机。如有特殊说明，会进行标注。</p>
-<p>2、本系列博客主要参考**尚硅谷的JVM视频教程**，整理不易，所以图片打上了一些水印，还请读者见谅。后续可能会加上一些补充的东西。</p>
+<p>2、本系列博客主要参考<strong>尚硅谷的JVM视频教程</strong>，整理不易，所以图片打上了一些水印，还请读者见谅。后续可能会加上一些补充的东西。</p>
 <p>3、尚硅谷的有些视频还不错（PS：不是广告，毕竟看了人家比较好的教程，得给人家打个call）</p>
 <p>4、转载请注明出处，多谢~，希望大家一起能维护一个良好的开源环境。</p>
 </blockquote>
-<h1 id="1-jvmjava">第1章-JVM和Java体系架构<a class="headerlink" href="#1-jvmjava" title="Permanent link">&para;</a></h1>
-<h2 id="_1">前言<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h1 id="1-jvmjava">第1章-JVM和Java体系架构</h1>
+<h2 id="_1">前言</h2>
 <p>你是否也遇到过这些问题？</p>
 <ol>
 <li>运行着的线上系统突然卡死，系统无法访问，甚至直接OOM！</li>
@@ -999,7 +999,7 @@
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0001.png"></p>
 <p>大部分Java开发人员，除了会在项目中使用到与Java平台相关的各种高精尖技术，对于Java技术的核心Java虚拟机了解甚少。</p>
-<h2 id="_2">开发人员如何看待上层框架<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">开发人员如何看待上层框架</h2>
 <ol>
 <li>一些有一定工作经验的开发人员，打心眼儿里觉得SSM、微服务等上层技术才是重点，基础技术并不重要，这其实是一种本末倒置的“病态”。</li>
 <li>如果我们把核心类库的API比做数学公式的话，那么Java虚拟机的知识就好比公式的推导过程。</li>
@@ -1008,7 +1008,7 @@
 <ul>
 <li>计算机系统体系对我们来说越来越远，在不了解底层实现方式的前提下，通过高级语言很容易编写程序代码。但事实上计算机并不认识高级语言。</li>
 </ul>
-<h2 id="_3">架构师每天都在思考什么？<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="_3">架构师每天都在思考什么？</h2>
 <ol>
 <li>应该如何让我的系统更快？</li>
 <li>如何避免系统出现瓶颈？</li>
@@ -1021,7 +1021,7 @@
 <li>解决各类潜在系统风险，核心功能的架构与代码编写</li>
 <li>分析系统瓶颈，解决各种疑难杂症，性能调优等</li>
 </ol>
-<h2 id="jvm">我们为什么要学习JVM<a class="headerlink" href="#jvm" title="Permanent link">&para;</a></h2>
+<h2 id="jvm">我们为什么要学习JVM</h2>
 <ol>
 <li>面试的需要（BATJ、TMD，PKQ等面试都爱问）</li>
 <li>中高级程序员必备技能</li>
@@ -1031,38 +1031,38 @@
 </ul>
 </li>
 </ol>
-<h2 id="java-vs-c">Java VS C++<a class="headerlink" href="#java-vs-c" title="Permanent link">&para;</a></h2>
+<h2 id="java-vs-c">Java VS C++</h2>
 <ol>
 <li>垃圾收集机制为我们打理了很多繁琐的工作，大大提高了开发的效率，但是，垃圾收集也不是万能的，懂得JVM内部的内存结构、工作机制，是设计高扩展性应用和诊断运行时问题的基础，也是Java工程师进阶的必备能力。</li>
 <li>C++语言需要程序员自己来分配内存和回收内存，对于高手来说可能更加舒服，但是对于普通开发者，如果技术实力不够，很容易造成内存泄漏。而Java全部交给JVM进行内存分配和回收，这也是一种趋势，减少程序员的工作量。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0003.png"></p>
-<h2 id="jvm_1">什么人需要学JVM？<a class="headerlink" href="#jvm_1" title="Permanent link">&para;</a></h2>
+<h2 id="jvm_1">什么人需要学JVM？</h2>
 <ol>
 <li>拥有一定开发经验的Java开发人员，希望升职加薪</li>
 <li>软件设计师，架构师</li>
 <li>系统调优人员</li>
 <li>虚拟机爱好者，JVM实践者</li>
 </ol>
-<h2 id="_4">推荐及参考书籍<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_4">推荐及参考书籍</h2>
 <p><strong>官方文档</strong></p>
 <p><strong>英文文档规范</strong>：https://docs.oracle.com/javase/specs/index.html</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0004.png"></p>
 <p><strong>中文书籍：</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0005.png"></p>
 <blockquote>
-<p>周志明老师的这本书**非常推荐看**，不过只推荐看第三版，第三版较第二版更新了很多，个人觉得没必要再看第二版。</p>
+<p>周志明老师的这本书<strong>非常推荐看</strong>，不过只推荐看第三版，第三版较第二版更新了很多，个人觉得没必要再看第二版。</p>
 </blockquote>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0006.png"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0007.png"></p>
-<h2 id="tiobe">TIOBE排行榜<a class="headerlink" href="#tiobe" title="Permanent link">&para;</a></h2>
+<h2 id="tiobe">TIOBE排行榜</h2>
 <p><strong>TIOBE 排行榜</strong>：https://www.tiobe.com/tiobe-index/</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0008.png"></p>
 <ul>
 <li>世界上没有最好的编程语言，只有最适用于具体应用场景的编程语言。</li>
 <li>目前网上一直流传Java被python，go撼动Java第一的地位。学习者不需要太担心，Java强大的生态圈，也不是说是朝夕之间可以被撼动的。</li>
 </ul>
-<h2 id="java">Java生态圈<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
+<h2 id="java">Java生态圈</h2>
 <p>Java是目前应用最为广泛的软件开发平台之一。随着Java以及Java社区的不断壮大Java 也早已不再是简简单单的一门计算机语言了，它更是一个平台、一种文化、一个社区。</p>
 <ol>
 <li>作为一个平台，Java虚拟机扮演着举足轻重的作用<ul>
@@ -1076,9 +1076,9 @@
 </li>
 <li>作为一个社区，Java拥有全世界最多的技术拥护者和开源社区支持，有数不清的论坛和资料。从桌面应用软件、嵌入式开发到企业级应用、后台服务器、中间件，都可以看到Java的身影。其应用形式之复杂、参与人数之众多也令人咋舌。</li>
 </ol>
-<h2 id="java-">Java-跨平台的语言<a class="headerlink" href="#java-" title="Permanent link">&para;</a></h2>
+<h2 id="java-">Java-跨平台的语言</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0009.png"></p>
-<h2 id="jvm-">JVM-跨语言的平台<a class="headerlink" href="#jvm-" title="Permanent link">&para;</a></h2>
+<h2 id="jvm-">JVM-跨语言的平台</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0010.png"></p>
 <ol>
 <li>随着Java7的正式发布，Java虚拟机的设计者们通过JSR-292规范基本实现在Java虚拟机平台上运行非Java语言编写的程序。</li>
@@ -1098,7 +1098,7 @@
 <p>Java虚拟机与Java语言并没有必然的联系，它只与特定的二进制文件格式——Class文件格式所关联，Class文件中包含了Java虚拟机指令集（或者称为字节码、Bytecodes）和符号表，还有一些其他辅助信息。</p>
 </li>
 </ol>
-<h2 id="_5">多语言混合编程<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h2 id="_5">多语言混合编程</h2>
 <ol>
 <li>
 <p>Java平台上的多语言混合编程正成为主流，通过特定领域的语言去解决特定领域的问题是当前软件开发应对日趋复杂的项目需求的一个方向。</p>
@@ -1110,14 +1110,14 @@
 <p>对这些运行于Java虚拟机之上、Java之外的语言，来自系统级的、底层的支持正在迅速增强，以JSR-292为核心的一系列项目和功能改进（如DaVinci Machine项目、Nashorn引擎、InvokeDynamic指令、java.lang.invoke包等），推动Java虚拟机从“Java语言的虚拟机”向 “多语言虚拟机”的方向发展。</p>
 </li>
 </ol>
-<h2 id="jvm_2">如何真正搞懂JVM？<a class="headerlink" href="#jvm_2" title="Permanent link">&para;</a></h2>
+<h2 id="jvm_2">如何真正搞懂JVM？</h2>
 <ol>
 <li>Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方式就是自己动手编写一个！</li>
 <li>自己动手写一个Java虚拟机，难吗？</li>
 <li>天下事有难易乎？为之，则难者亦易矣；不为，则易者亦难矣</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0011.png"></p>
-<h2 id="java_1">Java发展重大事件<a class="headerlink" href="#java_1" title="Permanent link">&para;</a></h2>
+<h2 id="java_1">Java发展重大事件</h2>
 <ul>
 <li>1990年，在Sun计算机公司中，由Patrick Naughton、MikeSheridan及James Gosling领导的小组Green Team，开发出的新的程序语言，命名为Oak，后期命名为Java</li>
 <li>1995年，Sun正式发布Java和HotJava产品，Java首次公开亮相。</li>
@@ -1140,14 +1140,14 @@
 <li><strong>同年，JDK11发布，LTS版本的JDK，发布革命性的ZGC，调整JDK授权许可</strong></li>
 <li>2019年，JDK12发布，加入RedHat领导开发的Shenandoah GC</li>
 </ul>
-<h2 id="open-jdkoracle-jdk">Open JDK和Oracle JDK<a class="headerlink" href="#open-jdkoracle-jdk" title="Permanent link">&para;</a></h2>
+<h2 id="open-jdkoracle-jdk">Open JDK和Oracle JDK</h2>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0012.png"></p>
 <ul>
 <li>在JDK11之前，Oracle JDK中还会存在一些Open JDK中没有的，闭源的功能。但在JDK11中，我们可以认为Open JDK和Oracle JDK代码实质上已经达到完全一致的程度了。</li>
 <li>主要的区别就是两者更新周期不一样</li>
 </ul>
-<h2 id="_6">虚拟机<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<h3 id="_7">虚拟机概念<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h2 id="_6">虚拟机</h2>
+<h3 id="_7">虚拟机概念</h3>
 <ul>
 <li>
 <p>所谓虚拟机（Virtual Machine），就是一台虚拟的计算机。它是一款软件，用来执行一系列虚拟计算机指令。大体上，虚拟机可以分为系统虚拟机和程序虚拟机。</p>
@@ -1162,7 +1162,7 @@
 <p>无论是系统虚拟机还是程序虚拟机，在上面运行的软件都被限制于虚拟机提供的资源中。</p>
 </li>
 </ul>
-<h3 id="java_2">Java虚拟机<a class="headerlink" href="#java_2" title="Permanent link">&para;</a></h3>
+<h3 id="java_2">Java虚拟机</h3>
 <ol>
 <li>Java虚拟机是一台执行Java字节码的虚拟计算机，它拥有独立的运行机制，其运行的Java字节码也未必由Java语言编译而成。</li>
 <li>JVM平台的各种语言可以共享Java虚拟机带来的跨平台性、优秀的垃圾回器，以及可靠的即时编译器。</li>
@@ -1176,23 +1176,23 @@
 <li>自动内存管理</li>
 <li>自动垃圾回收功能</li>
 </ol>
-<h2 id="jvm_3">JVM的位置<a class="headerlink" href="#jvm_3" title="Permanent link">&para;</a></h2>
+<h2 id="jvm_3">JVM的位置</h2>
 <p>JVM是运行在操作系统之上的，它与硬件没有直接的交互</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0013.png"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0014.png"></p>
-<h2 id="jvm_4">JVM的整体结构<a class="headerlink" href="#jvm_4" title="Permanent link">&para;</a></h2>
+<h2 id="jvm_4">JVM的整体结构</h2>
 <ol>
 <li>HotSpot VM是目前市面上高性能虚拟机的代表作之一。</li>
 <li>它采用解释器与即时编译器并存的架构。</li>
 <li>在今天，Java程序的运行性能早已脱胎换骨，已经达到了可以和C/C++程序一较高下的地步。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0015.png"></p>
-<h2 id="java_3">Java代码执行流程<a class="headerlink" href="#java_3" title="Permanent link">&para;</a></h2>
+<h2 id="java_3">Java代码执行流程</h2>
 <p>凡是能生成被Java虚拟机所能解释、运行的字节码文件，那么理论上我们就可以自己设计一套语言了</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0016.png"></p>
-<h2 id="jvm_5">JVM的架构模型<a class="headerlink" href="#jvm_5" title="Permanent link">&para;</a></h2>
-<p>Java编译器输入的指令流基本上是一种**基于栈的指令集架构**，另外一种指令集架构则是**基于寄存器的指令集架构**。具体来说：这两种架构之间的区别：</p>
-<h3 id="_8">基于栈的指令集架构<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<h2 id="jvm_5">JVM的架构模型</h2>
+<p>Java编译器输入的指令流基本上是一种<strong>基于栈的指令集架构</strong>，另外一种指令集架构则是<strong>基于寄存器的指令集架构</strong>。具体来说：这两种架构之间的区别：</p>
+<h3 id="_8">基于栈的指令集架构</h3>
 <p>基于栈式架构的特点：</p>
 <ol>
 <li>设计和实现更简单，适用于资源受限的系统；</li>
@@ -1200,7 +1200,7 @@
 <li>指令流中的指令大部分是零地址指令，其执行过程依赖于操作栈。指令集更小，编译器容易实现</li>
 <li>不需要硬件支持，可移植性更好，更好实现跨平台</li>
 </ol>
-<h3 id="_9">基于寄存器的指令级架构<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<h3 id="_9">基于寄存器的指令级架构</h3>
 <p>基于寄存器架构的特点：</p>
 <ol>
 <li>典型的应用是x86的二进制指令集：比如传统的PC以及Android的Davlik虚拟机。</li>
@@ -1209,34 +1209,34 @@
 <li>花费更少的指令去完成一项操作</li>
 <li>在大部分情况下，基于寄存器架构的指令集往往都以一地址指令、二地址指令和三地址指令为主，而基于栈式架构的指令集却是以零地址指令为主</li>
 </ol>
-<h3 id="_10">两种架构的举例<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<h3 id="_10">两种架构的举例</h3>
 <p>同样执行2+3这种逻辑操作，其指令分别如下：</p>
 <ul>
 <li>
 <p><strong>基于栈的计算流程（以Java虚拟机为例）：</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iconst_2</span><span class="w"> </span><span class="c1">//常量2入栈</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">istore_1</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">iconst_3</span><span class="w"> </span><span class="c1">// 常量3入栈</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">istore_2</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iload_1</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">iload_2</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">iadd</span><span class="w"> </span><span class="c1">//常量2/3出栈，执行相加</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">istore_0</span><span class="w"> </span><span class="c1">// 结果5入栈</span>
-</code></pre></div>
+<p><code>java
+iconst_2 //常量2入栈
+istore_1
+iconst_3 // 常量3入栈
+istore_2
+iload_1
+iload_2
+iadd //常量2/3出栈，执行相加
+istore_0 // 结果5入栈</code></p>
 <p>8个指令</p>
 </li>
 <li>
 <p><strong>而基于寄存器的计算流程</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">mov</span><span class="w"> </span><span class="n">eax</span><span class="p">,</span><span class="mi">2</span><span class="w"> </span><span class="c1">//将eax寄存器的值设为1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">add</span><span class="w"> </span><span class="n">eax</span><span class="p">,</span><span class="mi">3</span><span class="w"> </span><span class="c1">//使eax寄存器的值加3</span>
-</code></pre></div>
+<p><code>java
+mov eax,2 //将eax寄存器的值设为1
+add eax,3 //使eax寄存器的值加3</code></p>
 <p>2个指令</p>
 </li>
 </ul>
 <blockquote>
 <p>具体后面会讲</p>
 </blockquote>
-<h3 id="jvm_6">JVM架构总结<a class="headerlink" href="#jvm_6" title="Permanent link">&para;</a></h3>
+<h3 id="jvm_6">JVM架构总结</h3>
 <ol>
 <li>
 <p><strong>由于跨平台性的设计，Java的指令都是根据栈来设计的</strong>。不同平台CPU架构不同，所以不能设计为基于寄存器的。栈的优点：跨平台，指令集小，编译器容易实现，缺点是性能比寄存器差一些。</p>
@@ -1246,16 +1246,16 @@
 </li>
 <li>因为基于栈的架构跨平台性好、指令集小，虽然相对于基于寄存器的架构来说，基于栈的架构编译得到的指令更多，执行性能也不如基于寄存器的架构好，但考虑到其跨平台性与移植性，我们还是选用栈的架构</li>
 </ol>
-<h2 id="jvm_7">JVM的生命周期<a class="headerlink" href="#jvm_7" title="Permanent link">&para;</a></h2>
-<h3 id="_11">虚拟机的启动<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h2 id="jvm_7">JVM的生命周期</h2>
+<h3 id="_11">虚拟机的启动</h3>
 <p>Java虚拟机的启动是通过引导类加载器（bootstrap class loader）创建一个初始类（initial class）来完成的，这个类是由虚拟机的具体实现指定的。</p>
-<h3 id="_12">虚拟机的执行<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<h3 id="_12">虚拟机的执行</h3>
 <ol>
 <li>一个运行中的Java虚拟机有着一个清晰的任务：执行Java程序</li>
 <li>程序开始执行时他才运行，程序结束时他就停止</li>
 <li><strong>执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程</strong></li>
 </ol>
-<h3 id="_13">虚拟机的退出<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<h3 id="_13">虚拟机的退出</h3>
 <p><strong>有如下的几种情况：</strong></p>
 <ol>
 <li>
@@ -1274,10 +1274,10 @@
 <p>除此之外，JNI（Java Native Interface）规范描述了用JNI Invocation API来加载或卸载 Java虚拟机时，Java虚拟机的退出情况。</p>
 </li>
 </ol>
-<h2 id="jvm_8">JVM发展历程<a class="headerlink" href="#jvm_8" title="Permanent link">&para;</a></h2>
-<h3 id="sun-classic-vm">Sun Classic VM<a class="headerlink" href="#sun-classic-vm" title="Permanent link">&para;</a></h3>
+<h2 id="jvm_8">JVM发展历程</h2>
+<h3 id="sun-classic-vm">Sun Classic VM</h3>
 <ol>
-<li>早在1996年Java1.0版本的时候，Sun公司发布了一款名为sun classic VM的Java虚拟机，它同时也是**世界上第一款商用Java虚拟机**，JDK1.4时完全被淘汰。</li>
+<li>早在1996年Java1.0版本的时候，Sun公司发布了一款名为sun classic VM的Java虚拟机，它同时也是<strong>世界上第一款商用Java虚拟机</strong>，JDK1.4时完全被淘汰。</li>
 <li>这款虚拟机内部只提供解释器，没有即时编译器，因此效率比较低。【即时编译器会把热点代码的本地机器指令缓存起来，那么以后使用热点代码的时候，效率就比较高】</li>
 <li>如果使用JIT编译器，就需要进行外挂。但是一旦使用了JIT编译器，JIT就会接管虚拟机的执行系统。解释器就不再工作，解释器和编译器不能配合工作。<ul>
 <li>我们将字节码指令翻译成机器指令也是需要花时间的，如果只使用JIT，就需要把所有字节码指令都翻译成机器指令，就会导致翻译时间过长，也就是说在程序刚启动的时候，等待时间会很长。</li>
@@ -1286,7 +1286,7 @@
 </li>
 <li>现在Hotspot内置了此虚拟机。</li>
 </ol>
-<h3 id="exact-vm">Exact VM<a class="headerlink" href="#exact-vm" title="Permanent link">&para;</a></h3>
+<h3 id="exact-vm">Exact VM</h3>
 <ol>
 <li>
 <p>为了解决上一个虚拟机问题，jdk1.2时，Sun提供了此虚拟机。</p>
@@ -1317,7 +1317,7 @@
 <p>只在Solaris平台短暂使用，其他平台上还是classic vm，英雄气短，终被Hotspot虚拟机替换</p>
 </li>
 </ol>
-<h3 id="hotspot-vm">HotSpot VM（重点）<a class="headerlink" href="#hotspot-vm" title="Permanent link">&para;</a></h3>
+<h3 id="hotspot-vm">HotSpot VM（重点）</h3>
 <ol>
 <li>
 <p>HotSpot历史</p>
@@ -1334,7 +1334,7 @@
 </ul>
 </li>
 <li>
-<p>目前**Hotspot占有绝对的市场地位，称霸武林**。</p>
+<p>目前<strong>Hotspot占有绝对的市场地位，称霸武林</strong>。</p>
 <ul>
 <li>
 <p>不管是现在仍在广泛使用的JDK6，还是使用比例较多的JDK8中，默认的虚拟机都是HotSpot</p>
@@ -1362,7 +1362,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="jrockit">JRockit（商用三大虚拟机之一）<a class="headerlink" href="#jrockit" title="Permanent link">&para;</a></h3>
+<h3 id="jrockit">JRockit（商用三大虚拟机之一）</h3>
 <ol>
 <li>
 <p>专注于服务器端应用：它可以不太关注程序启动速度，因此JRockit内部不包含解析器实现，全部代码都靠即时编译器编译后执行。</p>
@@ -1391,7 +1391,7 @@
 <p>高斯林：目前就职于谷歌，研究人工智能和水下机器人</p>
 </li>
 </ol>
-<h3 id="ibmj9">IBM的J9（商用三大虚拟机之一）<a class="headerlink" href="#ibmj9" title="Permanent link">&para;</a></h3>
+<h3 id="ibmj9">IBM的J9（商用三大虚拟机之一）</h3>
 <ol>
 <li>
 <p>全称：IBM Technology for Java Virtual Machine，简称IT4J，内部代号：J9</p>
@@ -1409,7 +1409,7 @@
 <p>OpenJDK -&gt; 是JDK开源了，包括了虚拟机</p>
 </li>
 </ol>
-<h3 id="kvmcdccldc-hotspot">KVM和CDC/CLDC Hotspot<a class="headerlink" href="#kvmcdccldc-hotspot" title="Permanent link">&para;</a></h3>
+<h3 id="kvmcdccldc-hotspot">KVM和CDC/CLDC Hotspot</h3>
 <ol>
 <li>Oracle在Java ME产品线上的两款虚拟机为：CDC/CLDC HotSpot Implementation VM </li>
 <li>KVM（Kilobyte）是CLDC-HI早期产品</li>
@@ -1427,22 +1427,22 @@
 </ul>
 </li>
 </ol>
-<h3 id="azul-vm">Azul VM<a class="headerlink" href="#azul-vm" title="Permanent link">&para;</a></h3>
+<h3 id="azul-vm">Azul VM</h3>
 <ol>
-<li>前面三大“高性能Java虚拟机”使用在**通用硬件平台上**</li>
-<li>这里Azul VW和BEA Liquid VM是与**特定硬件平台绑定**、软硬件配合的专有虚拟机：高性能Java虚拟机中的战斗机。</li>
+<li>前面三大“高性能Java虚拟机”使用在<strong>通用硬件平台上</strong></li>
+<li>这里Azul VW和BEA Liquid VM是与<strong>特定硬件平台绑定</strong>、软硬件配合的专有虚拟机：高性能Java虚拟机中的战斗机。</li>
 <li>Azul VM是Azul Systems公司在HotSpot基础上进行大量改进，运行于Azul Systems公司的专有硬件Vega系统上的Java虚拟机。</li>
 <li>每个Azul VM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的GC时间的垃圾收集器、专有硬件优化的线程调度等优秀特性。</li>
 <li>2010年，Azul Systems公司开始从硬件转向软件，发布了自己的Zing JVM，可以在通用x86平台上提供接近于Vega系统的特性。</li>
 </ol>
-<h3 id="liquid-vm">Liquid VM<a class="headerlink" href="#liquid-vm" title="Permanent link">&para;</a></h3>
+<h3 id="liquid-vm">Liquid VM</h3>
 <ol>
 <li>高性能Java虚拟机中的战斗机。</li>
 <li>BEA公司开发的，直接运行在自家Hypervisor系统上</li>
 <li>Liquid VM即是现在的JRockit VE（Virtual Edition）。<strong>Liquid VM不需要操作系统的支持，或者说它自己本身实现了一个专用操作系统的必要功能，如线程调度、文件系统、网络支持等</strong>。</li>
 <li>随着JRockit虚拟机终止开发，Liquid vM项目也停止了。</li>
 </ol>
-<h3 id="apache-marmony">Apache Marmony<a class="headerlink" href="#apache-marmony" title="Permanent link">&para;</a></h3>
+<h3 id="apache-marmony">Apache Marmony</h3>
 <ol>
 <li>
 <p>Apache也曾经推出过与JDK1.5和JDK1.6兼容的Java运行平台Apache Harmony。</p>
@@ -1454,7 +1454,7 @@
 <p>虽然目前并没有Apache Harmony被大规模商用的案例，但是它的Java类库代码吸纳进了Android SDK。</p>
 </li>
 </ol>
-<h3 id="micorsoft-jvm">Micorsoft JVM<a class="headerlink" href="#micorsoft-jvm" title="Permanent link">&para;</a></h3>
+<h3 id="micorsoft-jvm">Micorsoft JVM</h3>
 <ol>
 <li>
 <p>微软为了在IE3浏览器中支持Java Applets，开发了Microsoft JVM。</p>
@@ -1466,7 +1466,7 @@
 <p>1997年，Sun以侵犯商标、不正当竞争罪名指控微软成功，赔了Sun很多钱。微软WindowsXP SP3中抹掉了其VM。现在Windows上安装的jdk都是HotSpot。</p>
 </li>
 </ol>
-<h3 id="taobao-jvm">Taobao JVM<a class="headerlink" href="#taobao-jvm" title="Permanent link">&para;</a></h3>
+<h3 id="taobao-jvm">Taobao JVM</h3>
 <ol>
 <li>
 <p>由AliJVM团队发布。阿里，国内使用Java最强大的公司，覆盖云计算、金融、物流、电商等众多领域，需要解决高并发、高可用、分布式的复合问题。有大量的开源产品。</p>
@@ -1478,7 +1478,7 @@
 <p>基于OpenJDK Hotspot VM发布的国内第一个优化、深度定制且开源的高性能服务器版Java虚拟机。</p>
 <ul>
 <li>创新的GCIH（GCinvisible heap）技术实现了off-heap，<strong>即将生命周期较长的Java对象从heap中移到heap之外，并且GC不能管理GCIH内部的Java对象，以此达到降低GC的回收频率和提升GC的回收效率的目的</strong>。</li>
-<li>GCIH中的**对象还能够在多个Java虚拟机进程中实现共享**</li>
+<li>GCIH中的<strong>对象还能够在多个Java虚拟机进程中实现共享</strong></li>
 <li>使用crc32指令实现JvM intrinsic降低JNI的调用开销</li>
 <li>PMU hardware的Java profiling tool和诊断协助功能</li>
 <li>针对大数据场景的ZenGC</li>
@@ -1487,7 +1487,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="dalvik-vm">Dalvik VM<a class="headerlink" href="#dalvik-vm" title="Permanent link">&para;</a></h3>
+<h3 id="dalvik-vm">Dalvik VM</h3>
 <ol>
 <li>
 <p>谷歌开发的，应用于Android系统，并在Android2.2中提供了JIT，发展迅猛。</p>
@@ -1511,13 +1511,13 @@
 <p>Android 5.0使用支持提前编译（Ahead of Time Compilation，AoT）的ART VM替换Dalvik VM。</p>
 </li>
 </ol>
-<h3 id="graal-vm">Graal VM（未来虚拟机）<a class="headerlink" href="#graal-vm" title="Permanent link">&para;</a></h3>
+<h3 id="graal-vm">Graal VM（未来虚拟机）</h3>
 <ol>
 <li>
 <p>2018年4月，Oracle Labs公开了GraalvM，号称 “<strong>Run Programs Faster Anywhere</strong>”，勃勃野心。与1995年java的”write once，run anywhere"遥相呼应。</p>
 </li>
 <li>
-<p>GraalVM在HotSpot VM基础上增强而成的**跨语言全栈虚拟机，可以作为“任何语言”**的运行平台使用。语言包括：Java、Scala、Groovy、Kotlin；C、C++、Javascript、Ruby、Python、R等</p>
+<p>GraalVM在HotSpot VM基础上增强而成的<strong>跨语言全栈虚拟机，可以作为“任何语言”</strong>的运行平台使用。语言包括：Java、Scala、Groovy、Kotlin；C、C++、Javascript、Ruby、Python、R等</p>
 </li>
 <li>
 <p>支持不同语言中混用对方的接口和对象，支持这些语言使用已经编写好的本地库文件</p>
@@ -1529,7 +1529,7 @@
 <p><strong>如果说HotSpot有一天真的被取代，Graalvm希望最大</strong>。但是Java的软件生态没有丝毫变化。</p>
 </li>
 </ol>
-<h3 id="_14">总结<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<h3 id="_14">总结</h3>
 <p>具体JVM的内存结构，其实取决于其实现，不同厂商的JVM，或者同一厂商发布的不同版本，都有可能存在一定差异。主要以Oracle HotSpot VM为默认虚拟机。</p>
 
 

@@ -1972,44 +1972,44 @@
 
   <h1>第05章 存储引擎</h1>
 
-<h3 id="05">第05章 存储引擎<a class="headerlink" href="#05" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>查看存储引擎</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">show</span><span class="w"> </span><span class="k">engines</span><span class="p">;</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># 或</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">show</span><span class="w"> </span><span class="k">engines</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
-<h4 id="2"><strong>2.</strong> <strong>设置系统默认的存储引擎</strong><a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<h3 id="05">第05章 存储引擎</h3>
+<h4 id="1"><strong>1.</strong> <strong>查看存储引擎</strong></h4>
+<pre><code class="language-mysql">show engines;
+# 或
+show engines\G
+</code></pre>
+<h4 id="2"><strong>2.</strong> <strong>设置系统默认的存储引擎</strong></h4>
 <ul>
 <li>查看默认的存储引擎：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">show</span><span class="w"> </span><span class="k">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%storage_engine%&#39;</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">#或</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">SELECT</span><span class="w"> </span><span class="nv">@@default_storage_engine</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show variables like '%storage_engine%'; 
+#或
+SELECT @@default_storage_engine;
+</code></pre>
 <ul>
 <li>修改默认的存储引擎</li>
 </ul>
 <p>如果在创建表的语句中没有显式指定表的存储引擎的话，那就会默认使用<code>InnoDB</code>作为表的存储引擎。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SET</span><span class="w"> </span><span class="n">DEFAULT_STORAGE_ENGINE</span><span class="o">=</span><span class="n">MyISAM</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SET DEFAULT_STORAGE_ENGINE=MyISAM;
+</code></pre>
 <p>或者修改<code>my.cnf</code>文件：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">default-storage-engine</span><span class="o">=</span><span class="s">MyISAM</span><span class="w"> </span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 重启服务 </span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>mysqld.service
-</code></pre></div>
-<h4 id="3"><strong>3.</strong> <strong>设置表的存储引擎</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<pre><code class="language-ini">default-storage-engine=MyISAM 
+</code></pre>
+<pre><code class="language-shell"># 重启服务 
+systemctl restart mysqld.service
+</code></pre>
+<h4 id="3"><strong>3.</strong> <strong>设置表的存储引擎</strong></h4>
 <p>存储引擎是负责对表中的数据进行提取和写入工作的，我们可以为<code>不同的表设置不同的存储引擎</code>，也就是说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
-<h5 id="31"><strong>3.1</strong> <strong>创建表时指定存储引擎</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">表名</span><span class="p">(</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">建表语句</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">存储引擎名称</span><span class="p">;</span>
-</code></pre></div>
-<h5 id="32"><strong>3.2</strong> <strong>修改表的存储引擎</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">ENGINE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">存储引擎名称</span><span class="p">;</span>
-</code></pre></div>
-<h4 id="4"><strong>4.</strong> <strong>引擎介绍</strong><a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
-<h5 id="41-innodb"><strong>4.1 InnoDB</strong> <strong>引擎：具备外键支持功能的事务存储引擎</strong><a class="headerlink" href="#41-innodb" title="Permanent link">&para;</a></h5>
+<h5 id="31"><strong>3.1</strong> <strong>创建表时指定存储引擎</strong></h5>
+<pre><code class="language-mysql">CREATE TABLE 表名(
+    建表语句; 
+) ENGINE = 存储引擎名称;
+</code></pre>
+<h5 id="32"><strong>3.2</strong> <strong>修改表的存储引擎</strong></h5>
+<pre><code class="language-mysql">ALTER TABLE 表名 ENGINE = 存储引擎名称;
+</code></pre>
+<h4 id="4"><strong>4.</strong> <strong>引擎介绍</strong></h4>
+<h5 id="41-innodb"><strong>4.1 InnoDB</strong> <strong>引擎：具备外键支持功能的事务存储引擎</strong></h5>
 <ul>
 <li>MySQL从3.23.34a开始就包含InnoDB存储引擎。<code>大于等于5.5之后，默认采用InnoDB引擎</code>。 </li>
 <li>InnoDB是MySQL的<code>默认事务型引擎</code>，它被设计用来处理大量的短期(short-lived)事务。可以确保事务的完整提交(Commit)和回滚(Rollback)。</li>
@@ -2023,7 +2023,7 @@
 <li>对比MyISAM的存储引擎，<code>InnoDB写的处理效率差一些</code>，并且会占用更多的磁盘空间以保存数据和索引。</li>
 <li>MyISAM只缓存索引，不缓存真实数据；InnoDB不仅缓存索引还要缓存真实数据，<code>对内存要求较高</code>，而且内存大小对性能有决定性的影响。</li>
 </ul>
-<h5 id="42-myisam"><strong>4.2 MyISAM</strong> <strong>引擎：主要的非事务处理存储引擎</strong><a class="headerlink" href="#42-myisam" title="Permanent link">&para;</a></h5>
+<h5 id="42-myisam"><strong>4.2 MyISAM</strong> <strong>引擎：主要的非事务处理存储引擎</strong></h5>
 <ul>
 <li>MyISAM提供了大量的特性，包括全文索引、压缩、空间函数(GIS)等，但MyISAM<code>不支持事务、行级锁、外键</code>，有一个毫无疑问的缺陷就是<code>崩溃后无法安全恢复</code>。 </li>
 <li><code>5.5之前默认的存储引擎</code></li>
@@ -2035,14 +2035,14 @@
 <li>表名.MYI 存储索引 (MYIndex)</li>
 <li>应用场景：只读应用或者以读为主的业务</li>
 </ul>
-<h5 id="43-archive"><strong>4.3 Archive</strong> <strong>引擎：用于数据存档</strong><a class="headerlink" href="#43-archive" title="Permanent link">&para;</a></h5>
-<h5 id="44-blackhole"><strong>4.4 Blackhole</strong> <strong>引擎：丢弃写操作，读操作会返回空内容</strong><a class="headerlink" href="#44-blackhole" title="Permanent link">&para;</a></h5>
-<h5 id="45-csv"><strong>4.5 CSV</strong> <strong>引擎：存储数据时，以逗号分隔各个数据项</strong><a class="headerlink" href="#45-csv" title="Permanent link">&para;</a></h5>
-<h5 id="46-memory"><strong>4.6 Memory</strong> <strong>引擎：置于内存的表</strong><a class="headerlink" href="#46-memory" title="Permanent link">&para;</a></h5>
-<h5 id="47-federated"><strong>4.7 Federated</strong> <strong>引擎：访问远程表</strong><a class="headerlink" href="#47-federated" title="Permanent link">&para;</a></h5>
-<h5 id="48-mergemyisam"><strong>4.8 Merge引擎：管理多个MyISAM表构成的表集合</strong><a class="headerlink" href="#48-mergemyisam" title="Permanent link">&para;</a></h5>
-<h5 id="49-ndbmysql"><strong>4.9 NDB引擎：MySQL集群专用存储引擎</strong><a class="headerlink" href="#49-ndbmysql" title="Permanent link">&para;</a></h5>
-<h4 id="5-myisaminnodb"><strong>5. MyISAM和InnoDB</strong><a class="headerlink" href="#5-myisaminnodb" title="Permanent link">&para;</a></h4>
+<h5 id="43-archive"><strong>4.3 Archive</strong> <strong>引擎：用于数据存档</strong></h5>
+<h5 id="44-blackhole"><strong>4.4 Blackhole</strong> <strong>引擎：丢弃写操作，读操作会返回空内容</strong></h5>
+<h5 id="45-csv"><strong>4.5 CSV</strong> <strong>引擎：存储数据时，以逗号分隔各个数据项</strong></h5>
+<h5 id="46-memory"><strong>4.6 Memory</strong> <strong>引擎：置于内存的表</strong></h5>
+<h5 id="47-federated"><strong>4.7 Federated</strong> <strong>引擎：访问远程表</strong></h5>
+<h5 id="48-mergemyisam"><strong>4.8 Merge引擎：管理多个MyISAM表构成的表集合</strong></h5>
+<h5 id="49-ndbmysql"><strong>4.9 NDB引擎：MySQL集群专用存储引擎</strong></h5>
+<h4 id="5-myisaminnodb"><strong>5. MyISAM和InnoDB</strong></h4>
 <table>
 <thead>
 <tr>
@@ -2094,7 +2094,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<h3 id="_1"></h3>
 
 
 

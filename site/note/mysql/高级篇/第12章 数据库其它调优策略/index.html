@@ -1956,15 +1956,15 @@
 
   <h1>第12章 数据库其它调优策略</h1>
 
-<h3 id="12">第12章 数据库其它调优策略<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>数据库调优的措施</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11"><strong>1.1</strong> <strong>调优的目标</strong><a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
+<h3 id="12">第12章 数据库其它调优策略</h3>
+<h4 id="1"><strong>1.</strong> <strong>数据库调优的措施</strong></h4>
+<h5 id="11"><strong>1.1</strong> <strong>调优的目标</strong></h5>
 <ul>
 <li>尽可能<code>节省系统资源</code>，以便系统可以提供更大负荷的服务。（吞吐量更大）</li>
 <li>合理的结构设计和参数调整，以提高用户操<code>响应的速度</code>。（响应速度更快）</li>
 <li>减少系统的瓶颈，提高MySQL数据库整体的性能。</li>
 </ul>
-<h5 id="12_1"><strong>1.2</strong> <strong>如何定位调优问题</strong><a class="headerlink" href="#12_1" title="Permanent link">&para;</a></h5>
+<h5 id="12_1"><strong>1.2</strong> <strong>如何定位调优问题</strong></h5>
 <ul>
 <li><strong>用户的反馈（主要）</strong></li>
 <li><strong>日志分析（主要）</strong></li>
@@ -1972,7 +1972,7 @@
 <li><strong>数据库内部状况监控</strong></li>
 <li><strong>其它</strong></li>
 </ul>
-<h5 id="13"><strong>1.3</strong> <strong>调优的维度和步骤</strong><a class="headerlink" href="#13" title="Permanent link">&para;</a></h5>
+<h5 id="13"><strong>1.3</strong> <strong>调优的维度和步骤</strong></h5>
 <p><strong>第1步：选择适合的</strong> <strong>DBMS</strong> </p>
 <p><strong>第2步：优化表设计</strong> </p>
 <p><strong>第3步：优化逻辑查询</strong></p>
@@ -1984,14 +1984,14 @@
 <p><img alt="image-20220403102536170" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204031025279.png" /></p>
 <p><strong>2、数据分片</strong></p>
 <p><img alt="image-20220403102618627" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204031026743.png" /></p>
-<h4 id="2-mysql"><strong>2.</strong> <strong>优化MySQL服务器</strong><a class="headerlink" href="#2-mysql" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>优化服务器硬件</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
-<p>**服务器的硬件性能直接决定着MySQL数据库的性能。**硬件的性能瓶颈直接决定MySQL数据库的运行速度和效率。针对性能瓶颈提高硬件配置，可以提高MySQL数据库查询、更新的速度。 </p>
+<h4 id="2-mysql"><strong>2.</strong> <strong>优化MySQL服务器</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>优化服务器硬件</strong></h5>
+<p><strong>服务器的硬件性能直接决定着MySQL数据库的性能。</strong>硬件的性能瓶颈直接决定MySQL数据库的运行速度和效率。针对性能瓶颈提高硬件配置，可以提高MySQL数据库查询、更新的速度。 </p>
 <p>（1）<code>配置较大的内存</code></p>
 <p>（2）<code>配置高速磁盘系统</code></p>
 <p>（3）<code>合理分布磁盘I/O</code></p>
 <p>（4）<code>配置多处理器</code></p>
-<h5 id="22-mysql"><strong>2.2</strong> <strong>优化MySQL的参数</strong><a class="headerlink" href="#22-mysql" title="Permanent link">&para;</a></h5>
+<h5 id="22-mysql"><strong>2.2</strong> <strong>优化MySQL的参数</strong></h5>
 <ul>
 <li><code>innodb_buffer_pool_size</code>：这个参数是Mysql数据库最重要的参数之一，表示InnoDB类型的<code>表和索引的最大缓存</code>。它不仅仅缓存<code>索引数据</code>，还会缓存<code>表的数据</code>。这个值越大，查询的速度就会越快。但是这个值太大会影响操作系统的性能。</li>
 <li><code>key_buffer_size</code>：表示<code>索引缓冲区的大小</code>。索引缓冲区是所有的<code>线程共享</code>。增加索引缓冲区可以得到更好处理的索引（对所有读和多重写）。当然，这个值不是越大越好，它的大小取决于内存的大小。如果这个值太大，就会导致操作系统频繁换页，也会降低系统性能。对于内存在<code>4GB</code>左右的服务器该参数可设置为<code>256M</code>或<code>384M</code>。</li>
@@ -2014,11 +2014,11 @@
 <li><code>wait_timeout</code>：指定<code>一个请求的最大连接时间</code>，对于4GB左右内存的服务器可以设置为5-10。 </li>
 <li><code>interactive_timeout</code>：表示服务器在关闭连接前等待行动的秒数。</li>
 </ul>
-<h4 id="3"><strong>3.</strong> <strong>优化数据库结构</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
-<h5 id="31"><strong>3.1</strong> <strong>拆分表：冷热数据分离</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
-<h5 id="32"><strong>3.2</strong> <strong>增加中间表</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
-<h5 id="33"><strong>3.3</strong> <strong>增加冗余字段</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
-<h5 id="34"><strong>3.4</strong> <strong>优化数据类型</strong><a class="headerlink" href="#34" title="Permanent link">&para;</a></h5>
+<h4 id="3"><strong>3.</strong> <strong>优化数据库结构</strong></h4>
+<h5 id="31"><strong>3.1</strong> <strong>拆分表：冷热数据分离</strong></h5>
+<h5 id="32"><strong>3.2</strong> <strong>增加中间表</strong></h5>
+<h5 id="33"><strong>3.3</strong> <strong>增加冗余字段</strong></h5>
+<h5 id="34"><strong>3.4</strong> <strong>优化数据类型</strong></h5>
 <p><strong>情况1：对整数类型数据进行优化。</strong></p>
 <p>遇到整数类型的字段可以用<code>INT 型</code>。这样做的理由是，INT 型数据有足够大的取值范围，不用担心数据超出取值范围的问题。刚开始做项目的时候，首先要保证系统的稳定性，这样设计字段类型是可以的。但在数据量很大的时候，数据类型的定义，在很大程度上会影响到系统整体的执行效率。</p>
 <p>对于<code>非负型</code>的数据（如自增ID、整型IP）来说，要优先使用无符号整型<code>UNSIGNED</code>来存储。因为无符号相对于有符号，同样的字节数，存储的数值范围更大。如tinyint有符号为-128-127，无符号为0-255，多出一倍的存储空间。</p>
@@ -2029,7 +2029,7 @@
 <p><strong>情况5：使用TIMESTAMP存储时间</strong></p>
 <p><strong>情况6：用DECIMAL代替FLOAT和DOUBLE存储精确浮点数</strong></p>
 <p><strong>总之，遇到数据量大的项目时，一定要在充分了解业务需求的前提下，合理优化数据类型，这样才能充分发挥资源的效率，使系统达到最优</strong>。</p>
-<h5 id="35"><strong>3.5</strong> <strong>优化插入记录的速度</strong><a class="headerlink" href="#35" title="Permanent link">&para;</a></h5>
+<h5 id="35"><strong>3.5</strong> <strong>优化插入记录的速度</strong></h5>
 <p><strong>1. MyISAM引擎的表：</strong></p>
 <p><strong>① 禁用索引</strong></p>
 <p><strong>② 禁用唯一性检查</strong></p>
@@ -2039,22 +2039,22 @@
 <p><strong>① 禁用唯一性检查</strong></p>
 <p><strong>② 禁用外键检查</strong></p>
 <p><strong>③ 禁止自动提交</strong></p>
-<h5 id="36"><strong>3.6</strong> <strong>使用非空约束</strong><a class="headerlink" href="#36" title="Permanent link">&para;</a></h5>
+<h5 id="36"><strong>3.6</strong> <strong>使用非空约束</strong></h5>
 <p><strong>在设计字段的时候，如果业务允许，建议尽量使用非空约束</strong></p>
-<h5 id="37"><strong>3.7</strong> <strong>分析表、检查表与优化表</strong><a class="headerlink" href="#37" title="Permanent link">&para;</a></h5>
+<h5 id="37"><strong>3.7</strong> <strong>分析表、检查表与优化表</strong></h5>
 <p><strong>1.</strong> <strong>分析表</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">ANALYZE</span><span class="w"> </span><span class="err">[</span><span class="k">LOCAL</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">NO_WRITE_TO_BINLOG</span><span class="err">]</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl_name</span><span class="err">[</span><span class="p">,</span><span class="n">tbl_name</span><span class="err">]</span><span class="n">…</span>
-</code></pre></div>
+<pre><code class="language-mysql">ANALYZE [LOCAL | NO_WRITE_TO_BINLOG] TABLE tbl_name[,tbl_name]…
+</code></pre>
 <p>默认的，MySQL服务会将 ANALYZE TABLE语句写到binlog中，以便在主从架构中，从服务能够同步数据。可以添加参数LOCAL 或者 NO_WRITE_TO_BINLOG取消将语句写到binlog中。</p>
 <p>使用<code>ANALYZE TABLE</code>分析表的过程中，数据库系统会自动对表加一个<code>只读锁</code>。在分析期间，只能读取表中的记录，不能更新和插入记录。ANALYZE TABLE语句能够分析InnoDB和MyISAM类型的表，但是不能作用于视图。</p>
 <p>ANALYZE TABLE分析后的统计结果会反应到<code>cardinality</code>的值，该值统计了表中某一键所在的列不重复的值的个数。<strong>该值越接近表中的总行数，则在表连接查询或者索引查询时，就越优先被优化器选择使用。</strong></p>
 <p><strong>2.</strong> <strong>检查表</strong> </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CHECK</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl_name</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">tbl_name</span><span class="err">]</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="err">[</span><span class="k">option</span><span class="err">]</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="k">option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="k">QUICK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">FAST</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">MEDIUM</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">EXTENDED</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">CHANGED</span><span class="err">}</span>
-</code></pre></div>
+<pre><code class="language-mysql">CHECK TABLE tbl_name [, tbl_name] ... [option] ... option = {QUICK | FAST | MEDIUM | EXTENDED | CHANGED}
+</code></pre>
 <p>MySQL中可以使用<code>CHECK TABLE</code>语句来检查表。CHECK TABLE语句能够检查InnoDB和MyISAM类型的表是否存在错误。CHECK TABLE语句在执行过程中也会给表加上<code>只读锁</code>。</p>
 <p><strong>3.</strong> <strong>优化表</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">OPTIMIZE</span><span class="w"> </span><span class="err">[</span><span class="k">LOCAL</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">NO_WRITE_TO_BINLOG</span><span class="err">]</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tbl_name</span><span class="w"> </span><span class="err">[</span><span class="p">,</span><span class="w"> </span><span class="n">tbl_name</span><span class="err">]</span><span class="w"> </span><span class="p">...</span>
-</code></pre></div>
+<pre><code class="language-mysql">OPTIMIZE [LOCAL | NO_WRITE_TO_BINLOG] TABLE tbl_name [, tbl_name] ...
+</code></pre>
 <p>MySQL中使用<code>OPTIMIZE TABLE</code>语句来优化表。但是，OPTILMIZE TABLE语句只能优化表中的<code>VARCHAR</code>、<code>BLOB</code>或<code>TEXT</code>类型的字段。一个表使用了这些字段的数据类型，若已经<code>删除</code>了表的一大部分数据，或者已经对含有可变长度行的表（含有VARCHAR、BLOB或TEXT列的表）进行了很多<code>更新</code>，则应使用OPTIMIZE TABLE来重新利用未使用的空间，并整理数据文件的<code>碎片</code>。 </p>
 <p>OPTIMIZE TABLE 语句对InnoDB和MyISAM类型的表都有效。该语句在执行过程中也会给表加上<code>只读锁</code>。</p>
 

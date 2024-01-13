@@ -1878,25 +1878,25 @@
   
 
 
-<h1 id="17_">第17章_触发器<a class="headerlink" href="#17_" title="Permanent link">&para;</a></h1>
+<h1 id="17_">第17章_触发器</h1>
 <p>讲师：尚硅谷-宋红康（江湖人称：康师傅）</p>
 <p>官网：<a href="http://www.atguigu.com/">http://www.atguigu.com</a></p>
 <hr />
 <p>在实际开发中，我们经常会遇到这样的情况：有 2 个或者多个相互关联的表，如<code>商品信息</code>和<code>库存信息</code>分别存放在 2 个不同的数据表中，我们在添加一条新商品记录的时候，为了保证数据的完整性，必须同时在库存表中添加一条库存记录。</p>
 <p>这样一来，我们就必须把这两个关联的操作步骤写到程序里面，而且要用<code>事务</code>包裹起来，确保这两个操作成为一个<code>原子操作</code>，要么全部执行，要么全部不执行。要是遇到特殊情况，可能还需要对数据进行手动维护，这样就很<code>容易忘记其中的一步</code>，导致数据缺失。</p>
-<p>这个时候，咱们可以使用触发器。**你可以创建一个触发器，让商品信息数据的插入操作自动触发库存数据的插入操作。**这样一来，就不用担心因为忘记添加库存数据而导致的数据缺失了。</p>
-<h2 id="1">1. 触发器概述<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>这个时候，咱们可以使用触发器。<strong>你可以创建一个触发器，让商品信息数据的插入操作自动触发库存数据的插入操作。</strong>这样一来，就不用担心因为忘记添加库存数据而导致的数据缺失了。</p>
+<h2 id="1">1. 触发器概述</h2>
 <p>MySQL从<code>5.0.2</code>版本开始支持触发器。MySQL的触发器和存储过程一样，都是嵌入到MySQL服务器的一段程序。</p>
 <p>触发器是由<code>事件来触发</code>某个操作，这些事件包括<code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>事件。所谓事件就是指用户的动作或者触发某项行为。如果定义了触发程序，当数据库执行这些语句时候，就相当于事件发生了，就会<code>自动</code>激发触发器执行相应的操作。</p>
 <p>当对数据表中的数据执行插入、更新和删除操作，需要自动执行一些数据库逻辑时，可以使用触发器来实现。</p>
-<h2 id="2">2. 触发器的创建<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<h3 id="21">2.1 创建触发器语法<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<h2 id="2">2. 触发器的创建</h2>
+<h3 id="21">2.1 创建触发器语法</h3>
 <p>创建触发器的语法结构是：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">触发器名称</span><span class="w"> </span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="err">{</span><span class="k">BEFORE</span><span class="o">|</span><span class="k">AFTER</span><span class="err">}</span><span class="w"> </span><span class="err">{</span><span class="k">INSERT</span><span class="o">|</span><span class="k">UPDATE</span><span class="o">|</span><span class="k">DELETE</span><span class="err">}</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">触发器执行的语句块</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TRIGGER 触发器名称 
+{BEFORE|AFTER} {INSERT|UPDATE|DELETE} ON 表名 
+FOR EACH ROW 
+触发器执行的语句块;
+</code></pre>
 <p>说明：</p>
 <ul>
 <li><code>表名</code>：表示触发器监控的对象。</li>
@@ -1911,109 +1911,109 @@
 <p><code>触发器执行的语句块</code>：可以是单条SQL语句，也可以是由BEGIN…END结构组成的复合语句块。</p>
 </li>
 </ul>
-<h3 id="22">2.2 代码举例<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h3 id="22">2.2 代码举例</h3>
 <p><strong>举例1：</strong></p>
 <p>1、创建数据表：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test_trigger</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">AUTO_INCREMENT</span><span class="p">,</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">t_note</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">);</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test_trigger_log</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="k">AUTO_INCREMENT</span><span class="p">,</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">t_log</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE test_trigger (
+id INT PRIMARY KEY AUTO_INCREMENT,
+t_note VARCHAR(30)
+);
+
+
+CREATE TABLE test_trigger_log (
+id INT PRIMARY KEY AUTO_INCREMENT,
+t_log VARCHAR(30)
+);
+</code></pre>
 <p>2、创建触发器：创建名称为before_insert的触发器，向test_trigger数据表插入数据之前，向test_trigger_log数据表中插入before_insert的日志信息。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">before_insert</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">BEFORE</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">test_trigger</span><span class="w"> </span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">BEGIN</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">test_trigger_log</span><span class="w"> </span><span class="p">(</span><span class="n">t_log</span><span class="p">)</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;before_insert&#39;</span><span class="p">);</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">END</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">DELIMITER //
+
+CREATE TRIGGER before_insert
+BEFORE INSERT ON test_trigger 
+FOR EACH ROW
+BEGIN
+    INSERT INTO test_trigger_log (t_log)
+    VALUES('before_insert');
+
+END //
+
+DELIMITER ;
+</code></pre>
 <p>3、向test_trigger数据表中插入数据</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">test_trigger</span><span class="w"> </span><span class="p">(</span><span class="n">t_note</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;测试 BEFORE INSERT 触发器&#39;</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO test_trigger (t_note) VALUES ('测试 BEFORE INSERT 触发器');
+</code></pre>
 <p>4、查看test_trigger_log数据表中的数据</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test_trigger_log</span><span class="p">;</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">t_log</span><span class="w">         </span><span class="o">|</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">before_insert</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; SELECT * FROM test_trigger_log;
++----+---------------+
+| id | t_log         |
++----+---------------+
+|  1 | before_insert |
++----+---------------+
+1 row in set (0.00 sec)
+</code></pre>
 <p><strong>举例2：</strong></p>
 <p>1、创建名称为after_insert的触发器，向test_trigger数据表插入数据之后，向test_trigger_log数据表中插入after_insert的日志信息。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">after_insert</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">AFTER</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">test_trigger</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">BEGIN</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">test_trigger_log</span><span class="w"> </span><span class="p">(</span><span class="n">t_log</span><span class="p">)</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="k">VALUES</span><span class="p">(</span><span class="s1">&#39;after_insert&#39;</span><span class="p">);</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">END</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">DELIMITER //
+
+CREATE TRIGGER after_insert
+AFTER INSERT ON test_trigger
+FOR EACH ROW
+BEGIN
+    INSERT INTO test_trigger_log (t_log)
+    VALUES('after_insert');
+END //
+
+DELIMITER ;
+</code></pre>
 <p>2、向test_trigger数据表中插入数据。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">test_trigger</span><span class="w"> </span><span class="p">(</span><span class="n">t_note</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;测试 AFTER INSERT 触发器&#39;</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">INSERT INTO test_trigger (t_note) VALUES ('测试 AFTER INSERT 触发器');
+</code></pre>
 <p>3、查看test_trigger_log数据表中的数据</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">test_trigger_log</span><span class="p">;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="o">|</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">t_log</span><span class="w">         </span><span class="o">|</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="o">|</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">before_insert</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="o">|</span><span class="w">  </span><span class="mi">2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">before_insert</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="o">|</span><span class="w">  </span><span class="mi">3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">after_insert</span><span class="w">  </span><span class="o">|</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="o">+----+---------------+</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="mi">3</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
-<p>**举例3：**定义触发器“salary_check_trigger”，基于员工表“employees”的INSERT事件，在INSERT之前检查将要添加的新员工薪资是否大于他领导的薪资，如果大于领导薪资，则报sqlstate_value为'HY000'的错误，从而使得添加失败。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">salary_check_trigger</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">BEFORE</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="k">ROW</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">BEGIN</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">mgrsalary</span><span class="w"> </span><span class="kt">DOUBLE</span><span class="p">;</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mgrsalary</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">employee_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">manager_id</span><span class="p">;</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="k">NEW</span><span class="p">.</span><span class="n">salary</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">mgrsalary</span><span class="w"> </span><span class="k">THEN</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="k">SIGNAL</span><span class="w"> </span><span class="k">SQLSTATE</span><span class="w"> </span><span class="s1">&#39;HY000&#39;</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">MESSAGE_TEXT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;薪资高于领导薪资错误&#39;</span><span class="p">;</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="k">END</span><span class="w"> </span><span class="o">//</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; SELECT * FROM test_trigger_log;
++----+---------------+
+| id | t_log         |
++----+---------------+
+|  1 | before_insert |
+|  2 | before_insert |
+|  3 | after_insert  |
++----+---------------+
+3 rows in set (0.00 sec)
+</code></pre>
+<p><strong>举例3：</strong>定义触发器“salary_check_trigger”，基于员工表“employees”的INSERT事件，在INSERT之前检查将要添加的新员工薪资是否大于他领导的薪资，如果大于领导薪资，则报sqlstate_value为'HY000'的错误，从而使得添加失败。</p>
+<pre><code class="language-mysql">DELIMITER //
+
+CREATE TRIGGER salary_check_trigger
+BEFORE INSERT ON employees FOR EACH ROW
+BEGIN
+    DECLARE mgrsalary DOUBLE;
+    SELECT salary INTO mgrsalary FROM employees WHERE employee_id = NEW.manager_id;
+
+    IF NEW.salary &gt; mgrsalary THEN
+        SIGNAL SQLSTATE 'HY000' SET MESSAGE_TEXT = '薪资高于领导薪资错误';
+    END IF;
+END //
+
+DELIMITER ;
+</code></pre>
 <p>上面触发器声明过程中的NEW关键字代表INSERT添加语句的新记录。</p>
-<h2 id="3">3. 查看、删除触发器<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<h3 id="31">3.1 查看触发器<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<h2 id="3">3. 查看、删除触发器</h2>
+<h3 id="31">3.1 查看触发器</h3>
 <p>查看触发器是查看数据库中已经存在的触发器的定义、状态和语法信息等。</p>
 <p>方式1：查看当前数据库的所有触发器的定义</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">TRIGGERS</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
+<pre><code class="language-mysql">SHOW TRIGGERS\G
+</code></pre>
 <p>方式2：查看当前数据库中某个触发器的定义</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">触发器名</span>
-</code></pre></div>
+<pre><code class="language-mysql">SHOW CREATE TRIGGER 触发器名
+</code></pre>
 <p>方式3：从系统库information_schema的TRIGGERS表中查询“salary_check_trigger”触发器的信息。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="k">TRIGGERS</span><span class="p">;</span>
-</code></pre></div>
-<h3 id="32">3.2 删除触发器<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<pre><code class="language-mysql">SELECT * FROM information_schema.TRIGGERS;
+</code></pre>
+<h3 id="32">3.2 删除触发器</h3>
 <p>触发器也是数据库对象，删除触发器也用DROP语句，语法格式如下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">DROP</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w">  </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">触发器名称</span><span class="p">;</span>
-</code></pre></div>
-<h2 id="4">4. 触发器的优缺点<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<h3 id="41">4.1 优点<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<pre><code class="language-mysql">DROP TRIGGER  IF EXISTS 触发器名称;
+</code></pre>
+<h2 id="4">4. 触发器的优缺点</h2>
+<h3 id="41">4.1 优点</h3>
 <p><strong>1、触发器可以确保数据的完整性</strong>。</p>
 <p>假设我们用<code>进货单头表</code>（demo.importhead）来保存进货单的总体信息，包括进货单编号、供货商编号、仓库编号、总计进货数量、总计进货金额和验收日期。</p>
 <p><img alt="image-20211010233336012" src="../images/image-20211010233336012.png" /></p>
@@ -2028,18 +2028,18 @@
 <p>利用触发器，可以具体记录什么时间发生了什么。比如，记录修改会员储值金额的触发器，就是一个很好的例子。这对我们还原操作执行时的具体场景，更好地定位问题原因很有帮助。</p>
 <p><strong>3、触发器还可以用在操作数据前，对数据进行合法性检查。</strong></p>
 <p>比如，超市进货的时候，需要库管录入进货价格。但是，人为操作很容易犯错误，比如说在录入数量的时候，把条形码扫进去了；录入金额的时候，看串了行，录入的价格远超售价，导致账面上的巨亏……这些都可以通过触发器，在实际插入或者更新操作之前，对相应的数据进行检查，及时提示错误，防止错误数据进入系统。</p>
-<h3 id="42">4.2 缺点<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<h3 id="42">4.2 缺点</h3>
 <p><strong>1、触发器最大的一个问题就是可读性差。</strong></p>
 <p>因为触发器存储在数据库中，并且由事件驱动，这就意味着触发器有可能<code>不受应用层的控制</code>。这对系统维护是非常有挑战的。</p>
 <p>比如，创建触发器用于修改会员储值操作。如果触发器中的操作出了问题，会导致会员储值金额更新失败。我用下面的代码演示一下：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">update</span><span class="w"> </span><span class="n">demo</span><span class="p">.</span><span class="n">membermaster</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">memberdeposit</span><span class="o">=</span><span class="mi">20</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">memberid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">ERROR</span><span class="w"> </span><span class="mi">1054</span><span class="w"> </span><span class="p">(</span><span class="n">42S22</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="no">Unknown</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;aa&#39;</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s1">&#39;field list&#39;</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; update demo.membermaster set memberdeposit=20 where memberid = 2;
+ERROR 1054 (42S22): Unknown column 'aa' in 'field list'
+</code></pre>
 <p>结果显示，系统提示错误，字段“aa”不存在。</p>
 <p>这是因为，触发器中的数据插入操作多了一个字段，系统提示错误。可是，如果你不了解这个触发器，很可能会认为是更新语句本身的问题，或者是会员信息表的结构出了问题。说不定你还会给会员信息表添加一个叫“aa”的字段，试图解决这个问题，结果只能是白费力。</p>
 <p><strong>2、相关数据的变更，可能会导致触发器出错。</strong></p>
 <p>特别是数据表结构的变更，都可能会导致触发器出错，进而影响数据操作的正常运行。这些都会由于触发器本身的隐蔽性，影响到应用中错误原因排查的效率。</p>
-<h3 id="43">4.3 注意点<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<h3 id="43">4.3 注意点</h3>
 <p>注意，如果在子表中定义了外键约束，并且外键指定了ON UPDATE/DELETE CASCADE/SET NULL子句，此时修改父表被引用的键值或删除父表被引用的记录行时，也会引起子表的修改和删除操作，此时基于子表的UPDATE和DELETE语句定义的触发器并不会被激活。</p>
 <p>例如：基于子表员工表（t_employee）的DELETE语句定义了触发器t1，而子表的部门编号（did）字段定义了外键约束引用了父表部门表（t_department）的主键列部门编号（did），并且该外键加了“ON DELETE SET NULL”子句，那么如果此时删除父表部门表（t_department）在子表员工表（t_employee）有匹配记录的部门记录时，会引起子表员工表（t_employee）匹配记录的部门编号（did）修改为NULL，但是此时不会激活触发器t1。只有直接对子表员工表（t_employee）执行DELETE语句时才会激活触发器t1。</p>
 

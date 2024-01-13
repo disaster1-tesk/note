@@ -1996,35 +1996,35 @@
 
   <h1>第16章 多版本并发控制</h1>
 
-<h3 id="16">第16章 多版本并发控制<a class="headerlink" href="#16" title="Permanent link">&para;</a></h3>
-<h4 id="1-mvcc"><strong>1.</strong> <strong>什么是MVCC</strong><a class="headerlink" href="#1-mvcc" title="Permanent link">&para;</a></h4>
+<h3 id="16">第16章 多版本并发控制</h3>
+<h4 id="1-mvcc"><strong>1.</strong> <strong>什么是MVCC</strong></h4>
 <p>MVCC （Multiversion Concurrency Control），多版本并发控制。顾名思义，MVCC 是通过数据行的多个版本管理来实现数据库的<code>并发控制</code>。这项技术使得在InnoDB的事务隔离级别下执行<code>一致性读</code>操作有了保证。换言之，就是为了查询一些正在被另一个事务更新的行，并且可以看到它们被更新之前的值，这样在做查询的时候就不用等待另一个事务释放锁。</p>
-<h4 id="2"><strong>2.</strong> <strong>快照读与当前读</strong><a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<h4 id="2"><strong>2.</strong> <strong>快照读与当前读</strong></h4>
 <p>MVCC在MySQL InnoDB中的实现主要是为了提高数据库并发性能，用更好的方式去处理<code>读-写冲突</code>，做到即使有读写冲突时，也能做到<code>不加锁</code>，<code>非阻塞并发读</code>，而这个读指的就是<code>快照读</code>, 而非<code>当前读</code>。当前读实际上是一种加锁的操作，是悲观锁的实现。而MVCC本质是采用乐观锁思想的一种方式。</p>
-<h5 id="21"><strong>2.1</strong> <strong>快照读</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
+<h5 id="21"><strong>2.1</strong> <strong>快照读</strong></h5>
 <p>快照读又叫一致性读，读取的是快照数据。<strong>不加锁的简单的</strong> <strong>SELECT</strong> <strong>都属于快照读</strong>，即不加锁的非阻塞读。</p>
 <p>之所以出现快照读的情况，是基于提高并发性能的考虑，快照读的实现是基于MVCC，它在很多情况下，避免了加锁操作，降低了开销。</p>
 <p>既然是基于多版本，那么快照读可能读到的并不一定是数据的最新版本，而有可能是之前的历史版本。</p>
 <p>快照读的前提是隔离级别不是串行级别，串行级别下的快照读会退化成当前读。</p>
-<h5 id="22"><strong>2.2</strong> <strong>当前读</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
+<h5 id="22"><strong>2.2</strong> <strong>当前读</strong></h5>
 <p>当前读读取的是记录的最新版本（最新数据，而不是历史版本的数据），读取时还要保证其他并发事务不能修改当前记录，会对读取的记录进行加锁。加锁的 SELECT，或者对数据进行增删改都会进行当前读。</p>
-<h4 id="3"><strong>3.</strong> <strong>复习</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
-<h5 id="31"><strong>3.1</strong> <strong>再谈隔离级别</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
+<h4 id="3"><strong>3.</strong> <strong>复习</strong></h4>
+<h5 id="31"><strong>3.1</strong> <strong>再谈隔离级别</strong></h5>
 <p>我们知道事务有 4 个隔离级别，可能存在三种并发问题：</p>
 <p><img alt="image-20220405153617536" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051536648.png" /></p>
 <p>另图：</p>
 <p><img alt="image-20220405153632021" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051536125.png" /></p>
-<h5 id="32-undo-log"><strong>3.2</strong> <strong>隐藏字段、Undo Log版本链</strong><a class="headerlink" href="#32-undo-log" title="Permanent link">&para;</a></h5>
+<h5 id="32-undo-log"><strong>3.2</strong> <strong>隐藏字段、Undo Log版本链</strong></h5>
 <p>回顾一下undo日志的版本链，对于使用<code>InnoDB</code>存储引擎的表来说，它的聚簇索引记录中都包含两个必要的隐藏列。</p>
 <ul>
 <li><code>trx_id</code>：每次一个事务对某条聚簇索引记录进行改动时，都会把该事务的<code>事务id</code>赋值给trx_id 隐藏列。</li>
 <li><code>roll_pointer</code>：每次对某条聚簇索引记录进行改动时，都会把旧的版本写入到 undo日志 中，然后这个隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。</li>
 </ul>
-<h4 id="4-mvccreadview"><strong>4. MVCC实现原理之ReadView</strong><a class="headerlink" href="#4-mvccreadview" title="Permanent link">&para;</a></h4>
+<h4 id="4-mvccreadview"><strong>4. MVCC实现原理之ReadView</strong></h4>
 <p>MVCC 的实现依赖于：<strong>隐藏字段、Undo Log、Read View</strong>。</p>
-<h5 id="41-readview"><strong>4.1</strong> <strong>什么是ReadView</strong><a class="headerlink" href="#41-readview" title="Permanent link">&para;</a></h5>
+<h5 id="41-readview"><strong>4.1</strong> <strong>什么是ReadView</strong></h5>
 <p>ReadView就是事务在使用MVCC机制进行快照读操作时产生的读视图。当事务启动时，会生成数据库系统当前的一个快照，InnoDB为每个事务构造了一个数组，用来记录并维护系统当前<code>活跃事务</code>的ID（“活跃”指的就是，启动了但还没提交）。</p>
-<h5 id="42"><strong>4.2</strong> <strong>设计思路</strong><a class="headerlink" href="#42" title="Permanent link">&para;</a></h5>
+<h5 id="42"><strong>4.2</strong> <strong>设计思路</strong></h5>
 <p>使用<code>READ UNCOMMITTED</code>隔离级别的事务，由于可以读到未提交事务修改过的记录，所以直接读取记录的最新版本就好了。</p>
 <p>使用<code>SERIALIZABLE</code>隔离级别的事务，InnoDB规定使用加锁的方式来访问记录。</p>
 <p>使用<code>READ COMMITTED</code>和<code>REPEATABLE READ</code>隔离级别的事务，都必须保证读到<code>已经提交了的</code>事务修改过的记录。假如另一个事务已经修改了记录但是尚未提交，是不能直接读取最新版本的记录的，核心问题就是需要判断一下版本链中的哪个版本是当前事务可见的，这是ReadView要解决的主要问题。</p>
@@ -2049,7 +2049,7 @@
 <blockquote>
 <p>注意：low_limit_id并不是trx_ids中的最大值，事务id是递增分配的。比如，现在有id为1， 2，3这三个事务，之后id为3的事务提交了。那么一个新的读事务在生成ReadView时，trx_ids就包括1和2，up_limit_id的值就是1，low_limit_id的值就是4。</p>
 </blockquote>
-<h5 id="43-readview"><strong>4.3 ReadView的规则</strong><a class="headerlink" href="#43-readview" title="Permanent link">&para;</a></h5>
+<h5 id="43-readview"><strong>4.3 ReadView的规则</strong></h5>
 <p>有了这个ReadView，这样在访问某条记录时，只需要按照下边的步骤判断记录的某个版本是否可见。</p>
 <ul>
 <li>如果被访问版本的trx_id属性值与ReadView中的<code>creator_trx_id</code>值相同，意味着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。</li>
@@ -2059,7 +2059,7 @@
 <li>如果在，说明创建ReadView时生成该版本的事务还是活跃的，该版本不可以被访问。</li>
 <li>如果不在，说明创建ReadView时生成该版本的事务已经被提交，该版本可以被访问。</li>
 </ul>
-<h5 id="44-mvcc"><strong>4.4 MVCC整体操作流程</strong><a class="headerlink" href="#44-mvcc" title="Permanent link">&para;</a></h5>
+<h5 id="44-mvcc"><strong>4.4 MVCC整体操作流程</strong></h5>
 <p>了解了这些概念之后，我们来看下当查询一条记录的时候，系统如何通过MVCC找到它：</p>
 <ol>
 <li>
@@ -2086,25 +2086,25 @@
 </blockquote>
 <p>当隔离级别为可重复读的时候，就避免了不可重复读，这是因为一个事务只在第一次 SELECT 的时候会获取一次 Read View，而后面所有的 SELECT 都会复用这个 Read View，如下表所示：</p>
 <p><img alt="image-20220405155041964" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051550072.png" /></p>
-<h4 id="5"><strong>5.</strong> <strong>举例说明</strong><a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
-<h5 id="51-read-committed"><strong>5.1 READ COMMITTED隔离级别下</strong><a class="headerlink" href="#51-read-committed" title="Permanent link">&para;</a></h5>
+<h4 id="5"><strong>5.</strong> <strong>举例说明</strong></h4>
+<h5 id="51-read-committed"><strong>5.1 READ COMMITTED隔离级别下</strong></h5>
 <p><strong>READ COMMITTED</strong> <strong>：每次读取数据前都生成一个ReadView</strong>。</p>
-<h5 id="52-repeatable-read"><strong>5.2 REPEATABLE READ隔离级别下</strong><a class="headerlink" href="#52-repeatable-read" title="Permanent link">&para;</a></h5>
+<h5 id="52-repeatable-read"><strong>5.2 REPEATABLE READ隔离级别下</strong></h5>
 <p>使用<code>REPEATABLE READ</code>隔离级别的事务来说，只会在第一次执行查询语句时生成一个 ReadView ，之后的查询就不会重复生成了。</p>
-<h5 id="53"><strong>5.3</strong> <strong>如何解决幻读</strong><a class="headerlink" href="#53" title="Permanent link">&para;</a></h5>
+<h5 id="53"><strong>5.3</strong> <strong>如何解决幻读</strong></h5>
 <p>假设现在表 student 中只有一条数据，数据内容中，主键 id=1，隐藏的 trx_id=10，它的 undo log 如下图所示。</p>
 <p><img alt="image-20220405155640520" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051556631.png" /></p>
 <p>假设现在有事务 A 和事务 B 并发执行，<code>事务 A</code>的事务 id 为<code>20</code>，<code>事务 B</code>的事务 id 为<code>30</code>。</p>
 <p>步骤1：事务 A 开始第一次查询数据，查询的 SQL 语句如下。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">select * from student where id &gt;= 1;
+</code></pre>
 <p>在开始查询之前，MySQL 会为事务 A 产生一个 ReadView，此时 ReadView 的内容如下：<code>trx_ids= [20,30]</code>，<code>up_limit_id=20</code>，<code>low_limit_id=31</code>，<code>creator_trx_id=20</code>。</p>
 <p>由于此时表 student 中只有一条数据，且符合 where id&gt;=1 条件，因此会查询出来。然后根据 ReadView机制，发现该行数据的trx_id=10，小于事务 A 的 ReadView 里 up_limit_id，这表示这条数据是事务 A 开启之前，其他事务就已经提交了的数据，因此事务 A 可以读取到。</p>
 <p>结论：事务 A 的第一次查询，能读取到一条数据，id=1。</p>
 <p>步骤2：接着事务 B(trx_id=30)，往表 student 中新插入两条数据，并提交事务。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;李四&#39;</span><span class="p">);</span><span class="w"> </span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;王五&#39;</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">insert into student(id,name) values(2,'李四'); 
+insert into student(id,name) values(3,'王五');
+</code></pre>
 <p>此时表student 中就有三条数据了，对应的 undo 如下图所示：</p>
 <p><img alt="image-20220405155909223" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051559345.png" /></p>
 <p>步骤3：接着事务 A 开启第二次查询，根据可重复读隔离级别的规则，此时事务 A 并不会再重新生成ReadView。此时表 student 中的 3 条数据都满足 where id&gt;=1 的条件，因此会先查出来。然后根据ReadView 机制，判断每条数据是不是都可以被事务 A 看到。</p>
@@ -2113,7 +2113,7 @@
 <p>3）同理，id=3 的这条数据，trx_id 也为 30，因此也不能被事务 A 看见。</p>
 <p><img alt="image-20220405155941753" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204051559867.png" /></p>
 <p>结论：最终事务 A 的第二次查询，只能查询出 id=1 的这条数据。这和事务 A 的第一次查询的结果是一样的，因此没有出现幻读现象，所以说在 MySQL 的可重复读隔离级别下，不存在幻读问题。</p>
-<h4 id="6"><strong>6.</strong> <strong>总结</strong><a class="headerlink" href="#6" title="Permanent link">&para;</a></h4>
+<h4 id="6"><strong>6.</strong> <strong>总结</strong></h4>
 <p>这里介绍了<code>MVCC</code>在<code>READ COMMITTD</code>、<code>REPEATABLE READ</code>这两种隔离级别的事务在执行快照读操作时访问记录的版本链的过程。这样使不同事务的<code>读-写</code>、<code>写-读</code>操作并发执行，从而提升系统性能。</p>
 <p>核心点在于 ReadView 的原理，<code>READ COMMITTD</code>、<code>REPEATABLE READ</code>这两个隔离级别的一个很大不同就是生成ReadView的时机不同：</p>
 <ul>

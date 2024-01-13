@@ -2396,15 +2396,15 @@
   
 
 
-<h1 id="02_mysql">第02章_MySQL环境搭建<a class="headerlink" href="#02_mysql" title="Permanent link">&para;</a></h1>
+<h1 id="02_mysql">第02章_MySQL环境搭建</h1>
 <p>讲师：尚硅谷 宋红康（江湖人称：康师傅）</p>
 <p>官网：<a href="http://www.atguigu.com/">http://www.atguigu.com</a></p>
 <hr />
-<h2 id="1-mysql">1. MySQL的卸载<a class="headerlink" href="#1-mysql" title="Permanent link">&para;</a></h2>
-<h3 id="1mysql">步骤1：停止MySQL服务<a class="headerlink" href="#1mysql" title="Permanent link">&para;</a></h3>
+<h2 id="1-mysql">1. MySQL的卸载</h2>
+<h3 id="1mysql">步骤1：停止MySQL服务</h3>
 <p>在卸载之前，先停止MySQL8.0的服务。按键盘上的“Ctrl + Alt + Delete”组合键，打开“任务管理器”对话框，可以在“服务”列表找到“MySQL8.0”的服务，如果现在“正在运行”状态，可以右键单击服务，选择“停止”选项停止MySQL8.0的服务，如图所示。</p>
 <p><img alt="image-20211014153604802" src="../images/image-20211014153604802.png" /></p>
-<h3 id="2">步骤2：软件的卸载<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<h3 id="2">步骤2：软件的卸载</h3>
 <p><strong>方式1：通过控制面板方式</strong></p>
 <p>卸载MySQL8.0的程序可以和其他桌面应用程序一样直接在“控制面板”选择“卸载程序”，并在程序列表中找到MySQL8.0服务器程序，直接双击卸载即可，如图所示。这种方式删除，数据目录下的数据不会跟着删除。</p>
 <p><img alt="image-20211014153657668" src="../images/image-20211014153657668.png" /></p>
@@ -2423,7 +2423,7 @@
 <p><img src="images/image-20211014154006530.png" alt="image-20211014154006530" style="zoom:90%;" /></p>
 <p>⑥ 完成卸载。单击“Finish”（完成）按钮即可。如果想要同时卸载MySQL8.0的安装向导程序，勾选“Yes，Uninstall MySQL Installer”即可，如图所示。</p>
 <p><img src="images/image-20211014154046268.png" alt="image-20211014154046268" style="zoom:80%;" /></p>
-<h3 id="3">步骤3：残余文件的清理<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<h3 id="3">步骤3：残余文件的清理</h3>
 <p>如果再次安装不成功，可以卸载后对残余文件进行清理后再安装。</p>
 <p>（1）服务目录：mysql服务的安装目录</p>
 <p>（2）数据目录：默认在C:\ProgramData\MySQL</p>
@@ -2432,30 +2432,30 @@
 <p>注意：请在卸载前做好数据备份</p>
 <p>在操作完以后，需要重启计算机，然后进行安装即可。<strong>如果仍然安装失败，需要继续操作如下步骤4。</strong></p>
 </blockquote>
-<h3 id="4">步骤4：清理注册表（选做）<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<h3 id="4">步骤4：清理注册表（选做）</h3>
 <p>如果前几步做了，再次安装还是失败，那么可以清理注册表。</p>
 <p>如何打开注册表编辑器：在系统的搜索框中输入<code>regedit</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\Eventlog\Application\MySQL服务 目录删除
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\MySQL服务 目录删除
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\Eventlog\Application\MySQL服务 目录删除
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\MySQL服务 目录删除
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\MySQL服务目录删除
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MySQL服务删除
-</code></pre></div>
+<pre><code>HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\Eventlog\Application\MySQL服务 目录删除
+
+HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\MySQL服务 目录删除
+
+HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\Eventlog\Application\MySQL服务 目录删除
+
+HKEY_LOCAL_MACHINE\SYSTEM\ControlSet002\Services\MySQL服务 目录删除
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\MySQL服务目录删除
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MySQL服务删除
+</code></pre>
 <blockquote>
 <p>注册表中的ControlSet001,ControlSet002,不一定是001和002,可能是ControlSet005、006之类</p>
 </blockquote>
-<h3 id="5">步骤5：删除环境变量配置<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<h3 id="5">步骤5：删除环境变量配置</h3>
 <p>找到path环境变量，将其中关于mysql的环境变量删除，<strong>切记不要全部删除。</strong></p>
 <p>例如：删除  D:\develop_tools\mysql\MySQLServer8.0.26\bin;  这个部分</p>
 <p><img alt="1575694476072" src="../images/1575694476072.png" /></p>
-<h2 id="2-mysql">2. MySQL的下载、安装、配置<a class="headerlink" href="#2-mysql" title="Permanent link">&para;</a></h2>
-<h3 id="21-mysql4">2.1 MySQL的4大版本<a class="headerlink" href="#21-mysql4" title="Permanent link">&para;</a></h3>
+<h2 id="2-mysql">2. MySQL的下载、安装、配置</h2>
+<h3 id="21-mysql4">2.1 MySQL的4大版本</h3>
 <blockquote>
 <ul>
 <li>
@@ -2477,7 +2477,7 @@
 </li>
 </ul>
 <p>此外，官方还提供了<code>MySQL Workbench</code>（GUITOOL）一款专为MySQL设计的<code>图形界面管理工具</code>。MySQLWorkbench又分为两个版本，分别是<code>社区版</code>（MySQL Workbench OSS）、<code>商用版</code>（MySQL WorkbenchSE）。</p>
-<h3 id="22">2.2 软件的下载<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h3 id="22">2.2 软件的下载</h3>
 <p><strong>1. 下载地址</strong></p>
 <p>官网：<a href="https://www.mysql.com/">https://www.mysql.com</a></p>
 <p><strong>2. 打开官网，点击DOWNLOADS</strong></p>
@@ -2500,7 +2500,7 @@
 </ul>
 <p><img alt="image-20211014163228051" src="../images/image-20211014163228051.png" /></p>
 <p><img alt="image-20211014163353156" src="../images/image-20211014163353156.png" /></p>
-<h3 id="23-mysql80">2.3 MySQL8.0 版本的安装<a class="headerlink" href="#23-mysql80" title="Permanent link">&para;</a></h3>
+<h3 id="23-mysql80">2.3 MySQL8.0 版本的安装</h3>
 <p>MySQL下载完成后，找到下载文件，双击进行安装，具体操作步骤如下。</p>
 <p>步骤1：双击下载的mysql-installer-community-8.0.26.0.msi文件，打开安装向导。</p>
 <p>步骤2：打开“Choosing a Setup Type”（选择安装类型）窗口，在其中列出了5种安装类型，分别是Developer Default（默认安装类型）、Server only（仅作为服务器）、Client only（仅作为客户端）、Full（完全安装）、Custom（自定义安装）。这里选择“Custom（自定义安装）”类型按钮，单击“Next(下一步)”按钮。</p>
@@ -2515,7 +2515,7 @@
 <p><img src="images/image-20211014170934889.png" alt="image-20211014170934889" style="zoom:90%;" /></p>
 <p>步骤5：安装完成后在“Status”（状态）列表下将显示“Complete”（安装完成），如图所示。</p>
 <p><img src="images/image-20211014171002259.png" alt="image-20211014171002259" style="zoom:90%;" /></p>
-<h3 id="24-mysql80">2.4 配置MySQL8.0<a class="headerlink" href="#24-mysql80" title="Permanent link">&para;</a></h3>
+<h3 id="24-mysql80">2.4 配置MySQL8.0</h3>
 <p>MySQL安装之后，需要对服务器进行配置。具体的配置步骤如下。</p>
 <p>步骤1：在上一个小节的最后一步，单击“Next”（下一步）按钮，就可以进入产品配置窗口。</p>
 <p><img src="images/clip_image002-1634203188594.jpg" alt="img" style="zoom:80%;" /></p>
@@ -2549,7 +2549,7 @@
 <p><img src="images/clip_image018.jpg" alt="img" style="zoom:80%;" /></p>
 <p>步骤9：结束安装和配置。</p>
 <p><img src="images/clip_image020.jpg" alt="img" style="zoom:80%;" /></p>
-<h3 id="25-mysql80">2.5 配置MySQL8.0 环境变量<a class="headerlink" href="#25-mysql80" title="Permanent link">&para;</a></h3>
+<h3 id="25-mysql80">2.5 配置MySQL8.0 环境变量</h3>
 <p>如果不配置MySQL环境变量，就不能在命令行直接输入MySQL登录命令。下面说如何配置MySQL的环境变量：</p>
 <p>步骤1：在桌面上右击【此电脑】图标，在弹出的快捷菜单中选择【属性】菜单命令。
 步骤2：打开【系统】窗口，单击【高级系统设置】链接。
@@ -2557,7 +2557,7 @@
 步骤4：打开【环境变量】对话框，在系统变量列表中选择path变量。
 步骤5：单击【编辑】按钮，在【编辑环境变量】对话框中，将MySQL应用程序的bin目录（C:\Program Files\MySQL\MySQL Server 8.0\bin）添加到变量值中，用分号将其与其他路径分隔开。
 步骤6：添加完成之后，单击【确定】按钮，这样就完成了配置path变量的操作，然后就可以直接输入MySQL命令来登录数据库了。</p>
-<h3 id="26-mysql57">2.6 MySQL5.7 版本的安装、配置<a class="headerlink" href="#26-mysql57" title="Permanent link">&para;</a></h3>
+<h3 id="26-mysql57">2.6 MySQL5.7 版本的安装、配置</h3>
 <ul>
 <li><strong>安装</strong></li>
 </ul>
@@ -2567,7 +2567,7 @@
 </ul>
 <p>配置环节与MySQL8.0版本确有细微不同。大部分情况下直接选择“Next”即可，不影响整理使用。</p>
 <p>这里配置MySQL5.7时，重点强调：<strong>与前面安装好的MySQL8.0不能使用相同的端口号。</strong></p>
-<h3 id="27">2.7 安装失败问题<a class="headerlink" href="#27" title="Permanent link">&para;</a></h3>
+<h3 id="27">2.7 安装失败问题</h3>
 <p>MySQL的安装和配置是一件非常简单的事，但是在操作过程中也可能出现问题，特别是初学者。</p>
 <p><strong>问题1：无法打开MySQL8.0软件安装包或者安装过程中失败，如何解决？</strong></p>
 <p>在运行MySQL8.0软件安装包之前，用户需要确保系统中已经安装了.Net Framework相关软件，如果缺少此软件，将不能正常地安装MySQL8.0软件。</p>
@@ -2582,11 +2582,11 @@
 <p>解决办法是，把以前的安装目录删除。如果之前安装并未单独指定过服务安装目录，则默认安装目录是“C:\Program Files\MySQL”，彻底删除该目录。同时删除MySQL的Data目录，如果之前安装并未单独指定过数据目录，则默认安装目录是“C:\ProgramData\MySQL”，该目录一般为隐藏目录。删除后，重新安装即可。</p>
 <p><strong>问题3：如何在Windows系统删除之前的未卸载干净的MySQL服务列表？</strong></p>
 <p>操作方法如下，在系统“搜索框”中输入“cmd”，按“Enter”（回车）键确认，弹出命令提示符界面。然后输入“sc delete MySQL服务名”,按“Enter”（回车）键，就能彻底删除残余的MySQL服务了。</p>
-<h2 id="3-mysql">3. MySQL的登录<a class="headerlink" href="#3-mysql" title="Permanent link">&para;</a></h2>
-<h3 id="31">3.1 服务的启动与停止<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<h2 id="3-mysql">3. MySQL的登录</h2>
+<h3 id="31">3.1 服务的启动与停止</h3>
 <p>MySQL安装完毕之后，需要启动服务器进程，不然客户端无法连接数据库。</p>
 <p>在前面的配置过程中，已经将MySQL安装为Windows服务，并且勾选当Windows启动、停止时，MySQL也自动启动、停止。</p>
-<h4 id="1">方式1：使用图形界面工具<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<h4 id="1">方式1：使用图形界面工具</h4>
 <ul>
 <li>
 <p>步骤1：打开windows服务</p>
@@ -2600,13 +2600,13 @@
 <li>步骤2：找到MySQL80（点击鼠标右键）→ 启动或停止（点击）</li>
 </ul>
 <p><img alt="image-20211014183908375" src="../images/image-20211014183908375.png" /></p>
-<h4 id="2_1">方式2：使用命令行工具<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 启动 MySQL 服务命令：</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">net</span><span class="w"> </span><span class="k">start</span><span class="w"> </span><span class="n">MySQL服务名</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 停止 MySQL 服务命令：</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">net</span><span class="w"> </span><span class="k">stop</span><span class="w"> </span><span class="n">MySQL服务名</span>
-</code></pre></div>
+<h4 id="2_1">方式2：使用命令行工具</h4>
+<pre><code class="language-mysql"># 启动 MySQL 服务命令：
+net start MySQL服务名
+
+# 停止 MySQL 服务命令：
+net stop MySQL服务名
+</code></pre>
 <p><img src="images/image-20211014184037414.png" alt="image-20211014184037414" style="zoom:80%;" /></p>
 <p>说明：</p>
 <ol>
@@ -2617,59 +2617,59 @@
 <p>如果当你输入命令后，提示“拒绝服务”，请以<code>系统管理员身份</code>打开命令提示符界面重新尝试。</p>
 </li>
 </ol>
-<h3 id="32">3.2 自带客户端的登录与退出<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<h3 id="32">3.2 自带客户端的登录与退出</h3>
 <p>当MySQL服务启动完成后，便可以通过客户端来登录MySQL数据库。注意：确认服务是开启的。</p>
-<h4 id="1mysql_1">登录方式1：MySQL自带客户端<a class="headerlink" href="#1mysql_1" title="Permanent link">&para;</a></h4>
+<h4 id="1mysql_1">登录方式1：MySQL自带客户端</h4>
 <p>开始菜单 → 所有程序 → MySQL → MySQL 8.0 Command Line Client</p>
 <p><img src="images/image-20211014184425147.png" alt="image-20211014184425147" style="zoom:80%;" /></p>
 <blockquote>
 <p>说明：仅限于root用户</p>
 </blockquote>
-<h4 id="2windows">登录方式2：windows命令行<a class="headerlink" href="#2windows" title="Permanent link">&para;</a></h4>
+<h4 id="2windows">登录方式2：windows命令行</h4>
 <ul>
 <li>格式：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mysql -h 主机名 -P 端口号 -u 用户名 -p密码
-</code></pre></div>
+<pre><code>mysql -h 主机名 -P 端口号 -u 用户名 -p密码
+</code></pre>
 <ul>
 <li>举例：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">localhost</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span><span class="mi">3306</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">-</span><span class="n">pabc123</span><span class="w">  </span><span class="c1"># 这里我设置的root用户的密码是abc123</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql -h localhost -P 3306 -u root -pabc123  # 这里我设置的root用户的密码是abc123
+</code></pre>
 <p><img src="images/image-20211014185035137.png" alt="image-20211014185035137" style="zoom:80%;" /></p>
 <p>注意：</p>
 <p>（1）-p与密码之间不能有空格，其他参数名与参数值之间可以有空格也可以没有空格。如：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">hlocalhost</span><span class="w"> </span><span class="o">-</span><span class="n">P3306</span><span class="w"> </span><span class="o">-</span><span class="n">uroot</span><span class="w"> </span><span class="o">-</span><span class="n">pabc123</span>
-</code></pre></div>
+<pre><code class="language-sql">mysql -hlocalhost -P3306 -uroot -pabc123
+</code></pre>
 <p>（2）密码建议在下一行输入，保证安全</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">h</span><span class="w"> </span><span class="n">localhost</span><span class="w"> </span><span class="o">-</span><span class="n">P</span><span class="w"> </span><span class="mi">3306</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">Enter</span><span class="w"> </span><span class="n">password</span><span class="p">:</span><span class="o">****</span>
-</code></pre></div>
+<pre><code class="language-sql">mysql -h localhost -P 3306 -u root -p
+Enter password:****
+</code></pre>
 <p>（3）客户端和服务器在同一台机器上，所以输入localhost或者IP地址127.0.0.1。同时，因为是连接本机：
 -hlocalhost就可以省略，如果端口号没有修改：-P3306也可以省略</p>
 <p>简写成：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">mysql</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">-</span><span class="n">p</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">Enter</span><span class="w"> </span><span class="n">password</span><span class="p">:</span><span class="o">****</span>
-</code></pre></div>
+<pre><code class="language-sql">mysql -u root -p
+Enter password:****
+</code></pre>
 <p>连接成功后，有关于MySQL Server服务版本的信息，还有第几次连接的id标识。</p>
 <p>也可以在命令行通过以下方式获取MySQL Server服务版本的信息：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>c:\&gt; mysql -V
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>c:\&gt; mysql --version
-</code></pre></div>
-<p>或**登录**后，通过以下方式查看当前版本信息：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>mysql&gt; select version();
-</code></pre></div>
-<h4 id="_1">退出登录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>exit
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>或
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>quit
-</code></pre></div>
-<h2 id="4-mysql">4. MySQL演示使用<a class="headerlink" href="#4-mysql" title="Permanent link">&para;</a></h2>
-<h3 id="41-mysql">4.1 MySQL的使用演示<a class="headerlink" href="#41-mysql" title="Permanent link">&para;</a></h3>
+<pre><code>c:\&gt; mysql -V
+</code></pre>
+<pre><code>c:\&gt; mysql --version
+</code></pre>
+<p>或<strong>登录</strong>后，通过以下方式查看当前版本信息：</p>
+<pre><code>mysql&gt; select version();
+</code></pre>
+<h4 id="_1">退出登录</h4>
+<pre><code>exit
+或
+quit
+</code></pre>
+<h2 id="4-mysql">4. MySQL演示使用</h2>
+<h3 id="41-mysql">4.1 MySQL的使用演示</h3>
 <p>1、查看所有的数据库</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">show</span><span class="w"> </span><span class="k">databases</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show databases;
+</code></pre>
 <blockquote>
 <p>“information_schema”是 MySQL 系统自带的数据库，主要保存 MySQL 数据库服务器的系统信息，比如数据库的名称、数据表的名称、字段名称、存取权限、数据文件 所在的文件夹和系统使用的文件夹，等等</p>
 <p>“performance_schema”是 MySQL 系统自带的数据库，可以用来监控 MySQL 的各类性能指标。 </p>
@@ -2679,139 +2679,139 @@
 <p>为什么 Workbench 里面我们只能看到“demo”和“sys”这 2 个数据库呢？ </p>
 <p>这是因为，Workbench 是图形化的管理工具，主要面向开发人 员，“demo”和“sys”这 2 个数据库已经够用了。如果有特殊需求，比如，需要监控 MySQL 数据库各项性能指标、直接操作 MySQL 数据库系统文件等，可以由 DBA 通过 SQL 语句，查看其它的系统数据库。</p>
 <p>2、创建自己的数据库</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">数据库名</span><span class="p">;</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1">#创建atguigudb数据库，该名称不能与已经存在的数据库重名。</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">atguigudb</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">create database 数据库名;
+
+#创建atguigudb数据库，该名称不能与已经存在的数据库重名。
+create database atguigudb;
+</code></pre>
 <p>3、使用自己的数据库</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">use</span><span class="w"> </span><span class="n">数据库名</span><span class="p">;</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">#使用atguigudb数据库</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">use</span><span class="w"> </span><span class="n">atguigudb</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">use 数据库名;
+
+#使用atguigudb数据库
+use atguigudb;
+</code></pre>
 <p>说明：如果没有使用use语句，后面针对数据库的操作也没有加“数据名”的限定，那么会报“ERROR 1046 (3D000): No database selected”（没有选择数据库）</p>
 <p>使用完use语句之后，如果接下来的SQL都是针对一个数据库操作的，那就不用重复use了，如果要针对另一个数据库操作，那么要重新use。</p>
 <p>4、查看某个库的所有表格</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">show</span><span class="w"> </span><span class="k">tables</span><span class="p">;</span><span class="w">  </span><span class="c1">#要求前面有use语句</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">show</span><span class="w"> </span><span class="k">tables</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">数据库名</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">show tables;  #要求前面有use语句
+
+show tables from 数据库名;
+</code></pre>
 <p>5、创建新的表格</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">表名称</span><span class="p">(</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="n">字段名</span><span class="w">  </span><span class="n">数据类型</span><span class="p">,</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="n">字段名</span><span class="w"> </span><span class="n">数据类型</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">create table 表名称(
+    字段名  数据类型,
+    字段名 数据类型
+);
+</code></pre>
 <p>说明：如果是最后一个字段，后面就用加逗号，因为逗号的作用是分割每个字段。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">#创建学生表</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="p">(</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="k">name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w">  </span><span class="c1">#说名字最长不超过20个字符</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">#创建学生表
+create table student(
+    id int,
+    name varchar(20)  #说名字最长不超过20个字符
+);
+</code></pre>
 <p>6、查看一个表的数据</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">数据库表名称</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">#查看学生表的数据</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">student</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">select * from 数据库表名称;
+</code></pre>
+<pre><code class="language-mysql">#查看学生表的数据
+select * from student;
+</code></pre>
 <p>7、添加一条记录</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">表名称</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="n">值列表</span><span class="p">);</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1">#添加两条记录到student表中</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;张三&#39;</span><span class="p">);</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;李四&#39;</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">insert into 表名称 values(值列表);
+
+#添加两条记录到student表中
+insert into student values(1,'张三');
+insert into student values(2,'李四');
+</code></pre>
 <p>报错：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;张三&#39;</span><span class="p">);</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">ERROR</span><span class="w"> </span><span class="mi">1366</span><span class="w"> </span><span class="p">(</span><span class="n">HY000</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Incorrect</span><span class="w"> </span><span class="k">string</span><span class="w"> </span><span class="k">value</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;</span><span class="err">\</span><span class="s1">xD5</span><span class="err">\</span><span class="s1">xC5</span><span class="err">\</span><span class="s1">xC8</span><span class="err">\</span><span class="s1">xFD&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="mi">1</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;李四&#39;</span><span class="p">);</span>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">ERROR</span><span class="w"> </span><span class="mi">1366</span><span class="w"> </span><span class="p">(</span><span class="n">HY000</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Incorrect</span><span class="w"> </span><span class="k">string</span><span class="w"> </span><span class="k">value</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;</span><span class="err">\</span><span class="s1">xC0</span><span class="err">\</span><span class="s1">xEE</span><span class="err">\</span><span class="s1">xCB</span><span class="err">\</span><span class="s1">xC4&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;name&#39;</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="mi">1</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; insert into student values(1,'张三');
+ERROR 1366 (HY000): Incorrect string value: '\xD5\xC5\xC8\xFD' for column 'name' at row 1
+mysql&gt; insert into student values(2,'李四');
+ERROR 1366 (HY000): Incorrect string value: '\xC0\xEE\xCB\xC4' for column 'name' at row 1
+mysql&gt; show create table student;
+</code></pre>
 <p>字符集的问题。</p>
 <p>8、查看表的创建信息</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">表名称</span><span class="err">\</span><span class="n">G</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1">#查看student表的详细创建信息</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1">#结果如下</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="o">***************************</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">       </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="k">Create</span><span class="w"> </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n n-Quoted">`student`</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="n n-Quoted">`id`</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">  </span><span class="n n-Quoted">`name`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span>
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CHARSET</span><span class="o">=</span><span class="n">latin1</span>
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">show create table 表名称\G
+
+
+#查看student表的详细创建信息
+show create table student\G
+</code></pre>
+<pre><code class="language-mysql">#结果如下
+*************************** 1. row ***************************
+       Table: student
+Create Table: CREATE TABLE `student` (
+  `id` int(11) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+</code></pre>
 <p>上面的结果显示student的表格的默认字符集是“latin1”不支持中文。</p>
 <p>9、查看数据库的创建信息</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">数据库名</span><span class="err">\</span><span class="n">G</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1">#查看atguigudb数据库的详细创建信息</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">atguigudb</span><span class="err">\</span><span class="n">G</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">#结果如下</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="o">***************************</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">       </span><span class="k">Database</span><span class="o">:</span><span class="w"> </span><span class="n">atguigudb</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="k">Create</span><span class="w"> </span><span class="k">Database</span><span class="o">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n n-Quoted">`atguigudb`</span><span class="w"> </span><span class="cm">/*!40100 DEFAULT CHARACTER SET latin1 */</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">show create database 数据库名\G
+
+#查看atguigudb数据库的详细创建信息
+show create database atguigudb\G
+</code></pre>
+<pre><code class="language-mysql">#结果如下
+*************************** 1. row ***************************
+       Database: atguigudb
+Create Database: CREATE DATABASE `atguigudb` /*!40100 DEFAULT CHARACTER SET latin1 */
+1 row in set (0.00 sec)
+</code></pre>
 <p>上面的结果显示atguigudb数据库也不支持中文，字符集默认是latin1。</p>
 <p>10、删除表格</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">drop</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">表名称</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1">#删除学生表</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">drop</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">drop table 表名称;
+</code></pre>
+<pre><code class="language-mysql">#删除学生表
+drop table student;
+</code></pre>
 <p>11、删除数据库</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">drop</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">数据库名</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1">#删除atguigudb数据库</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">drop</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">atguigudb</span><span class="p">;</span>
-</code></pre></div>
-<h3 id="42-mysql">4.2 MySQL的编码设置<a class="headerlink" href="#42-mysql" title="Permanent link">&para;</a></h3>
-<h4 id="mysql57">MySQL5.7中<a class="headerlink" href="#mysql57" title="Permanent link">&para;</a></h4>
+<pre><code class="language-mysql">drop database 数据库名;
+</code></pre>
+<pre><code class="language-mysql">#删除atguigudb数据库
+drop database atguigudb;
+</code></pre>
+<h3 id="42-mysql">4.2 MySQL的编码设置</h3>
+<h4 id="mysql57">MySQL5.7中</h4>
 <p><strong>问题再现：命令行操作sql乱码问题</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t_stu</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;张三&#39;</span><span class="p">,</span><span class="s1">&#39;男&#39;</span><span class="p">);</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">ERROR</span><span class="w"> </span><span class="mi">1366</span><span class="w"> </span><span class="p">(</span><span class="n">HY000</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Incorrect</span><span class="w"> </span><span class="k">string</span><span class="w"> </span><span class="k">value</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;</span><span class="err">\</span><span class="s1">xD5</span><span class="err">\</span><span class="s1">xC5</span><span class="err">\</span><span class="s1">xC8</span><span class="err">\</span><span class="s1">xFD&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;sname&#39;</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="mi">1</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; INSERT INTO t_stu VALUES(1,'张三','男');
+ERROR 1366 (HY000): Incorrect string value: '\xD5\xC5\xC8\xFD' for column 'sname' at row 1
+</code></pre>
 <p><strong>问题解决</strong></p>
 <p>步骤1：查看编码命令</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>show variables like &#39;character_%&#39;;
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>show variables like &#39;collation_%&#39;;
-</code></pre></div>
+<pre><code>show variables like 'character_%';
+show variables like 'collation_%';
+</code></pre>
 <p>步骤2：修改mysql的数据目录下的my.ini配置文件</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="na">[mysql]  #大概在63行左右，在其下添加</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="na">... </span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="na">default-character-set</span><span class="o">=</span><span class="s">utf8</span><span class="w">  </span><span class="c1">#默认字符集</span>
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="na">[mysqld]  # 大概在76行左右，在其下添加</span>
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="na">...</span>
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="na">character-set-server</span><span class="o">=</span><span class="s">utf8</span>
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="na">collation-server</span><span class="o">=</span><span class="s">utf8_general_ci</span>
-</code></pre></div>
+<pre><code class="language-ini">[mysql]  #大概在63行左右，在其下添加
+... 
+default-character-set=utf8  #默认字符集
+
+[mysqld]  # 大概在76行左右，在其下添加
+...
+character-set-server=utf8
+collation-server=utf8_general_ci
+</code></pre>
 <blockquote>
 <p>注意：建议修改配置文件使用notepad++等高级文本编辑器，使用记事本等软件打开修改后可能会导致文件编码修改为“含BOM头”的编码，从而服务重启失败。</p>
 </blockquote>
 <p>步骤3：重启服务</p>
 <p>步骤4：查看编码命令</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;character_%&#39;</span><span class="p">;</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;collation_%&#39;</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-sql">show variables like 'character_%';
+show variables like 'collation_%';
+</code></pre>
 <p><img src="images/MySQL编码1.jpg" style="zoom:90%;" /></p>
 <p><img src="images/MySQL编码2.jpg" style="zoom:90%;" /></p>
 <ul>
 <li>如果是以上配置就说明对了。接着我们就可以新创建数据库、新创建数据表，接着添加包含中文的数据了。</li>
 </ul>
-<h4 id="mysql80">MySQL8.0中<a class="headerlink" href="#mysql80" title="Permanent link">&para;</a></h4>
+<h4 id="mysql80">MySQL8.0中</h4>
 <p>在MySQL 8.0版本之前，默认字符集为latin1，utf8字符集指向的是utf8mb3。网站开发人员在数据库设计的时候往往会将编码修改为utf8字符集。如果遗忘修改默认的编码，就会出现乱码的问题。从MySQL 8.0开始，数据库的默认编码改为<code>utf8mb4</code>，从而避免了上述的乱码问题。</p>
-<h2 id="5-mysql">5. MySQL图形化管理工具<a class="headerlink" href="#5-mysql" title="Permanent link">&para;</a></h2>
+<h2 id="5-mysql">5. MySQL图形化管理工具</h2>
 <p>MySQL图形化管理工具极大地方便了数据库的操作与管理，常用的图形化管理工具有：MySQL Workbench、phpMyAdmin、Navicat Preminum、MySQLDumper、SQLyog、dbeaver、MySQL ODBC Connector。</p>
-<h3 id="1-mysql-workbench">工具1. MySQL Workbench<a class="headerlink" href="#1-mysql-workbench" title="Permanent link">&para;</a></h3>
+<h3 id="1-mysql-workbench">工具1. MySQL Workbench</h3>
 <p>MySQL官方提供的图形化管理工具MySQL Workbench完全支持MySQL 5.0以上的版本。MySQL Workbench分为社区版和商业版，社区版完全免费，而商业版则是按年收费。</p>
 <p>MySQL Workbench 为数据库管理员、程序开发者和系统规划师提供可视化设计、模型建立、以及数据库管理功能。它包含了用于创建复杂的数据建模ER模型，正向和逆向数据库工程，也可以用于执行通常需要花费大量时间的、难以变更和管理的文档任务。</p>
 <p>下载地址：http://dev.mysql.com/downloads/workbench/。</p>
@@ -2835,17 +2835,17 @@
 </li>
 </ul>
 <p>好了，下面我们就用 Workbench 实际创建一个数据库，并且导入一个 Excel 数据文件， 来生成一个数据表。数据表是存储数据的载体，有了数据表以后，我们就能对数据进行操作了。 </p>
-<h3 id="2-navicat">工具2. Navicat<a class="headerlink" href="#2-navicat" title="Permanent link">&para;</a></h3>
+<h3 id="2-navicat">工具2. Navicat</h3>
 <p>Navicat MySQL是一个强大的MySQL数据库服务器管理和开发工具。它可以与任何3.21或以上版本的MySQL一起工作，支持触发器、存储过程、函数、事件、视图、管理用户等，对于新手来说易学易用。其精心设计的图形用户界面（GUI）可以让用户用一种安全简便的方式来快速方便地创建、组织、访问和共享信息。Navicat支持中文，有免费版本提供。
 下载地址：http://www.navicat.com/。</p>
 <p><img src="images/1557378069584.png" style="zoom:80%;" /></p>
 <p><img src="images/image-20210913180359685.png" alt="image-20210913180359685" style="zoom:80%;" /></p>
-<h3 id="3-sqlyog">工具3. SQLyog<a class="headerlink" href="#3-sqlyog" title="Permanent link">&para;</a></h3>
+<h3 id="3-sqlyog">工具3. SQLyog</h3>
 <p>SQLyog 是业界著名的 Webyog 公司出品的一款简洁高效、功能强大的图形化 MySQL 数据库管理工具。这款工具是使用C++语言开发的。该工具可以方便地创建数据库、表、视图和索引等，还可以方便地进行插入、更新和删除等操作，同时可以方便地进行数据库、数据表的备份和还原。该工具不仅可以通过SQL文件进行大量文件的导入和导出，还可以导入和导出XML、HTML和CSV等多种格式的数据。
 下载地址：http://www.webyog.com/，读者也可以搜索中文版的下载地址。</p>
 <p><img src="images/image-20211014213018979.png" alt="image-20211014213018979" style="zoom:80%;" /></p>
 <p><img src="images/image-20211014213036470.png" alt="image-20211014213036470" style="zoom:80%;" /></p>
-<h3 id="4dbeaver">工具4：dbeaver<a class="headerlink" href="#4dbeaver" title="Permanent link">&para;</a></h3>
+<h3 id="4dbeaver">工具4：dbeaver</h3>
 <p>DBeaver是一个通用的数据库管理工具和 SQL 客户端，支持所有流行的数据库：MySQL、PostgreSQL、SQLite、Oracle、DB2、SQL Server、 Sybase、MS Access、Teradata、 Firebird、Apache Hive、Phoenix、Presto等。DBeaver比大多数的SQL管理工具要轻量，而且支持中文界面。DBeaver社区版作为一个免费开源的产品，和其他类似的软件相比，在功能和易用性上都毫不逊色。</p>
 <p>唯一需要注意是 DBeaver 是用Java编程语言开发的，所以需要拥有 JDK（Java Development ToolKit）环境。如果电脑上没有JDK，在选择安装DBeaver组件时，勾选“Include Java”即可。</p>
 <p>下载地址：https://dbeaver.io/download/</p>
@@ -2853,23 +2853,23 @@
 <p><img src="images/image-20211014195251371.png" alt="image-20211014195251371" style="zoom:75%;" /></p>
 <p><img src="images/image-20211014195300510.png" alt="image-20211014195300510" style="zoom:80%;" /></p>
 <p><img src="images/image-20211014195309805.png" alt="image-20211014195309805" style="zoom:70%;" /></p>
-<h3 id="_2">可能出现连接问题：<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<h3 id="_2">可能出现连接问题：</h3>
 <p>有些图形界面工具，特别是旧版本的图形界面工具，在连接MySQL8时出现“Authentication plugin 'caching_sha2_password' cannot be loaded”错误。</p>
 <p><img src="images/image-20211019215249254.png" alt="image-20211019215249254" style="zoom:80%;" /></p>
 <p>出现这个原因是MySQL8之前的版本中加密规则是mysql_native_password，而在MySQL8之后，加密规则是caching_sha2_password。解决问题方法有两种，第一种是升级图形界面工具版本，第二种是把MySQL8用户登录密码加密规则还原成mysql_native_password。</p>
 <p>第二种解决方案如下，用命令行登录MySQL数据库之后，执行如下命令修改用户密码加密规则并更新用户密码，这里修改用户名为“root@localhost”的用户密码规则为“mysql_native_password”，密码值为“123456”，如图所示。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1">#使用mysql数据库</span>
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">USE</span><span class="w"> </span><span class="n">mysql</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1">#修改&#39;root&#39;@&#39;localhost&#39;用户的密码规则和密码</span>
-<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="nv">@&#39;localhost&#39;</span><span class="w"> </span><span class="k">IDENTIFIED</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">mysql_native_password</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;abc123&#39;</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>
-<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="c1">#刷新权限</span>
-<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="k">FLUSH</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">#使用mysql数据库
+USE mysql; 
+
+#修改'root'@'localhost'用户的密码规则和密码
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'abc123'; 
+
+#刷新权限
+FLUSH PRIVILEGES;
+</code></pre>
 <p><img src="images/image-20211019215408965.png" alt="image-20211019215408965" style="zoom:80%;" /></p>
-<h2 id="6-mysql">6. MySQL目录结构与源码<a class="headerlink" href="#6-mysql" title="Permanent link">&para;</a></h2>
-<h3 id="61">6.1 主要目录结构<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<h2 id="6-mysql">6. MySQL目录结构与源码</h2>
+<h3 id="61">6.1 主要目录结构</h3>
 <table>
 <thead>
 <tr>
@@ -2900,7 +2900,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="62-mysql">6.2 MySQL 源代码获取<a class="headerlink" href="#62-mysql" title="Permanent link">&para;</a></h3>
+<h3 id="62-mysql">6.2 MySQL 源代码获取</h3>
 <p>首先，你要进入 MySQL下载界面。 这里你不要选择用默认的“Microsoft Windows”，而是要通过下拉栏，找到“Source Code”，在下面的操作系统版本里面， 选择 Windows（Architecture Independent），然后点击下载。 </p>
 <p>接下来，把下载下来的压缩文件解压，我们就得到了 MySQL 的源代码。</p>
 <p>MySQL 是用 C++ 开发而成的，我简单介绍一下源代码的组成。 </p>
@@ -2923,8 +2923,8 @@
 <p>源代码可以用记事本打开查看，如果你有 C++ 的开发环境，也可以在开发环境中打开查看。 </p>
 <p><img alt="image-20211007154213156" src="../images/image-20211007154213156.png" /></p>
 <p>如上图所示，源代码并不神秘，就是普通的 C++ 代码，跟你熟悉的一样，而且有很多注释，可以帮助你理解。阅读源代码就像在跟 MySQL 的开发人员对话一样，十分有趣。</p>
-<h2 id="7">7. 常见问题的解决(课外内容)<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
-<h3 id="1root">问题1：root用户密码忘记，重置的操作<a class="headerlink" href="#1root" title="Permanent link">&para;</a></h3>
+<h2 id="7">7. 常见问题的解决(课外内容)</h2>
+<h3 id="1root">问题1：root用户密码忘记，重置的操作</h3>
 <p>1: 通过任务管理器或者服务管理，关掉mysqld(服务进程)
 2: 通过命令行+特殊参数开启mysqld
 mysqld --defaults-file="D:\ProgramFiles\mysql\MySQLServer5.7Data\my.ini" --skip-grant-tables</p>
@@ -2937,10 +2937,10 @@ mysqld --defaults-file="D:\ProgramFiles\mysql\MySQLServer5.7Data\my.ini" --skip-
 6: 通过任务管理器，关掉mysqld服务进程。
 7: 再次通过服务管理，打开mysql服务。
 8: 即可用修改后的新密码登陆。</p>
-<h3 id="2mysql">问题2：mysql命令报“不是内部或外部命令”<a class="headerlink" href="#2mysql" title="Permanent link">&para;</a></h3>
+<h3 id="2mysql">问题2：mysql命令报“不是内部或外部命令”</h3>
 <p>如果输入mysql命令报“不是内部或外部命令”，把mysql安装目录的bin目录配置到环境变量path中。如下：</p>
 <p><img alt="image-20210914093150145" src="../images/image-20210914093150145.png" /></p>
-<h3 id="3error">问题3：错误ERROR ：没有选择数据库就操作表格和数据<a class="headerlink" href="#3error" title="Permanent link">&para;</a></h3>
+<h3 id="3error">问题3：错误ERROR ：没有选择数据库就操作表格和数据</h3>
 <table>
 <thead>
 <tr>
@@ -2956,93 +2956,93 @@ mysqld --defaults-file="D:\ProgramFiles\mysql\MySQLServer5.7Data\my.ini" --skip-
 </tr>
 </tbody>
 </table>
-<h3 id="4_1">问题4：命令行客户端的字符集问题<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">t_stu</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;张三&#39;</span><span class="p">,</span><span class="s1">&#39;男&#39;</span><span class="p">);</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="k">ERROR</span><span class="w"> </span><span class="mi">1366</span><span class="w"> </span><span class="p">(</span><span class="n">HY000</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">Incorrect</span><span class="w"> </span><span class="k">string</span><span class="w"> </span><span class="k">value</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;</span><span class="err">\</span><span class="s1">xD5</span><span class="err">\</span><span class="s1">xC5</span><span class="err">\</span><span class="s1">xC8</span><span class="err">\</span><span class="s1">xFD&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">column</span><span class="w"> </span><span class="s1">&#39;sname&#39;</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="mi">1</span>
-</code></pre></div>
+<h3 id="4_1">问题4：命令行客户端的字符集问题</h3>
+<pre><code class="language-mysql">mysql&gt; INSERT INTO t_stu VALUES(1,'张三','男');
+ERROR 1366 (HY000): Incorrect string value: '\xD5\xC5\xC8\xFD' for column 'sname' at row 1
+</code></pre>
 <p>原因：服务器端认为你的客户端的字符集是utf-8，而实际上你的客户端的字符集是GBK。</p>
 <p><img alt="1554912924219" src="../images/1554912924219.png" /></p>
 <p>查看所有字符集：<strong>SHOW VARIABLES LIKE 'character_set_%';</strong></p>
 <p><img alt="1554912943186" src="../images/1554912943186.png" /></p>
 <p>解决方案，设置当前连接的客户端字符集 <strong>“SET NAMES GBK;”</strong></p>
 <p><img alt="1554912957353" src="../images/1554912957353.png" /></p>
-<h3 id="5_1">问题5：修改数据库和表的字符编码<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h3>
+<h3 id="5_1">问题5：修改数据库和表的字符编码</h3>
 <p>修改编码：</p>
 <p>（1)先停止服务，（2）修改my.ini文件（3）重新启动服务</p>
 <p>说明：</p>
 <p>如果是在修改my.ini之前建的库和表，那么库和表的编码还是原来的Latin1，要么删了重建，要么使用alter语句修改编码。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">0728db</span><span class="w"> </span><span class="k">charset</span><span class="w"> </span><span class="n">Latin1</span><span class="p">;</span>
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>mysql&gt; use 0728db;
-<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>Database changed
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span><span class="w"> </span><span class="k">charset</span><span class="w"> </span><span class="n">Latin1</span><span class="p">;</span>
-<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.02</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
-<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
-<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="err">\</span><span class="n">G</span>
-<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="o">***************************</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
-<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">       </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>
-<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="k">Create</span><span class="w"> </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n n-Quoted">`student`</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w">  </span><span class="n n-Quoted">`id`</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">  </span><span class="n n-Quoted">`name`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n n-Quoted">`id`</span><span class="p">)</span>
-<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CHARSET</span><span class="o">=</span><span class="n">latin1</span>
-<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">charset</span><span class="w"> </span><span class="n">utf8</span><span class="p">;</span><span class="w"> </span><span class="c1">#修改表字符编码为UTF8</span>
-<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.01</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">Records</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="n">Duplicates</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="k">Warnings</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>
-<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>
-<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="err">\</span><span class="n">G</span>
-<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="o">***************************</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
-<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="w">       </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>
-<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="k">Create</span><span class="w"> </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n n-Quoted">`student`</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a><span class="w">  </span><span class="n n-Quoted">`id`</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a><span class="w">  </span><span class="n n-Quoted">`name`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">latin1</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">  </span><span class="c1">#字段仍然是latin1编码</span>
-<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n n-Quoted">`id`</span><span class="p">)</span>
-<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CHARSET</span><span class="o">=</span><span class="n">utf8</span>
-<a id="__codelineno-38-14" name="__codelineno-38-14" href="#__codelineno-38-14"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-38-15" name="__codelineno-38-15" href="#__codelineno-38-15"></a>
-<a id="__codelineno-38-16" name="__codelineno-38-16" href="#__codelineno-38-16"></a>
-<a id="__codelineno-38-17" name="__codelineno-38-17" href="#__codelineno-38-17"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">modify</span><span class="w"> </span><span class="k">name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">charset</span><span class="w"> </span><span class="n">utf8</span><span class="p">;</span><span class="w"> </span><span class="c1">#修改字段字符编码为UTF8</span>
-<a id="__codelineno-38-18" name="__codelineno-38-18" href="#__codelineno-38-18"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">rows</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.05</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-38-19" name="__codelineno-38-19" href="#__codelineno-38-19"></a><span class="n">Records</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="n">Duplicates</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="k">Warnings</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<a id="__codelineno-38-20" name="__codelineno-38-20" href="#__codelineno-38-20"></a>
-<a id="__codelineno-38-21" name="__codelineno-38-21" href="#__codelineno-38-21"></a>
-<a id="__codelineno-38-22" name="__codelineno-38-22" href="#__codelineno-38-22"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">student</span><span class="err">\</span><span class="n">G</span>
-<a id="__codelineno-38-23" name="__codelineno-38-23" href="#__codelineno-38-23"></a><span class="o">***************************</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="o">***************************</span>
-<a id="__codelineno-38-24" name="__codelineno-38-24" href="#__codelineno-38-24"></a><span class="w">       </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>
-<a id="__codelineno-38-25" name="__codelineno-38-25" href="#__codelineno-38-25"></a><span class="k">Create</span><span class="w"> </span><span class="k">Table</span><span class="o">:</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n n-Quoted">`student`</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-38-26" name="__codelineno-38-26" href="#__codelineno-38-26"></a><span class="w">  </span><span class="n n-Quoted">`id`</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-38-27" name="__codelineno-38-27" href="#__codelineno-38-27"></a><span class="w">  </span><span class="n n-Quoted">`name`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span>
-<a id="__codelineno-38-28" name="__codelineno-38-28" href="#__codelineno-38-28"></a><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n n-Quoted">`id`</span><span class="p">)</span>
-<a id="__codelineno-38-29" name="__codelineno-38-29" href="#__codelineno-38-29"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CHARSET</span><span class="o">=</span><span class="n">utf8</span>
-<a id="__codelineno-38-30" name="__codelineno-38-30" href="#__codelineno-38-30"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">0728db</span><span class="p">;;</span>
-<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="o">+--------+-----------------------------------------------------------------+</span>
-<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="o">|</span><span class="k">Database</span><span class="o">|</span><span class="w"> </span><span class="k">Create</span><span class="w"> </span><span class="k">Database</span><span class="w">                                                 </span><span class="o">|</span>
-<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="o">+------+-------------------------------------------------------------------+</span>
-<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="o">|</span><span class="n">0728db</span><span class="o">|</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n n-Quoted">`0728db`</span><span class="w"> </span><span class="cm">/*!40100 DEFAULT CHARACTER SET latin1 */</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="o">+------+-------------------------------------------------------------------+</span>
-<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>
-<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>
-<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">0728db</span><span class="w"> </span><span class="k">charset</span><span class="w"> </span><span class="n">utf8</span><span class="p">;</span><span class="w"> </span><span class="c1">#修改数据库的字符编码为utf8</span>
-<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="k">Query</span><span class="w"> </span><span class="n">OK</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="n">affected</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a>
-<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a>
-<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">0728db</span><span class="p">;</span>
-<a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="o">+--------+-----------------------------------------------------------------+</span>
-<a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a><span class="o">|</span><span class="k">Database</span><span class="o">|</span><span class="w"> </span><span class="k">Create</span><span class="w"> </span><span class="k">Database</span><span class="w">                                                 </span><span class="o">|</span>
-<a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a><span class="o">+--------+-----------------------------------------------------------------+</span>
-<a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="o">|</span><span class="w"> </span><span class="n">0728db</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n n-Quoted">`0728db`</span><span class="w"> </span><span class="cm">/*!40100 DEFAULT CHARACTER SET utf8 */</span><span class="w"> </span><span class="o">|</span>
-<a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="o">+--------+-----------------------------------------------------------------+</span>
-<a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="p">(</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sec</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; create database 0728db charset Latin1;
+Query OK, 1 row affected (0.00 sec)
+</code></pre>
+<pre><code>mysql&gt; use 0728db;
+Database changed
+</code></pre>
+<pre><code class="language-mysql">mysql&gt; create table student (id int , name varchar(20)) charset Latin1;
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql&gt; show create table student\G
+*************************** 1. row ***************************
+       Table: student
+Create Table: CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+</code></pre>
+<pre><code class="language-mysql">mysql&gt; alter table student charset utf8; #修改表字符编码为UTF8
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql&gt; show create table student\G
+*************************** 1. row ***************************
+       Table: student
+Create Table: CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) CHARACTER SET latin1 DEFAULT NULL,  #字段仍然是latin1编码
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+1 row in set (0.00 sec)
+
+
+mysql&gt; alter table student modify name varchar(20) charset utf8; #修改字段字符编码为UTF8
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql&gt; show create table student\G
+*************************** 1. row ***************************
+       Table: student
+Create Table: CREATE TABLE `student` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+1 row in set (0.00 sec)
+</code></pre>
+<pre><code class="language-mysql">mysql&gt; show create database 0728db;;
++--------+-----------------------------------------------------------------+
+|Database| Create Database                                                 |
++------+-------------------------------------------------------------------+
+|0728db| CREATE DATABASE `0728db` /*!40100 DEFAULT CHARACTER SET latin1 */ |
++------+-------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+mysql&gt; alter database 0728db charset utf8; #修改数据库的字符编码为utf8
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql&gt; show create database 0728db;
++--------+-----------------------------------------------------------------+
+|Database| Create Database                                                 |
++--------+-----------------------------------------------------------------+
+| 0728db | CREATE DATABASE `0728db` /*!40100 DEFAULT CHARACTER SET utf8 */ |
++--------+-----------------------------------------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
 
 
 

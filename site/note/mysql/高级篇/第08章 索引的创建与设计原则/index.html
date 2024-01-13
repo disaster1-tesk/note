@@ -1900,18 +1900,18 @@
 
   <h1>第08章 索引的创建与设计原则</h1>
 
-<h3 id="08">第08章 索引的创建与设计原则<a class="headerlink" href="#08" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>索引的声明与使用</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11"><strong>1.1</strong> <strong>索引的分类</strong><a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
+<h3 id="08">第08章 索引的创建与设计原则</h3>
+<h4 id="1"><strong>1.</strong> <strong>索引的声明与使用</strong></h4>
+<h5 id="11"><strong>1.1</strong> <strong>索引的分类</strong></h5>
 <ul>
 <li>从<code>功能逻辑</code>上说，索引主要有 4 种，分别是普通索引、唯一索引、主键索引、全文索引。</li>
 <li>按照<code>物理实现方式</code>，索引可以分为 2 种：聚簇索引和非聚簇索引。</li>
 <li>按照<code>作用字段个数</code>进行划分，分成单列索引和联合索引。</li>
 </ul>
-<h5 id="12"><strong>1.2</strong> <strong>创建索引</strong><a class="headerlink" href="#12" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="err">[</span><span class="n">col_name</span><span class="w"> </span><span class="n">data_type</span><span class="err">]</span><span class="w"> </span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="err">[</span><span class="k">UNIQUE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">FULLTEXT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">SPATIAL</span><span class="err">]</span><span class="w"> </span><span class="err">[</span><span class="k">INDEX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">KEY</span><span class="err">]</span><span class="w"> </span><span class="err">[</span><span class="n">index_name</span><span class="err">]</span><span class="w"> </span><span class="p">(</span><span class="n">col_name</span><span class="w"> </span><span class="err">[</span><span class="n">length</span><span class="err">]</span><span class="p">)</span><span class="w"> </span><span class="err">[</span><span class="k">ASC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESC</span><span class="err">]</span>
-</code></pre></div>
+<h5 id="12"><strong>1.2</strong> <strong>创建索引</strong></h5>
+<pre><code class="language-mysql">CREATE TABLE table_name [col_name data_type] 
+[UNIQUE | FULLTEXT | SPATIAL] [INDEX | KEY] [index_name] (col_name [length]) [ASC | DESC]
+</code></pre>
 <ul>
 <li><code>UNIQUE</code>、<code>FULLTEXT</code>和<code>SPATIAL</code>为可选参数，分别表示唯一索引、全文索引和空间索引；</li>
 <li><code>INDEX</code>与<code>KEY</code>为同义词，两者的作用相同，用来指定创建索引；</li>
@@ -1921,111 +1921,111 @@
 <li><code>ASC</code>或<code>DESC</code>指定升序或者降序的索引值存储。</li>
 </ul>
 <p><strong>1.</strong> <strong>创建普通索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">book</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">book_id</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">book_name</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">authors</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="n">info</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">comment</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="n">year_publication</span><span class="w"> </span><span class="kt">YEAR</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">INDEX</span><span class="p">(</span><span class="n">year_publication</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE book( 
+    book_id INT , 
+    book_name VARCHAR(100), 
+    authors VARCHAR(100), 
+    info VARCHAR(100) , 
+    comment VARCHAR(100), 
+    year_publication YEAR, 
+    INDEX(year_publication) 
+);
+</code></pre>
 <p><strong>2.</strong> <strong>创建唯一索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test1</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">uk_idx_id</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE test1( 
+    id INT NOT NULL, 
+    name varchar(30) NOT NULL, 
+    UNIQUE INDEX uk_idx_id(id) 
+);
+</code></pre>
 <p><strong>3.</strong> <strong>主键索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">UNSIGNED</span><span class="w"> </span><span class="k">AUTO_INCREMENT</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">student_no</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">student_name</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">);</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 删除主键索引</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">student</span><span class="w"> </span><span class="k">drop</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE student ( 
+    id INT(10) UNSIGNED AUTO_INCREMENT, 
+    student_no VARCHAR(200),
+    student_name VARCHAR(200), 
+    PRIMARY KEY(id) 
+);
+</code></pre>
+<pre><code class="language-mysql"># 删除主键索引
+ALTER TABLE student drop PRIMARY KEY ;
+</code></pre>
 <p><strong>4.</strong> <strong>创建单列索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test2</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">name</span><span class="w"> </span><span class="kt">CHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="k">INDEX</span><span class="w"> </span><span class="n">single_idx_name</span><span class="p">(</span><span class="k">name</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span><span class="w"> </span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE test2( 
+    id INT NOT NULL, 
+    name CHAR(50) NULL, 
+    INDEX single_idx_name(name(20)) 
+);
+</code></pre>
 <p><strong>5.</strong> <strong>创建组合索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test3</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">INT</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="k">name</span><span class="w"> </span><span class="kt">CHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="kt">INT</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">info</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="k">INDEX</span><span class="w"> </span><span class="n">multi_idx</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="k">name</span><span class="p">,</span><span class="n">age</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE test3( 
+    id INT(11) NOT NULL, 
+    name CHAR(30) NOT NULL, 
+    age INT(11) NOT NULL, 
+    info VARCHAR(255), 
+    INDEX multi_idx(id,name,age) 
+);
+</code></pre>
 <p><strong>6.</strong> <strong>创建全文索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n n-Quoted">`papers`</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">id</span><span class="n n-Quoted">` int(10) unsigned NOT NULL AUTO_INCREMENT, </span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n n-Quoted">    `</span><span class="n">title</span><span class="n n-Quoted">` varchar(200) DEFAULT NULL, </span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n n-Quoted">    `</span><span class="n">content</span><span class="n n-Quoted">` text, PRIMARY KEY (`</span><span class="n">id</span><span class="n n-Quoted">`), </span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n n-Quoted">    FULLTEXT KEY `</span><span class="n">title</span><span class="n n-Quoted">` (`</span><span class="n">title</span><span class="n n-Quoted">`,`</span><span class="n">content</span><span class="n n-Quoted">`) </span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n n-Quoted">) ENGINE=MyISAM DEFAULT CHARSET=utf8;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">papers</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">MATCH</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">content</span><span class="p">)</span><span class="w"> </span><span class="k">AGAINST</span><span class="w"> </span><span class="p">(</span><span class="n">‘查询字符串’</span><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE `papers` ( 
+    id` int(10) unsigned NOT NULL AUTO_INCREMENT, 
+    `title` varchar(200) DEFAULT NULL, 
+    `content` text, PRIMARY KEY (`id`), 
+    FULLTEXT KEY `title` (`title`,`content`) 
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+</code></pre>
+<pre><code class="language-mysql">SELECT * FROM papers WHERE MATCH(title,content) AGAINST (‘查询字符串’);
+</code></pre>
 <p><strong>7.</strong> <strong>创建空间索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test5</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">geo</span><span class="w"> </span><span class="kt">GEOMETRY</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="k">SPATIAL</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">spa_idx_geo</span><span class="p">(</span><span class="n">geo</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">MyISAM</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE test5( 
+    geo GEOMETRY NOT NULL, 
+    SPATIAL INDEX spa_idx_geo(geo) 
+) ENGINE=MyISAM;
+</code></pre>
 <p><strong>2.</strong> <strong>在已经存在的表上创建索引</strong></p>
 <p><strong>1.</strong> <strong>使用ALTER TABLE语句创建索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">ADD</span><span class="w"> </span><span class="err">[</span><span class="k">UNIQUE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">FULLTEXT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">SPATIAL</span><span class="err">]</span><span class="w"> </span><span class="err">[</span><span class="k">INDEX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">KEY</span><span class="err">]</span><span class="w"> </span><span class="err">[</span><span class="n">index_name</span><span class="err">]</span><span class="w"> </span><span class="p">(</span><span class="n">col_name</span><span class="err">[</span><span class="n">length</span><span class="err">]</span><span class="p">,...)</span><span class="w"> </span><span class="err">[</span><span class="k">ASC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESC</span><span class="err">]</span>
-</code></pre></div>
+<pre><code class="language-mysql">ALTER TABLE table_name 
+ADD [UNIQUE | FULLTEXT | SPATIAL] [INDEX | KEY] [index_name] (col_name[length],...) [ASC | DESC]
+</code></pre>
 <p><strong>2.</strong> <strong>使用CREATE INDEX创建索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="err">[</span><span class="k">UNIQUE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">FULLTEXT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">SPATIAL</span><span class="err">]</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">ON</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="p">(</span><span class="n">col_name</span><span class="err">[</span><span class="n">length</span><span class="err">]</span><span class="p">,...)</span><span class="w"> </span><span class="err">[</span><span class="k">ASC</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DESC</span><span class="err">]</span>
-</code></pre></div>
-<h5 id="13"><strong>1.3</strong> <strong>删除索引</strong><a class="headerlink" href="#13" title="Permanent link">&para;</a></h5>
+<pre><code class="language-mysql">CREATE [UNIQUE | FULLTEXT | SPATIAL] INDEX index_name 
+ON table_name (col_name[length],...) [ASC | DESC]
+</code></pre>
+<h5 id="13"><strong>1.3</strong> <strong>删除索引</strong></h5>
 <p><strong>1.</strong> <strong>使用ALTER TABLE删除索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">ALTER TABLE table_name DROP INDEX index_name;
+</code></pre>
 <p><strong>2.</strong> <strong>使用DROP INDEX语句删除索引</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">table_name</span><span class="p">;</span>
-</code></pre></div>
-<h4 id="2-mysql80"><strong>2. MySQL8.0索引新特性</strong><a class="headerlink" href="#2-mysql80" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>支持降序索引</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ts1</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="k">index</span><span class="w"> </span><span class="n">idx_a_b</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="k">desc</span><span class="p">));</span>
-</code></pre></div>
-<h5 id="22"><strong>2.2</strong> <strong>隐藏索引</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
+<pre><code class="language-mysql">DROP INDEX index_name ON table_name;
+</code></pre>
+<h4 id="2-mysql80"><strong>2. MySQL8.0索引新特性</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>支持降序索引</strong></h5>
+<pre><code class="language-mysql">CREATE TABLE ts1(a int,b int,index idx_a_b(a,b desc));
+</code></pre>
+<h5 id="22"><strong>2.2</strong> <strong>隐藏索引</strong></h5>
 <p>从MySQL 8.x开始支持<code>隐藏索引（invisible indexes）</code>，只需要将待删除的索引设置为隐藏索引，使查询优化器不再使用这个索引（即使使用force index（强制使用索引），优化器也不会使用该索引），确认将索引设置为隐藏索引后系统不受任何响应，就可以彻底删除索引。<code>这种通过先将索引设置为隐藏索引，再删除索引的方式就是软删除</code>。</p>
 <p><strong>1.</strong> <strong>创建表时直接创建</strong> </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tablename</span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="n">propname1</span><span class="w"> </span><span class="n">type1</span><span class="err">[</span><span class="n">CONSTRAINT1</span><span class="err">]</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="n">propname2</span><span class="w"> </span><span class="n">type2</span><span class="err">[</span><span class="n">CONSTRAINT2</span><span class="err">]</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="n">……</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="n">propnamen</span><span class="w"> </span><span class="n">typen</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="k">INDEX</span><span class="w"> </span><span class="err">[</span><span class="n">indexname</span><span class="err">]</span><span class="p">(</span><span class="n">propname1</span><span class="w"> </span><span class="err">[</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="err">]</span><span class="p">)</span><span class="w"> </span><span class="k">INVISIBLE</span><span class="w"> </span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">);</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE tablename( 
+    propname1 type1[CONSTRAINT1], 
+    propname2 type2[CONSTRAINT2], 
+    ……
+    propnamen typen, 
+    INDEX [indexname](propname1 [(length)]) INVISIBLE 
+);
+</code></pre>
 <p><strong>2.</strong> <strong>在已经存在的表上创建</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">indexname</span><span class="w"> </span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="k">ON</span><span class="w"> </span><span class="n">tablename</span><span class="p">(</span><span class="n">propname</span><span class="err">[</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="err">]</span><span class="p">)</span><span class="w"> </span><span class="k">INVISIBLE</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE INDEX indexname 
+ON tablename(propname[(length)]) INVISIBLE;
+</code></pre>
 <p><strong>3.</strong> <strong>通过ALTER TABLE语句创建</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tablename</span><span class="w"> </span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">ADD</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">indexname</span><span class="w"> </span><span class="p">(</span><span class="n">propname</span><span class="w"> </span><span class="err">[</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="err">]</span><span class="p">)</span><span class="w"> </span><span class="k">INVISIBLE</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">ALTER TABLE tablename 
+ADD INDEX indexname (propname [(length)]) INVISIBLE;
+</code></pre>
 <p><strong>4.</strong> <strong>切换索引可见状态</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tablename</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="k">INVISIBLE</span><span class="p">;</span><span class="w"> </span><span class="c1">#切换成隐藏索引 </span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tablename</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">index_name</span><span class="w"> </span><span class="k">VISIBLE</span><span class="p">;</span><span class="w"> </span><span class="c1">#切换成非隐藏索引</span>
-</code></pre></div>
-<h4 id="3"><strong>3.</strong> <strong>索引的设计原则</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
-<h5 id="31"><strong>3.1</strong> <strong>哪些情况适合创建索引</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
+<pre><code class="language-mysql">ALTER TABLE tablename ALTER INDEX index_name INVISIBLE; #切换成隐藏索引 
+ALTER TABLE tablename ALTER INDEX index_name VISIBLE; #切换成非隐藏索引
+</code></pre>
+<h4 id="3"><strong>3.</strong> <strong>索引的设计原则</strong></h4>
+<h5 id="31"><strong>3.1</strong> <strong>哪些情况适合创建索引</strong></h5>
 <p><strong>1.</strong> <strong>字段的数值有唯一性的限制</strong></p>
 <p>索引本身可以起到约束的作用，比如唯一索引、主键索引都可以起到唯一性约束的，因此在我们的数据表中，如果<code>某个字段是唯一的</code>，就可以直接<code>创建唯一性索引</code>，或者<code>主键索引</code>。这样可以更快速地通过该索引来确定某条记录。</p>
 <blockquote>
@@ -2053,25 +2053,25 @@
 <p>这个建议对于表的<code>主键来说更加适用</code>，因为不仅是聚簇索引中会存储主键值，其他所有的二级索引的节点处都会存储一份记录的主键值，如果主键使用更小的数据类型，也就意味着节省更多的存储空间和更高效的I/O。</p>
 <p><strong>8.</strong> <strong>使用字符串前缀创建索引</strong></p>
 <p>区分度计算公式：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nf">count</span><span class="p">(</span><span class="k">distinct</span><span class="w"> </span><span class="k">left</span><span class="p">(</span><span class="n">列名</span><span class="p">,</span><span class="w"> </span><span class="n">索引长度</span><span class="p">))</span><span class="o">/</span><span class="nf">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-mysql">count(distinct left(列名, 索引长度))/count(*)
+</code></pre>
 <p><strong>拓展：Alibaba《Java开发手册》</strong></p>
 <p>【<code>强制</code>】在 varchar 字段上建立索引时，必须指定索引长度，没必要对全字段建立索引，根据实际文本区分度决定索引长度。</p>
 <p>说明：索引的长度与区分度是一对矛盾体，一般对字符串类型数据，长度为 20 的索引，区分度会<code>高达 90% 以上</code>。</p>
 <p><strong>9.</strong> <strong>区分度高(散列性高)的列适合作为索引</strong></p>
-<p><code>列的基数</code>指的是某一列中不重复数据的个数，比方说某个列包含值<code>2,5,8,2,5,8,2,5,8</code>，虽然有<code>9</code>条记录，但该列的基数却是<code>3</code>。也就是说，**在记录行数一定的情况下，列的基数越大，该列中的值越分散；列的基数越小，该列中的值越集中。**这个列的基数指标非常重要，直接影响我们是否能有效的利用索引。最好为列的基数大的列建立索引，为基数太小的列建立索引效果可能不好。</p>
+<p><code>列的基数</code>指的是某一列中不重复数据的个数，比方说某个列包含值<code>2,5,8,2,5,8,2,5,8</code>，虽然有<code>9</code>条记录，但该列的基数却是<code>3</code>。也就是说，<strong>在记录行数一定的情况下，列的基数越大，该列中的值越分散；列的基数越小，该列中的值越集中。</strong>这个列的基数指标非常重要，直接影响我们是否能有效的利用索引。最好为列的基数大的列建立索引，为基数太小的列建立索引效果可能不好。</p>
 <p>可以使用公式<code>select count(distinct a)/count(*) from t1</code>计算区分度，越接近1越好，一般超过<code>33%</code>就算是比较高效的索引了。</p>
 <p>拓展：联合索引把区分度高（散列性高）的列放在前面。</p>
 <p><strong>10.</strong> <strong>使用最频繁的列放到联合索引的左侧</strong></p>
 <p><strong>11.</strong> <strong>在多个字段都要创建索引的情况下，联合索引优于单值索引</strong></p>
-<h5 id="32"><strong>3.2</strong> <strong>限制索引的数目</strong><a class="headerlink" href="#32" title="Permanent link">&para;</a></h5>
+<h5 id="32"><strong>3.2</strong> <strong>限制索引的数目</strong></h5>
 <p>在实际工作中，我们也需要注意平衡，索引的数目不是越多越好。我们需要限制每张表上的索引数量，建议单张表索引数量<code>不超过6个</code>。原因：</p>
 <ul>
 <li>每个索引都需要占用<code>磁盘空间</code>，索引越多，需要的磁盘空间就越大。</li>
 <li>索引会影响<code>INSERT、DELETE、UPDATE等语句的性能</code>，因为表中的数据更改的同时，索引也会进行调整和更新，会造成负担。</li>
 <li>优化器在选择如何优化查询时，会根据统一信息，对每一个可以用到的<code>索引来进行评估</code>，以生成出一个最好的执行计划，如果同时有很多个索引都可以用于查询，会增加MySQL优化器生成执行计划时间，降低查询性能。</li>
 </ul>
-<h5 id="33"><strong>3.3</strong> <strong>哪些情况不适合创建索引</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
+<h5 id="33"><strong>3.3</strong> <strong>哪些情况不适合创建索引</strong></h5>
 <p><strong>1.</strong> <strong>在where中使用不到的字段，不要设置索引</strong></p>
 <p><strong>2.</strong> <strong>数据量小的表最好不要使用索引</strong></p>
 <p><strong>3.</strong> <strong>有大量重复数据的列上不要建立索引</strong></p>

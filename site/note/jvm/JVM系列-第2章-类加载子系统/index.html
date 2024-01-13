@@ -1002,11 +1002,11 @@
   
 
 
-<h1 id="2-">第2章-类加载子系统<a class="headerlink" href="#2-" title="Permanent link">&para;</a></h1>
-<h2 id="_1">内存结构概述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<h3 id="_2">简图<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<h1 id="2-">第2章-类加载子系统</h1>
+<h2 id="_1">内存结构概述</h2>
+<h3 id="_2">简图</h3>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0001.png"></p>
-<h3 id="_3">详细图<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<h3 id="_3">详细图</h3>
 <p>英文版</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0002.jpg"></p>
 <p>中文版</p>
@@ -1017,7 +1017,7 @@
 <li>类加载器</li>
 <li>执行引擎</li>
 </ol>
-<h2 id="_4">类加载器子系统<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_4">类加载器子系统</h2>
 <p><strong>类加载器子系统作用：</strong></p>
 <ol>
 <li>
@@ -1031,23 +1031,23 @@
 </li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0004.png"></p>
-<h2 id="classloader">类加载器ClassLoader角色<a class="headerlink" href="#classloader" title="Permanent link">&para;</a></h2>
+<h2 id="classloader">类加载器ClassLoader角色</h2>
 <ol>
 <li>class file（在下图中就是Car.class文件）存在于本地硬盘上，可以理解为设计师画在纸上的模板，而最终这个模板在执行的时候是要加载到JVM当中来根据这个文件实例化出n个一模一样的实例。</li>
 <li>class file加载到JVM中，被称为DNA元数据模板（在下图中就是内存中的Car Class），放在方法区。</li>
 <li>在.class文件–&gt;JVM–&gt;最终成为元数据模板，此过程就要一个运输工具（类装载器Class Loader），扮演一个快递员的角色。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0005.png"></p>
-<h2 id="_5">类加载过程<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<h3 id="_6">概述<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloLoader</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;谢谢ClassLoader加载我....&quot;</span><span class="p">);</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;你的大恩大德，我下辈子再报！&quot;</span><span class="p">);</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
-</code></pre></div>
+<h2 id="_5">类加载过程</h2>
+<h3 id="_6">概述</h3>
+<pre><code class="language-java">public class HelloLoader {
+
+    public static void main(String[] args) {
+        System.out.println(&quot;谢谢ClassLoader加载我....&quot;);
+        System.out.println(&quot;你的大恩大德，我下辈子再报！&quot;);
+    }
+}
+</code></pre>
 <p>它的加载过程是怎么样的呢?</p>
 <ul>
 <li>执行 main() 方法（静态方法）就需要先加载main方法所在类 HelloLoader</li>
@@ -1057,7 +1057,7 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0006.png"></p>
 <p>完整的流程图如下所示：</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0007.png"></p>
-<h3 id="_7">加载阶段<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<h3 id="_7">加载阶段</h3>
 <p><strong>加载：</strong></p>
 <ol>
 <li>
@@ -1079,9 +1079,9 @@
 <li>由其他文件生成，典型场景：JSP应用从专有数据库中提取.class文件，比较少见</li>
 <li>从加密文件中获取，典型的防Class文件被反编译的保护措施</li>
 </ol>
-<h3 id="_8">链接阶段<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<h3 id="_8">链接阶段</h3>
 <p>链接分为三个子阶段：验证 -&gt; 准备 -&gt; 解析</p>
-<h4 id="verify">验证(Verify)<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h4>
+<h4 id="verify">验证(Verify)</h4>
 <ol>
 <li>目的在于确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全</li>
 <li>主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证。</li>
@@ -1089,7 +1089,7 @@
 <p><strong>举例</strong></p>
 <p>使用 BinaryViewer软件查看字节码文件，其开头均为 CAFE BABE ，如果出现不合法的字节码文件，那么将会验证不通过。</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0008.png"></p>
-<h4 id="prepare">准备(Prepare)<a class="headerlink" href="#prepare" title="Permanent link">&para;</a></h4>
+<h4 id="prepare">准备(Prepare)</h4>
 <ol>
 <li>为类变量（static变量）分配内存并且设置该类变量的默认初始值，即零值</li>
 <li>这里不包含用final修饰的static，因为final在编译的时候就会分配好了默认值，准备阶段会显式初始化</li>
@@ -1097,16 +1097,16 @@
 </ol>
 <p><strong>举例</strong></p>
 <p>代码：变量a在准备阶段会赋初始值，但不是1，而是0，在初始化阶段会被赋值为 1</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloApp</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//prepare：a = 0 ---&gt; initial : a = 1</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="resolve">解析(Resolve)<a class="headerlink" href="#resolve" title="Permanent link">&para;</a></h4>
+<pre><code class="language-java">public class HelloApp {
+    private static int a = 1;//prepare：a = 0 ---&gt; initial : a = 1
+
+
+    public static void main(String[] args) {
+        System.out.println(a);
+    }
+}
+</code></pre>
+<h4 id="resolve">解析(Resolve)</h4>
 <ol>
 <li>
 <p><strong>将常量池内的符号引用转换为直接引用的过程</strong></p>
@@ -1126,8 +1126,8 @@
 <li>反编译 class 文件后可以查看符号引用，下面带# 的就是符号引用</li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0023.png"/></p>
-<h3 id="_9">初始化阶段<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
-<h4 id="_10">类的初始化时机<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<h3 id="_9">初始化阶段</h3>
+<h4 id="_10">类的初始化时机</h4>
 <ol>
 <li>创建类的实例</li>
 <li>访问某个类或接口的静态变量，或者对该静态变量赋值</li>
@@ -1138,13 +1138,13 @@
 <li>JDK7开始提供的动态语言支持：java.lang.invoke.MethodHandle实例的解析结果REF_getStatic、REF putStatic、REF_invokeStatic句柄对应的类没有初始化，则初始化</li>
 </ol>
 <p>除了以上七种情况，其他使用Java类的方式都被看作是对类的被动使用，都不会导致类的初始化，即不会执行初始化阶段（不会调用 clinit() 方法和 init() 方法）</p>
-<h3 id="clinit">clinit()<a class="headerlink" href="#clinit" title="Permanent link">&para;</a></h3>
+<h3 id="clinit">clinit()</h3>
 <ol>
 <li>
 <p>初始化阶段就是执行类构造器方法<code>&lt;clinit&gt;()</code>的过程</p>
 </li>
 <li>
-<p>此方法不需定义，是javac编译器自动收集类中的所有**类变量**的赋值动作和静态代码块中的语句合并而来。也就是说，当我们代码中包含static变量的时候，就会有clinit方法</p>
+<p>此方法不需定义，是javac编译器自动收集类中的所有<strong>类变量</strong>的赋值动作和静态代码块中的语句合并而来。也就是说，当我们代码中包含static变量的时候，就会有clinit方法</p>
 </li>
 <li>
 <p><code>&lt;clinit&gt;()</code>方法中的指令按语句在源文件中出现的顺序执行</p>
@@ -1162,61 +1162,62 @@
 <blockquote>
 <p>IDEA 中安装 JClassLib Bytecode viewer 插件，可以很方便的看字节码。安装过程可以自行百度</p>
 </blockquote>
-<h4 id="123">1，2，3说明<a class="headerlink" href="#123" title="Permanent link">&para;</a></h4>
+<h4 id="123">1，2，3说明</h4>
 <p><strong>举例1：有static变量</strong></p>
 <p>查看下面这个代码的字节码，可以发现有一个<code>&lt;clinit&gt;()</code>方法。</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0009.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClassInitTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">   </span><span class="kd">static</span><span class="p">{</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">       </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">       </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">       </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">       </span><span class="c1">//System.out.println(number);//报错：非法的前向引用。</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">   </span><span class="p">}</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">   </span><span class="cm">/**</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="cm">    * 1、linking之prepare: number = 0 --&gt; initial: 20 --&gt; 10</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="cm">    * 2、这里因为静态代码块出现在声明变量语句前面，所以之前被准备阶段为0的number变量会</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="cm">    * 首先被初始化为20，再接着被初始化成10（这也是面试时常考的问题哦）</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="cm">    *</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="cm">    */</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">num</span><span class="p">);</span><span class="c1">//2</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">number</span><span class="p">);</span><span class="c1">//10</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class ClassInitTest {
+   private static int num = 1;
+
+   static{
+       num = 2;
+       number = 20;
+       System.out.println(num);
+       //System.out.println(number);//报错：非法的前向引用。
+   }
+
+   /**
+    * 1、linking之prepare: number = 0 --&gt; initial: 20 --&gt; 10
+    * 2、这里因为静态代码块出现在声明变量语句前面，所以之前被准备阶段为0的number变量会
+    * 首先被初始化为20，再接着被初始化成10（这也是面试时常考的问题哦）
+    *
+    */
+   private static int number = 10;
+
+    public static void main(String[] args) {
+        System.out.println(ClassInitTest.num);//2
+        System.out.println(ClassInitTest.number);//10
+    }
+}
+
+</code></pre>
 <p><clint字节码>：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">iconst_1</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">putstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">num</span><span class="o">&gt;</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">iconst_2</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">putstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">num</span><span class="o">&gt;</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">bipush</span><span class="w"> </span><span class="mi">20</span><span class="w">     </span><span class="c1">//先赋20</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="mi">10</span><span class="w"> </span><span class="n">putstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">number</span><span class="o">&gt;</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="mi">13</span><span class="w"> </span><span class="n">getstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="o">&gt;</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="mi">16</span><span class="w"> </span><span class="n">getstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">num</span><span class="o">&gt;</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="mi">19</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w"> </span><span class="o">&lt;</span><span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span><span class="p">.</span><span class="na">println</span><span class="o">&gt;</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="mi">22</span><span class="w"> </span><span class="n">bipush</span><span class="w"> </span><span class="mi">10</span><span class="w">    </span><span class="c1">//再赋10</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="mi">24</span><span class="w"> </span><span class="n">putstatic</span><span class="w"> </span><span class="err">#</span><span class="mi">5</span><span class="w"> </span><span class="o">&lt;</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">ClassInitTest</span><span class="p">.</span><span class="na">number</span><span class="o">&gt;</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="mi">27</span><span class="w"> </span><span class="k">return</span>
-</code></pre></div>
+<pre><code class="language-java"> 0 iconst_1
+ 1 putstatic #3 &lt;com/atguigu/java/ClassInitTest.num&gt;
+ 4 iconst_2
+ 5 putstatic #3 &lt;com/atguigu/java/ClassInitTest.num&gt;
+ 8 bipush 20     //先赋20
+10 putstatic #5 &lt;com/atguigu/java/ClassInitTest.number&gt;
+13 getstatic #2 &lt;java/lang/System.out&gt;
+16 getstatic #3 &lt;com/atguigu/java/ClassInitTest.num&gt;
+19 invokevirtual #4 &lt;java/io/PrintStream.println&gt;
+22 bipush 10    //再赋10
+24 putstatic #5 &lt;com/atguigu/java/ClassInitTest.number&gt;
+27 return
+</code></pre>
 <p>当我们代码中包含static变量的时候，就会有clinit方法</p>
 <p><strong>举例2：无 static 变量</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0010.png"></p>
 <p>加上之后就有了</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0011.png"></p>
-<h4 id="4">4说明<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<h4 id="4">4说明</h4>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0012.png"></p>
 <p>在构造器中：</p>
 <ul>
 <li>先将类变量 a 赋值为 10</li>
 <li>再将局部变量赋值为 20</li>
 </ul>
-<h4 id="5">5说明<a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
+<h4 id="5">5说明</h4>
 <p>若该类具有父类，JVM会保证子类的<code>&lt;clinit&gt;()</code>执行前，父类的<code>&lt;clinit&gt;()</code>已经执行完毕</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0013.png"></p>
 <p>如上代码，加载流程如下：</p>
@@ -1225,56 +1226,56 @@
 <li>获取 Son.B 静态变量，需要加载 Son 类</li>
 <li>Son 类的父类是 Father 类，所以需要先执行 Father 类的加载，再执行 Son 类的加载</li>
 </ul>
-<h4 id="6">6说明<a class="headerlink" href="#6" title="Permanent link">&para;</a></h4>
+<h4 id="6">6说明</h4>
 <p>虚拟机必须保证一个类的<code>&lt;clinit&gt;()</code>方法在多线程下被同步加锁</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">DeadThreadTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="n">Runnable</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;开始&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">            </span><span class="n">DeadThread</span><span class="w"> </span><span class="n">dead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeadThread</span><span class="p">();</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;结束&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="p">};</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="n">Thread</span><span class="w"> </span><span class="n">t1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s">&quot;线程1&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="n">Thread</span><span class="w"> </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s">&quot;线程2&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="n">t1</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="n">t2</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="kd">class</span> <span class="nc">DeadThread</span><span class="p">{</span>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="kd">static</span><span class="p">{</span>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="kc">true</span><span class="p">){</span>
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;初始化当前类&quot;</span><span class="p">);</span>
-<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">            </span><span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">){</span>
-<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
-<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class DeadThreadTest {
+    public static void main(String[] args) {
+        Runnable r = () -&gt; {
+            System.out.println(Thread.currentThread().getName() + &quot;开始&quot;);
+            DeadThread dead = new DeadThread();
+            System.out.println(Thread.currentThread().getName() + &quot;结束&quot;);
+        };
+
+        Thread t1 = new Thread(r,&quot;线程1&quot;);
+        Thread t2 = new Thread(r,&quot;线程2&quot;);
+
+        t1.start();
+        t2.start();
+    }
+}
+
+class DeadThread{
+    static{
+        if(true){
+            System.out.println(Thread.currentThread().getName() + &quot;初始化当前类&quot;);
+            while(true){
+
+            }
+        }
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>线程2开始
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>线程1开始
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>线程2初始化当前类
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>/然后程序卡死了
-</code></pre></div>
+<pre><code>线程2开始
+线程1开始
+线程2初始化当前类
+
+/然后程序卡死了
+</code></pre>
 <p>程序卡死，分析原因：</p>
 <ul>
 <li>两个线程同时去加载 DeadThread 类，而 DeadThread 类中静态代码块中有一处死循环</li>
 <li>先加载 DeadThread 类的线程抢到了同步锁，然后在类的静态代码块中执行死循环，而另一个线程在等待同步锁的释放</li>
 <li>所以无论哪个线程先执行 DeadThread 类的加载，另外一个类也不会继续执行。（一个类只会被加载一次）</li>
 </ul>
-<h2 id="_11">类加载器的分类<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
-<h3 id="_12">概述<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<h2 id="_11">类加载器的分类</h2>
+<h3 id="_12">概述</h3>
 <ol>
 <li>
 <p>JVM严格来讲支持两种类型的类加载器 。分别为引导类加载器（Bootstrap ClassLoader）和自定义类加载器（User-Defined ClassLoader）</p>
 </li>
 <li>
-<p>从概念上来讲，自定义类加载器一般指的是程序中由开发人员自定义的一类类加载器，但是Java虚拟机规范却没有这么定义，而是**将所有派生于抽象类ClassLoader的类加载器都划分为自定义类加载器**</p>
+<p>从概念上来讲，自定义类加载器一般指的是程序中由开发人员自定义的一类类加载器，但是Java虚拟机规范却没有这么定义，而是<strong>将所有派生于抽象类ClassLoader的类加载器都划分为自定义类加载器</strong></p>
 </li>
 <li>
 <p>无论类加载器的类型如何划分，在程序中我们最常见的类加载器始终只有3个，如下所示</p>
@@ -1285,39 +1286,39 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0015.png"></p>
 <p><strong>AppClassLoader</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0016.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClassLoaderTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="c1">//获取系统类加载器</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">systemClassLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">getSystemClassLoader</span><span class="p">();</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">systemClassLoader</span><span class="p">);</span><span class="c1">//sun.misc.Launcher$AppClassLoader@18b4aac2</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="c1">//获取其上层：扩展类加载器</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">extClassLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">systemClassLoader</span><span class="p">.</span><span class="na">getParent</span><span class="p">();</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">extClassLoader</span><span class="p">);</span><span class="c1">//sun.misc.Launcher$ExtClassLoader@1540e19d</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="c1">//获取其上层：获取不到引导类加载器</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">bootstrapClassLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extClassLoader</span><span class="p">.</span><span class="na">getParent</span><span class="p">();</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">bootstrapClassLoader</span><span class="p">);</span><span class="c1">//null</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="c1">//对于用户自定义类来说：默认使用系统类加载器进行加载</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassLoaderTest</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">();</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader</span><span class="p">);</span><span class="c1">//sun.misc.Launcher$AppClassLoader@18b4aac2</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">        </span><span class="c1">//String类使用引导类加载器进行加载的。---&gt; Java的核心类库都是使用引导类加载器进行加载的。</span>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">();</span>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader1</span><span class="p">);</span><span class="c1">//null</span>
-<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
-<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>
-<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class ClassLoaderTest {
+    public static void main(String[] args) {
+
+        //获取系统类加载器
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        System.out.println(systemClassLoader);//sun.misc.Launcher$AppClassLoader@18b4aac2
+
+        //获取其上层：扩展类加载器
+        ClassLoader extClassLoader = systemClassLoader.getParent();
+        System.out.println(extClassLoader);//sun.misc.Launcher$ExtClassLoader@1540e19d
+
+        //获取其上层：获取不到引导类加载器
+        ClassLoader bootstrapClassLoader = extClassLoader.getParent();
+        System.out.println(bootstrapClassLoader);//null
+
+        //对于用户自定义类来说：默认使用系统类加载器进行加载
+        ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();
+        System.out.println(classLoader);//sun.misc.Launcher$AppClassLoader@18b4aac2
+
+        //String类使用引导类加载器进行加载的。---&gt; Java的核心类库都是使用引导类加载器进行加载的。
+        ClassLoader classLoader1 = String.class.getClassLoader();
+        System.out.println(classLoader1);//null
+
+
+    }
+}
+</code></pre>
 <ul>
 <li>我们尝试获取引导类加载器，获取到的值为 null ，这并不代表引导类加载器不存在，<strong>因为引导类加载器右 C/C++ 语言，我们获取不到</strong></li>
-<li>两次获取系统类加载器的值都相同：sun.misc.Launcher$AppClassLoader@18b4aac2 ，这说明**系统类加载器是全局唯一的**</li>
+<li>两次获取系统类加载器的值都相同：sun.misc.Launcher$AppClassLoader@18b4aac2 ，这说明<strong>系统类加载器是全局唯一的</strong></li>
 </ul>
-<h3 id="_13">虚拟机自带的加载器<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
-<h4 id="_14">启动类加载器<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<h3 id="_13">虚拟机自带的加载器</h3>
+<h4 id="_14">启动类加载器</h4>
 <blockquote>
 <p><strong>启动类加载器（引导类加载器，Bootstrap ClassLoader）</strong></p>
 </blockquote>
@@ -1328,7 +1329,7 @@
 <li>加载扩展类和应用程序类加载器，并作为他们的父类加载器</li>
 <li>出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类</li>
 </ol>
-<h4 id="_15">扩展类加载器<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<h4 id="_15">扩展类加载器</h4>
 <blockquote>
 <p><strong>扩展类加载器（Extension ClassLoader）</strong></p>
 </blockquote>
@@ -1338,7 +1339,7 @@
 <li>父类加载器为启动类加载器</li>
 <li>从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的jre/lib/ext子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载</li>
 </ol>
-<h4 id="_16">系统类加载器<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<h4 id="_16">系统类加载器</h4>
 <blockquote>
 <p><strong>应用程序类加载器（也称为系统类加载器，AppClassLoader）</strong></p>
 </blockquote>
@@ -1350,49 +1351,50 @@
 <li>该类加载是程序中默认的类加载器，一般来说，Java应用的类都是由它来完成加载</li>
 <li>通过classLoader.getSystemclassLoader()方法可以获取到该类加载器</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClassLoaderTest1</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;**********启动类加载器**************&quot;</span><span class="p">);</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="c1">//获取BootstrapClassLoader能够加载的api的路径</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="n">URL</span><span class="o">[]</span><span class="w"> </span><span class="n">urLs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sun</span><span class="p">.</span><span class="na">misc</span><span class="p">.</span><span class="na">Launcher</span><span class="p">.</span><span class="na">getBootstrapClassPath</span><span class="p">().</span><span class="na">getURLs</span><span class="p">();</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">URL</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">urLs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">element</span><span class="p">.</span><span class="na">toExternalForm</span><span class="p">());</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="c1">//从上面的路径中随意选择一个类,来看看他的类加载器是什么:引导类加载器</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Provider</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">();</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader</span><span class="p">);</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;***********扩展类加载器*************&quot;</span><span class="p">);</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">extDirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;java.ext.dirs&quot;</span><span class="p">);</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">extDirs</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;;&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">        </span><span class="c1">//从上面的路径中随意选择一个类,来看看他的类加载器是什么:扩展类加载器</span>
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">        </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurveDB</span><span class="p">.</span><span class="na">class</span><span class="p">.</span><span class="na">getClassLoader</span><span class="p">();</span>
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader1</span><span class="p">);</span><span class="c1">//sun.misc.Launcher$ExtClassLoader@1540e19d</span>
-<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>
-<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class ClassLoaderTest1 {
+    public static void main(String[] args) {
+        System.out.println(&quot;**********启动类加载器**************&quot;);
+        //获取BootstrapClassLoader能够加载的api的路径
+        URL[] urLs = sun.misc.Launcher.getBootstrapClassPath().getURLs();
+        for (URL element : urLs) {
+            System.out.println(element.toExternalForm());
+        }
+        //从上面的路径中随意选择一个类,来看看他的类加载器是什么:引导类加载器
+        ClassLoader classLoader = Provider.class.getClassLoader();
+        System.out.println(classLoader);
+
+        System.out.println(&quot;***********扩展类加载器*************&quot;);
+        String extDirs = System.getProperty(&quot;java.ext.dirs&quot;);
+        for (String path : extDirs.split(&quot;;&quot;)) {
+            System.out.println(path);
+        }
+
+        //从上面的路径中随意选择一个类,来看看他的类加载器是什么:扩展类加载器
+        ClassLoader classLoader1 = CurveDB.class.getClassLoader();
+        System.out.println(classLoader1);//sun.misc.Launcher$ExtClassLoader@1540e19d
+
+    }
+}
+
+</code></pre>
 <p><strong>输出结果</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">**********</span><span class="n">启动类加载器</span><span class="o">**************</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">resources</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">rt</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">sunrsasign</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jsse</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jce</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">charsets</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jfr</span><span class="p">.</span><span class="na">jar</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nl">file</span><span class="p">:</span><span class="o">/</span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span><span class="o">%</span><span class="mi">20</span><span class="n">Files</span><span class="o">/</span><span class="n">Java</span><span class="o">/</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">classes</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="kc">null</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="o">***********</span><span class="n">扩展类加载器</span><span class="o">*************</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="nl">C</span><span class="p">:</span><span class="err">\</span><span class="n">Program</span><span class="w"> </span><span class="n">Files</span><span class="err">\</span><span class="n">Java</span><span class="err">\</span><span class="n">jdk1</span><span class="mf">.8.0_131</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">lib</span><span class="err">\</span><span class="n">ext</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="nl">C</span><span class="p">:</span><span class="err">\</span><span class="n">Windows</span><span class="err">\</span><span class="n">Sun</span><span class="err">\</span><span class="n">Java</span><span class="err">\</span><span class="n">lib</span><span class="err">\</span><span class="n">ext</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">sun</span><span class="p">.</span><span class="na">misc</span><span class="p">.</span><span class="na">Launcher$ExtClassLoader</span><span class="err">@</span><span class="mi">29453</span><span class="n">f44</span>
-</code></pre></div>
-<h3 id="_17">用户自定义类加载器<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
-<h4 id="_18">什么时候需要自定义类加载器？<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<pre><code class="language-java">**********启动类加载器**************
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/resources.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/rt.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/sunrsasign.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/jsse.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/jce.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/charsets.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/lib/jfr.jar
+file:/C:/Program%20Files/Java/jdk1.8.0_131/jre/classes
+null
+***********扩展类加载器*************
+C:\Program Files\Java\jdk1.8.0_131\jre\lib\ext
+C:\Windows\Sun\Java\lib\ext
+sun.misc.Launcher$ExtClassLoader@29453f44
+</code></pre>
+<h3 id="_17">用户自定义类加载器</h3>
+<h4 id="_18">什么时候需要自定义类加载器？</h4>
 <p>在Java的日常应用程序开发中，类的加载几乎是由上述3种类加载器相互配合执行的，在必要时，我们还可以自定义类加载器，来定制类的加载方式。那为什么还需要自定义类加载器？</p>
 <ol>
 <li>隔离加载类（比如说我假设现在Spring框架，和RocketMQ有包名路径完全一样的类，类名也一样，这个时候类就冲突了。不过一般的主流框架和中间件都会自定义类加载器，实现不同的框架，中间价之间是隔离的）</li>
@@ -1400,51 +1402,51 @@
 <li>扩展加载源（还可以考虑从数据库中加载类，路由器等等不同的地方）</li>
 <li>防止源码泄漏（对字节码文件进行解密，自己用的时候通过自定义类加载器来对其进行解密）</li>
 </ol>
-<h4 id="_19">如何自定义类加载器？<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<h4 id="_19">如何自定义类加载器？</h4>
 <ol>
 <li>开发人员可以通过继承抽象类java.lang.ClassLoader类的方式，实现自己的类加载器，以满足一些特殊的需求</li>
 <li>在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写loadClass()方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖loadClass()方法，而是建议把自定义的类加载逻辑写在findclass()方法中</li>
 <li>在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承URIClassLoader类，这样就可以避免自己去编写findclass()方法及其获取字节码流的方式，使自定义类加载器编写更加简洁。</li>
 </ol>
 <p><strong>代码示例</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CustomClassLoader</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">ClassLoader</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nd">@Override</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="n">Class</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">findClass</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">ClassNotFoundException</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getClassFromCustomPath</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">                </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FileNotFoundException</span><span class="p">();</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">                </span><span class="c1">//defineClass和findClass搭配使用</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">defineClass</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">.</span><span class="na">length</span><span class="p">);</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">            </span><span class="p">}</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">FileNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ClassNotFoundException</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">    </span><span class="c1">//自定义流的获取方式</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="nf">getClassFromCustomPath</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">        </span><span class="c1">//从自定义路径中加载指定类:细节略</span>
-<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">        </span><span class="c1">//如果指定路径的字节码文件进行了加密，则需要在此方法中进行解密操作。</span>
-<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
-<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>
-<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">        </span><span class="n">CustomClassLoader</span><span class="w"> </span><span class="n">customClassLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CustomClassLoader</span><span class="p">();</span>
-<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">            </span><span class="n">Class</span><span class="o">&lt;?&gt;</span><span class="w"> </span><span class="n">clazz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span><span class="s">&quot;One&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="n">customClassLoader</span><span class="p">);</span>
-<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">            </span><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clazz</span><span class="p">.</span><span class="na">newInstance</span><span class="p">();</span>
-<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">obj</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getClassLoader</span><span class="p">());</span>
-<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="p">}</span>
-</code></pre></div>
-<h3 id="classloader_1">关于ClassLoader<a class="headerlink" href="#classloader_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-java">public class CustomClassLoader extends ClassLoader {
+    @Override
+    protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException {
+
+        try {
+            byte[] result = getClassFromCustomPath(name);
+            if (result == null) {
+                throw new FileNotFoundException();
+            } else {
+                //defineClass和findClass搭配使用
+                return defineClass(name, result, 0, result.length);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        throw new ClassNotFoundException(name);
+    }
+    //自定义流的获取方式
+    private byte[] getClassFromCustomPath(String name) {
+        //从自定义路径中加载指定类:细节略
+        //如果指定路径的字节码文件进行了加密，则需要在此方法中进行解密操作。
+        return null;
+    }
+
+    public static void main(String[] args) {
+        CustomClassLoader customClassLoader = new CustomClassLoader();
+        try {
+            Class&lt;?&gt; clazz = Class.forName(&quot;One&quot;, true, customClassLoader);
+            Object obj = clazz.newInstance();
+            System.out.println(obj.getClass().getClassLoader());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+<h3 id="classloader_1">关于ClassLoader</h3>
 <blockquote>
 <p><strong>ClassLoader 类介绍</strong></p>
 </blockquote>
@@ -1452,38 +1454,39 @@
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0017.png"></p>
 <p>sun.misc.Launcher 它是一个java虚拟机的入口应用</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0018.png"></p>
-<h4 id="classloader_2">获取ClassLoader途径<a class="headerlink" href="#classloader_2" title="Permanent link">&para;</a></h4>
+<h4 id="classloader_2">获取ClassLoader途径</h4>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0019.png"></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClassLoaderTest2</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">            </span><span class="c1">//1.</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">            </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="p">.</span><span class="na">forName</span><span class="p">(</span><span class="s">&quot;java.lang.String&quot;</span><span class="p">).</span><span class="na">getClassLoader</span><span class="p">();</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader</span><span class="p">);</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">            </span><span class="c1">//2.</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">            </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">getContextClassLoader</span><span class="p">();</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader1</span><span class="p">);</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="c1">//3.</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">            </span><span class="n">ClassLoader</span><span class="w"> </span><span class="n">classLoader2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">getSystemClassLoader</span><span class="p">().</span><span class="na">getParent</span><span class="p">();</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">classLoader2</span><span class="p">);</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">ClassNotFoundException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="p">}</span>
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class ClassLoaderTest2 {
+    public static void main(String[] args) {
+        try {
+            //1.
+            ClassLoader classLoader = Class.forName(&quot;java.lang.String&quot;).getClassLoader();
+            System.out.println(classLoader);
+            //2.
+            ClassLoader classLoader1 = Thread.currentThread().getContextClassLoader();
+            System.out.println(classLoader1);
+
+            //3.
+            ClassLoader classLoader2 = ClassLoader.getSystemClassLoader().getParent();
+            System.out.println(classLoader2);
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>null
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>sun.misc.Launcher$AppClassLoader@18b4aac2
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>sun.misc.Launcher$ExtClassLoader@1540e19d
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Process finished with exit code 0
-</code></pre></div>
-<h2 id="_20">双亲委派机制<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h2>
-<h3 id="_21">双亲委派机制原理<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
-<p>Java虚拟机对class文件采用的是**按需加载**的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象。而且加载某个类的class文件时，Java虚拟机采用的是双亲委派模式，即把请求交由父类处理，它是一种任务委派模式</p>
+<pre><code>null
+sun.misc.Launcher$AppClassLoader@18b4aac2
+sun.misc.Launcher$ExtClassLoader@1540e19d
+
+Process finished with exit code 0
+</code></pre>
+<h2 id="_20">双亲委派机制</h2>
+<h3 id="_21">双亲委派机制原理</h3>
+<p>Java虚拟机对class文件采用的是<strong>按需加载</strong>的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象。而且加载某个类的class文件时，Java虚拟机采用的是双亲委派模式，即把请求交由父类处理，它是一种任务委派模式</p>
 <ol>
 <li>如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行；</li>
 <li>如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器；</li>
@@ -1491,80 +1494,80 @@
 <li>父类加载器一层一层往下分配任务，如果子类加载器能加载，则加载此类，如果将加载任务分配至系统类加载器也无法加载此类，则抛出异常</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0020.png"></p>
-<h3 id="_22">双亲委派机制代码演示<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
-<h4 id="1">举例1<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<h3 id="_22">双亲委派机制代码演示</h3>
+<h4 id="1">举例1</h4>
 <p>1、我们自己建立一个 java.lang.String 类，写上 static 代码块</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">String</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="c1">//</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="kd">static</span><span class="p">{</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;我是自定义的String类的静态代码块&quot;</span><span class="p">);</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class String {
+    //
+    static{
+        System.out.println(&quot;我是自定义的String类的静态代码块&quot;);
+    }
+}
+</code></pre>
 <p>2、在另外的程序中加载 String 类，看看加载的 String 类是 JDK 自带的 String 类，还是我们自己编写的 String 类</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StringTest</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">String</span><span class="p">();</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;hello,atguigu.com&quot;</span><span class="p">);</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">        </span><span class="n">StringTest</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringTest</span><span class="p">();</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">test</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getClassLoader</span><span class="p">());</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">public class StringTest {
+
+    public static void main(String[] args) {
+        java.lang.String str = new java.lang.String();
+        System.out.println(&quot;hello,atguigu.com&quot;);
+
+        StringTest test = new StringTest();
+        System.out.println(test.getClass().getClassLoader());
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>hello,atguigu.com
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>sun.misc.Launcher$AppClassLoader@18b4aac2
-</code></pre></div>
+<pre><code>hello,atguigu.com
+sun.misc.Launcher$AppClassLoader@18b4aac2
+</code></pre>
 <p>程序并没有输出我们静态代码块中的内容，可见仍然加载的是 JDK 自带的 String 类。</p>
 <p>把刚刚的类改一下</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">java.lang</span><span class="p">;</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">String</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="c1">//</span>
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="kd">static</span><span class="p">{</span>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;我是自定义的String类的静态代码块&quot;</span><span class="p">);</span>
-<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="c1">//错误: 在类 java.lang.String 中找不到 main 方法</span>
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;hello,String&quot;</span><span class="p">);</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="p">}</span>
-</code></pre></div>
+<pre><code class="language-java">package java.lang;
+public class String {
+    //
+    static{
+        System.out.println(&quot;我是自定义的String类的静态代码块&quot;);
+    }
+    //错误: 在类 java.lang.String 中找不到 main 方法
+    public static void main(String[] args) {
+        System.out.println(&quot;hello,String&quot;);
+    }
+}
+</code></pre>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0021.png"></p>
 <p>由于双亲委派机制一直找父类，所以最后找到了Bootstrap ClassLoader，Bootstrap ClassLoader找到的是 JDK 自带的 String 类，在那个String类中并没有 main() 方法，所以就报了上面的错误。</p>
-<h4 id="2">举例2<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">java.lang</span><span class="p">;</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ShkStart</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;hello!&quot;</span><span class="p">);</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="p">}</span>
-</code></pre></div>
+<h4 id="2">举例2</h4>
+<pre><code class="language-java">package java.lang;
+
+
+public class ShkStart {
+
+    public static void main(String[] args) {
+        System.out.println(&quot;hello!&quot;);
+    }
+}
+</code></pre>
 <p>输出结果：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">SecurityException</span><span class="p">:</span><span class="w"> </span><span class="n">Prohibited</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="nn">name</span><span class="p">:</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">ClassLoader</span><span class="p">.</span><span class="na">preDefineClass</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">662</span><span class="p">)</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">ClassLoader</span><span class="p">.</span><span class="na">defineClass</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">761</span><span class="p">)</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">security</span><span class="p">.</span><span class="na">SecureClassLoader</span><span class="p">.</span><span class="na">defineClass</span><span class="p">(</span><span class="n">SecureClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">142</span><span class="p">)</span>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">URLClassLoader</span><span class="p">.</span><span class="na">defineClass</span><span class="p">(</span><span class="n">URLClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">467</span><span class="p">)</span>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">URLClassLoader</span><span class="p">.</span><span class="na">access$100</span><span class="p">(</span><span class="n">URLClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">73</span><span class="p">)</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">URLClassLoader$1</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">URLClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">368</span><span class="p">)</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">URLClassLoader$1</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">URLClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">362</span><span class="p">)</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">security</span><span class="p">.</span><span class="na">AccessController</span><span class="p">.</span><span class="na">doPrivileged</span><span class="p">(</span><span class="n">Native</span><span class="w"> </span><span class="n">Method</span><span class="p">)</span>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">net</span><span class="p">.</span><span class="na">URLClassLoader</span><span class="p">.</span><span class="na">findClass</span><span class="p">(</span><span class="n">URLClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">361</span><span class="p">)</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">ClassLoader</span><span class="p">.</span><span class="na">loadClass</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">424</span><span class="p">)</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">sun</span><span class="p">.</span><span class="na">misc</span><span class="p">.</span><span class="na">Launcher$AppClassLoader</span><span class="p">.</span><span class="na">loadClass</span><span class="p">(</span><span class="n">Launcher</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">335</span><span class="p">)</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">ClassLoader</span><span class="p">.</span><span class="na">loadClass</span><span class="p">(</span><span class="n">ClassLoader</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">357</span><span class="p">)</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">sun</span><span class="p">.</span><span class="na">launcher</span><span class="p">.</span><span class="na">LauncherHelper</span><span class="p">.</span><span class="na">checkAndLoadMain</span><span class="p">(</span><span class="n">LauncherHelper</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">495</span><span class="p">)</span>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="nl">Error</span><span class="p">:</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="n">JNI</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">occurred</span><span class="p">,</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">installation</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">try</span><span class="w"> </span><span class="n">again</span>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="n">Exception</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">thread</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">1</span>
-</code></pre></div>
+<pre><code class="language-java">java.lang.SecurityException: Prohibited package name: java.lang
+    at java.lang.ClassLoader.preDefineClass(ClassLoader.java:662)
+    at java.lang.ClassLoader.defineClass(ClassLoader.java:761)
+    at java.security.SecureClassLoader.defineClass(SecureClassLoader.java:142)
+    at java.net.URLClassLoader.defineClass(URLClassLoader.java:467)
+    at java.net.URLClassLoader.access$100(URLClassLoader.java:73)
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:368)
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:362)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at java.net.URLClassLoader.findClass(URLClassLoader.java:361)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:335)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+    at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:495)
+Error: A JNI error has occurred, please check your installation and try again
+Exception in thread &quot;main&quot; 
+Process finished with exit code 1
+</code></pre>
 <p>即使类名没有重复，也禁止使用java.lang这种包名。这是一种保护机制</p>
-<h4 id="3">举例3<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<h4 id="3">举例3</h4>
 <p>当我们加载jdbc.jar 用于实现数据库连接的时候</p>
 <ol>
 <li>我们现在程序中需要用到SPI接口，而SPI接口属于rt.jar包中Java核心api</li>
@@ -1574,7 +1577,7 @@
 <li>从这里面就可以看到SPI核心接口由引导类加载器来加载，SPI具体实现类由系统类加载器来加载</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_002/0022.png"></p>
-<h3 id="_23">双亲委派机制优势<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<h3 id="_23">双亲委派机制优势</h3>
 <p>通过上面的例子，我们可以知道，双亲机制可以</p>
 <ol>
 <li>
@@ -1588,20 +1591,20 @@
 </li>
 <li>自定义类：java.lang.ShkStart（报错：阻止创建 java.lang开头的类）</li>
 </ol>
-<h2 id="_24">沙箱安全机制<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h2>
+<h2 id="_24">沙箱安全机制</h2>
 <ol>
 <li>自定义String类时：在加载自定义String类的时候会率先使用引导类加载器加载，而引导类加载器在加载的过程中会先加载jdk自带的文件（rt.jar包中java.lang.String.class），报错信息说没有main方法，就是因为加载的是rt.jar包中的String类。</li>
 <li>这样可以保证对java核心源代码的保护，这就是沙箱安全机制。</li>
 </ol>
-<h2 id="_25">其他<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h2>
-<h3 id="class">如何判断两个class对象是否相同？<a class="headerlink" href="#class" title="Permanent link">&para;</a></h3>
+<h2 id="_25">其他</h2>
+<h3 id="class">如何判断两个class对象是否相同？</h3>
 <p>在JVM中表示两个class对象是否为同一个类存在两个必要条件：</p>
 <ol>
 <li>类的完整类名必须一致，包括包名</li>
 <li><strong>加载这个类的ClassLoader（指ClassLoader实例对象）必须相同</strong></li>
 <li>换句话说，在JVM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的</li>
 </ol>
-<h3 id="_26">对类加载器的引用<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<h3 id="_26">对类加载器的引用</h3>
 <ol>
 <li>JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的</li>
 <li><strong>如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中</strong></li>

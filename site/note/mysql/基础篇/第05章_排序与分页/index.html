@@ -1824,53 +1824,53 @@
   
 
 
-<h1 id="05_">第05章_排序与分页<a class="headerlink" href="#05_" title="Permanent link">&para;</a></h1>
+<h1 id="05_">第05章_排序与分页</h1>
 <p>讲师：尚硅谷-宋红康（江湖人称：康师傅）</p>
 <p>官网：<a href="http://www.atguigu.com/">http://www.atguigu.com</a></p>
 <hr />
-<h2 id="1">1. 排序数据<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<h3 id="11">1.1 排序规则<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<h2 id="1">1. 排序数据</h2>
+<h3 id="11">1.1 排序规则</h3>
 <ul>
 <li>使用 ORDER BY 子句排序</li>
 <li><strong>ASC（ascend）: 升序</strong></li>
 <li><strong>DESC（descend）:降序</strong></li>
 <li><strong>ORDER BY 子句在SELECT语句的结尾。</strong></li>
 </ul>
-<h3 id="12">1.2 单列排序<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w">   </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_id</span><span class="p">,</span><span class="w"> </span><span class="n">department_id</span><span class="p">,</span><span class="w"> </span><span class="n">hire_date</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">FROM</span><span class="w">     </span><span class="n">employees</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">hire_date</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<h3 id="12">1.2 单列排序</h3>
+<pre><code class="language-mysql">SELECT   last_name, job_id, department_id, hire_date
+FROM     employees
+ORDER BY hire_date ;
+</code></pre>
 <p><img alt="1554974255957" src="../images/1554974255957.png" /></p>
 <p><img alt="1554974260133" src="../images/1554974260133.png" /></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SELECT</span><span class="w">   </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">job_id</span><span class="p">,</span><span class="w"> </span><span class="n">department_id</span><span class="p">,</span><span class="w"> </span><span class="n">hire_date</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">FROM</span><span class="w">     </span><span class="n">employees</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">hire_date</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT   last_name, job_id, department_id, hire_date
+FROM     employees
+ORDER BY hire_date DESC ;
+</code></pre>
 <p><img alt="1554974822229" src="../images/1554974822229.png" /></p>
 <p><img alt="1554974827522" src="../images/1554974827522.png" /></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">employee_id</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="o">*</span><span class="mi">12</span><span class="w"> </span><span class="n">annsal</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w">   </span><span class="n">employees</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">annsal</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT employee_id, last_name, salary*12 annsal
+FROM   employees
+ORDER BY annsal;
+</code></pre>
 <p><img alt="1554974853194" src="../images/1554974853194.png" /></p>
 <p><img alt="1554974858252" src="../images/1554974858252.png" /></p>
-<h3 id="13">1.3 多列排序<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">department_id</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">FROM</span><span class="w">   </span><span class="n">employees</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">department_id</span><span class="p">,</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</code></pre></div>
+<h3 id="13">1.3 多列排序</h3>
+<pre><code class="language-mysql">SELECT last_name, department_id, salary
+FROM   employees
+ORDER BY department_id, salary DESC;
+</code></pre>
 <p><img alt="1554974901572" src="../images/1554974901572.png" /></p>
 <p><img alt="1554974907498" src="../images/1554974907498.png" /></p>
 <ul>
 <li>可以使用不在SELECT列表中的列排序。</li>
 <li>在对多列进行排序的时候，首先排序的第一列必须有相同的列值，才会对第二列进行排序。如果第一列数据中所有值都是唯一的，将不再对第二列进行排序。</li>
 </ul>
-<h2 id="2">2. 分页<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<h3 id="21">2.1 背景<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<h2 id="2">2. 分页</h2>
+<h3 id="21">2.1 背景</h3>
 <p>背景1：查询返回的记录太多了，查看起来很不方便，怎么样能够实现分页查询呢？</p>
 <p>背景2：表里有 4 条数据，我们只想要显示第 2、3 条数据怎么办呢？</p>
-<h3 id="22">2.2 实现规则<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h3 id="22">2.2 实现规则</h3>
 <ul>
 <li>分页原理</li>
 </ul>
@@ -1883,62 +1883,62 @@
 <p>格式：</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">LIMIT</span><span class="w"> </span><span class="err">[</span><span class="n">位置偏移量</span><span class="p">,</span><span class="err">]</span><span class="w"> </span><span class="n">行数</span>
-</code></pre></div>
+<p><code>mysql
+  LIMIT [位置偏移量,] 行数</code></p>
 <p>第一个“位置偏移量”参数指示MySQL从哪一行开始显示，是一个可选参数，如果不指定“位置偏移量”，将会从表中的第一条记录开始（第一条记录的位置偏移量是0，第二条记录的位置偏移量是1，以此类推）；第二个参数“行数”指示返回的记录条数。</p>
 <ul>
 <li>举例</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">--</span><span class="n">前10条记录：</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">或者</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="o">--</span><span class="n">第11至20条记录：</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">;</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="o">--</span><span class="n">第21至30条记录：</span><span class="w"> </span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">表名</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">--前10条记录：
+SELECT * FROM 表名 LIMIT 0,10;
+或者
+SELECT * FROM 表名 LIMIT 10;
+
+--第11至20条记录：
+SELECT * FROM 表名 LIMIT 10,10;
+
+--第21至30条记录： 
+SELECT * FROM 表名 LIMIT 20,10;
+</code></pre>
 <blockquote>
 <p>MySQL 8.0中可以使用“LIMIT 3 OFFSET 4”，意思是获取从第5条记录开始后面的3条记录，和“LIMIT 4,3;”返回的结果相同。</p>
 </blockquote>
 <ul>
-<li>分页显式公式**：（当前页数-1）<em>每页条数，每页条数*</em></li>
+<li>分页显式公式<strong>：（当前页数-1）*每页条数，每页条数</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">table</span><span class="w"> </span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">LIMIT</span><span class="p">(</span><span class="n">PageNo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">PageSize</span><span class="p">,</span><span class="n">PageSize</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT * FROM table 
+LIMIT(PageNo - 1)*PageSize,PageSize;
+</code></pre>
 <ul>
 <li><strong>注意：LIMIT 子句必须放在整个SELECT语句的最后！</strong></li>
 <li>使用 LIMIT 的好处</li>
 </ul>
 <p>约束返回结果的数量可以<code>减少数据表的网络传输量</code>，也可以<code>提升查询效率</code>。如果我们知道返回结果只有 1 条，就可以使用<code>LIMIT 1</code>，告诉 SELECT 语句只需要返回一条记录即可。这样的好处就是 SELECT 不需要扫描完整的表，只需要检索到一条符合条件的记录即可返回。</p>
-<h3 id="23">2.3 拓展<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<h3 id="23">2.3 拓展</h3>
 <p>在不同的 DBMS 中使用的关键字可能不同。在 MySQL、PostgreSQL、MariaDB 和 SQLite 中使用 LIMIT 关键字，而且需要放到 SELECT 语句的最后面。</p>
 <ul>
 <li>如果是 SQL Server 和 Access，需要使用 <code>TOP</code> 关键字，比如：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">TOP</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">name</span><span class="p">,</span><span class="w"> </span><span class="n">hp_max</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">heros</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">hp_max</span><span class="w"> </span><span class="k">DESC</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT TOP 5 name, hp_max FROM heros ORDER BY hp_max DESC
+</code></pre>
 <ul>
 <li>如果是 DB2，使用<code>FETCH FIRST 5 ROWS ONLY</code>这样的关键字：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">name</span><span class="p">,</span><span class="w"> </span><span class="n">hp_max</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">heros</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">hp_max</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">FETCH</span><span class="w"> </span><span class="k">FIRST</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">ROWS</span><span class="w"> </span><span class="k">ONLY</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT name, hp_max FROM heros ORDER BY hp_max DESC FETCH FIRST 5 ROWS ONLY
+</code></pre>
 <ul>
 <li>如果是 Oracle，你需要基于 <code>ROWNUM</code> 来统计行数：</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">rownum</span><span class="p">,</span><span class="n">last_name</span><span class="p">,</span><span class="n">salary</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">rownum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT rownum,last_name,salary FROM employees WHERE rownum &lt; 5 ORDER BY salary DESC;
+</code></pre>
 <p>需要说明的是，这条语句是先取出来前 5 条数据行，然后再按照 hp_max 从高到低的顺序进行排序。但这样产生的结果和上述方法的并不一样。我会在后面讲到子查询，你可以使用</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">rownum</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="n">salary</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="n">salary</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">employees</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">salary</span><span class="w"> </span><span class="k">DESC</span><span class="p">)</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">rownum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">SELECT rownum, last_name,salary
+FROM (
+    SELECT last_name,salary
+    FROM employees
+    ORDER BY salary DESC)
+WHERE rownum &lt; 10;
+</code></pre>
 <p>得到与上述方法一致的结果。</p>
 
 

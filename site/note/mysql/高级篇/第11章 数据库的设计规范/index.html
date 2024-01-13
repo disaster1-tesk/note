@@ -2066,14 +2066,14 @@
 
   <h1>第11章 数据库的设计规范</h1>
 
-<h3 id="11">第11章 数据库的设计规范<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>范 式</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11_1"><strong>1.1</strong> <strong>范式简介</strong><a class="headerlink" href="#11_1" title="Permanent link">&para;</a></h5>
-<p>**在关系型数据库中，关于数据表设计的基本原则、规则就称为范式。**可以理解为，一张数据表的设计结构需要满足的某种设计标准的<code>级别</code>。要想设计一个结构合理的关系型数据库，必须满足一定的范式。</p>
-<h5 id="12"><strong>1.2</strong> <strong>范式都包括哪些</strong><a class="headerlink" href="#12" title="Permanent link">&para;</a></h5>
+<h3 id="11">第11章 数据库的设计规范</h3>
+<h4 id="1"><strong>1.</strong> <strong>范 式</strong></h4>
+<h5 id="11_1"><strong>1.1</strong> <strong>范式简介</strong></h5>
+<p><strong>在关系型数据库中，关于数据表设计的基本原则、规则就称为范式。</strong>可以理解为，一张数据表的设计结构需要满足的某种设计标准的<code>级别</code>。要想设计一个结构合理的关系型数据库，必须满足一定的范式。</p>
+<h5 id="12"><strong>1.2</strong> <strong>范式都包括哪些</strong></h5>
 <p>目前关系型数据库有六种常见范式，按照范式级别，从低到高分别是：<strong>第一范式（1NF）、第二范式（2NF）、第三范式（3NF）、巴斯-科德范式（BCNF）、第四范式(4NF）和第五范式（5NF，又称完美范式）</strong>。</p>
 <p><img alt="image-20220403092826169" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204030928295.png" /></p>
-<h5 id="13"><strong>1.3</strong> <strong>键和相关属性的概念</strong><a class="headerlink" href="#13" title="Permanent link">&para;</a></h5>
+<h5 id="13"><strong>1.3</strong> <strong>键和相关属性的概念</strong></h5>
 <p>这里有两个表：</p>
 <p><code>球员表(player)</code>：球员编号 | 姓名 | 身份证号 | 年龄 | 球队编号</p>
 <p><code>球队表(team)</code>：球队编号 | 主教练 | 球队所在地</p>
@@ -2084,24 +2084,24 @@
 <li><code>外键</code>：球员表中的球队编号。</li>
 <li><code>主属性</code>、<code>非主属性</code>：在球员表中，主属性是（球员编号）（身份证号），其他的属性（姓名）（年龄）（球队编号）都是非主属性。</li>
 </ul>
-<h5 id="14-1st-nf"><strong>1.4</strong> <strong>第一范式(1<sup>st</sup> NF)</strong><a class="headerlink" href="#14-1st-nf" title="Permanent link">&para;</a></h5>
+<h5 id="14-1st-nf"><strong>1.4</strong> <strong>第一范式(1st NF)</strong></h5>
 <p>第一范式主要是确保数据表中每个字段的值必须具有<code>原子性</code>，也就是说数据表中每个字段的值为<code>不可再次拆分</code>的最小数据单位。</p>
-<h5 id="15-2nd-nf"><strong>1.5</strong> <strong>第二范式(2<sup>nd</sup> NF)</strong><a class="headerlink" href="#15-2nd-nf" title="Permanent link">&para;</a></h5>
-<p>第二范式要求，在满足第一范式的基础上，还要**满足数据表里的每一条数据记录，都是可唯一标识的。而且所有非主键字段，都必须完全依赖主键，不能只依赖主键的一部分。**如果知道主键的所有属性的值，就可以检索到任何元组（行）的任何属性的任何值。</p>
-<h5 id="16-3rd-nf"><strong>1.6</strong> <strong>第三范式(3<sup>rd</sup> NF)</strong><a class="headerlink" href="#16-3rd-nf" title="Permanent link">&para;</a></h5>
-<p>第三范式是在第二范式的基础上，确保数据表中的每一个非主键字段都和主键字段直接相关，也就是说，<strong>要求数据表中的所有非主键字段不能依赖于其他非主键字段。</strong>（即，不能存在非主属性A依赖于非主属性B，非主属性B依赖于主键C的情况，即存在"A&rarr;B&rarr;C"的决定关系）通俗地讲，该规则的意思是所有<code>非主键属性</code>之间不能有依赖关系，必须<code>相互独立</code>。</p>
-<h5 id="17">1.7 小结<a class="headerlink" href="#17" title="Permanent link">&para;</a></h5>
+<h5 id="15-2nd-nf"><strong>1.5</strong> <strong>第二范式(2nd NF)</strong></h5>
+<p>第二范式要求，在满足第一范式的基础上，还要<strong>满足数据表里的每一条数据记录，都是可唯一标识的。而且所有非主键字段，都必须完全依赖主键，不能只依赖主键的一部分。</strong>如果知道主键的所有属性的值，就可以检索到任何元组（行）的任何属性的任何值。</p>
+<h5 id="16-3rd-nf"><strong>1.6</strong> <strong>第三范式(3rd NF)</strong></h5>
+<p>第三范式是在第二范式的基础上，确保数据表中的每一个非主键字段都和主键字段直接相关，也就是说，<strong>要求数据表中的所有非主键字段不能依赖于其他非主键字段。</strong>（即，不能存在非主属性A依赖于非主属性B，非主属性B依赖于主键C的情况，即存在"A--&gt;B--&gt;C"的决定关系）通俗地讲，该规则的意思是所有<code>非主键属性</code>之间不能有依赖关系，必须<code>相互独立</code>。</p>
+<h5 id="17">1.7 小结</h5>
 <p>关于数据表的设计，有三个范式要遵循。</p>
 <p>（1）第一范式（1NF），确保每列保持<code>原子性</code></p>
 <p>数据库的每一列都是不可分割的原子数据项，不可再分的最小数据单元，而不能是集合、数组、记录等非原子数据项。</p>
 <p>（2）第二范式（2NF），确保每列都和主键<code>完全依赖</code></p>
 <p>尤其在复合主键的情况向下，非主键部分不应该依赖于部分主键。</p>
 <p>（3）第三范式（3NF），确保每列都和主键<code>直接相关</code>，而不是间接相关</p>
-<p>**范式的优点：**数据的标准化有助于消除数据库中的<code>数据冗余</code>，第三范式（3NF）通常被认为在性能、拓展性和数据完整性方面达到了最好的平衡。</p>
-<p>**范式的缺点：**范式的使用，可能<code>降低查询的效率</code>。因为范式等级越高，设计出来的数据表就越多、越精细，数据的冗余度就越低，进行数据查询的时候就可能需要<code>关联多张表</code>，这不但代价昂贵，也可能使一些<code>索引策略无效</code>。</p>
+<p><strong>范式的优点：</strong>数据的标准化有助于消除数据库中的<code>数据冗余</code>，第三范式（3NF）通常被认为在性能、拓展性和数据完整性方面达到了最好的平衡。</p>
+<p><strong>范式的缺点：</strong>范式的使用，可能<code>降低查询的效率</code>。因为范式等级越高，设计出来的数据表就越多、越精细，数据的冗余度就越低，进行数据查询的时候就可能需要<code>关联多张表</code>，这不但代价昂贵，也可能使一些<code>索引策略无效</code>。</p>
 <p>范式只是提出了设计的标准，实际上设计数据表时，未必一定要符合这些标准。开发中，我们会出现为了性能和读取效率违反范式化的原则，通过<code>增加少量的冗余</code>或重复的数据来提高数据库的<code>读性能</code>，减少关联查询，join表的次数，实现<code>空间换取时间</code>的目的。因此在实际的设计过程中要理论结合实际，灵活运用。</p>
-<h4 id="2"><strong>2.</strong> <strong>反范式化</strong><a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>概述</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
+<h4 id="2"><strong>2.</strong> <strong>反范式化</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>概述</strong></h5>
 <p><strong>规范化</strong> <strong>vs</strong> <strong>性能</strong></p>
 <ol>
 <li>
@@ -2117,14 +2117,14 @@
 <p>通过在给定的表中插入计算列，以方便查询</p>
 </li>
 </ol>
-<h5 id="22"><strong>2.2</strong> <strong>反范式的新问题</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
+<h5 id="22"><strong>2.2</strong> <strong>反范式的新问题</strong></h5>
 <ul>
 <li>存储<code>空间变大</code>了</li>
 <li>一个表中字段做了修改，另一个表中冗余的字段也需要做同步修改，否则<code>数据不一致</code></li>
 <li>若采用存储过程来支持数据的更新、删除等额外操作，如果更新频繁，会非常<code>消耗系统资源</code></li>
 <li>在<code>数据量小</code>的情况下，反范式不能体现性能的优势，可能还会让数据库的设计更加<code>复杂</code></li>
 </ul>
-<h5 id="23"><strong>2.3</strong> <strong>反范式的适用场景</strong><a class="headerlink" href="#23" title="Permanent link">&para;</a></h5>
+<h5 id="23"><strong>2.3</strong> <strong>反范式的适用场景</strong></h5>
 <p>当冗余信息有价值或者能<code>大幅度提高查询效率</code>的时候，我们才会采取反范式的优化。</p>
 <p><strong>1.</strong> <strong>增加冗余字段的建议</strong> </p>
 <p>1）这个冗余字段<code>不需要经常进行修改</code></p>
@@ -2132,23 +2132,23 @@
 <p><strong>2.</strong> <strong>历史快照、历史数据的需要</strong></p>
 <p>在现实生活中，我们经常需要一些冗余信息，比如订单中的收货人信息，包括姓名、电话和地址等。每次发生的<code>订单收货信息</code>都属于<code>历史快照</code>，需要进行保存，但用户可以随时修改自己的信息，这时保存这些冗余信息是非常有必要的。</p>
 <p>反范式优化也常用在<code>数据仓库</code>的设计中，因为数据仓库通常<code>存储历史数据</code>，对增删改的实时性要求不强，对历史数据的分析需求强。这时适当允许数据的冗余度，更方便进行数据分析。</p>
-<h4 id="3-bcnf"><strong>3. BCNF(巴斯范式)</strong><a class="headerlink" href="#3-bcnf" title="Permanent link">&para;</a></h4>
+<h4 id="3-bcnf"><strong>3. BCNF(巴斯范式)</strong></h4>
 <p>主属性（仓库名）对于候选键（管理员，物品名）是部分依赖的关系，这样就有可能导致异常情况。因此引入BCNF，<strong>它在</strong> <strong>3NF</strong> <strong>的基础上消除了主属性对候选键的部分依赖或者传递依赖关系</strong>。</p>
 <p>如果在关系R中，U为主键，A属性是主键的一个属性，若存在A-&gt;Y，Y为主属性，则该关系不属于BCNF。</p>
-<h4 id="4-er"><strong>4. ER模型</strong><a class="headerlink" href="#4-er" title="Permanent link">&para;</a></h4>
+<h4 id="4-er"><strong>4. ER模型</strong></h4>
 <p>ER模型也叫做<code>实体关系模型</code>，是用来描述现实生活中客观存在的事物、事物的属性，以及事物之间关系的一种数据模型。<strong>在开发基于数据库的信息系统的设计阶段，通常使用ER模型来描述信息需要和信息特性，帮助我们理清业务逻辑，从而设计出优秀的数据库。</strong></p>
-<h5 id="41-er">4.1 ER 模型包括那些要素？<a class="headerlink" href="#41-er" title="Permanent link">&para;</a></h5>
+<h5 id="41-er">4.1 ER 模型包括那些要素？</h5>
 <p><strong>ER</strong> <strong>模型中有三个要素，分别是实体、属性和关系</strong>。 </p>
 <p><code>实体</code>，可以看做是数据对象，往往对应于现实生活中的真实存在的个体。在 ER 模型中，用<code>矩形</code>来表示。实体分为两类，分别是<code>强实体</code>和<code>弱实体</code>。强实体是指不依赖于其他实体的实体；弱实体是指对另一个实体有很强的依赖关系的实体。</p>
 <p><code>属性</code>，则是指实体的特性。比如超市的地址、联系电话、员工数等。在 ER 模型中用<code>椭圆形</code>来表示。</p>
 <p><code>关系</code>，则是指实体之间的联系。比如超市把商品卖给顾客，就是一种超市与顾客之间的联系。在 ER 模型中用<code>菱形</code>来表示。</p>
 <p>注意：实体和属性不容易区分。这里提供一个原则：我们要从系统整体的角度出发去看，<strong>可以独立存在的是实体，不可再分的是属性</strong>。也就是说，属性不能包含其他属性。</p>
-<h5 id="42"><strong>4.2</strong> <strong>关系的类型</strong><a class="headerlink" href="#42" title="Permanent link">&para;</a></h5>
+<h5 id="42"><strong>4.2</strong> <strong>关系的类型</strong></h5>
 <p>在 ER 模型的 3 个要素中，关系又可以分为 3 种类型，分别是 一对一、一对多、多对多。</p>
 <p><code>一对一</code>：指实体之间的关系是一一对应的</p>
 <p><code>一对多</code>：指一边的实体通过关系，可以对应多个另外一边的实体。相反，另外一边的实体通过这个关系，则只能对应唯一的一边的实体</p>
 <p><code>多对多</code>：指关系两边的实体都可以通过关系对应多个对方的实体</p>
-<h4 id="5"><strong>5.</strong> <strong>数据表的设计原则</strong><a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
+<h4 id="5"><strong>5.</strong> <strong>数据表的设计原则</strong></h4>
 <p>数据表设计的一般原则："三少一多" </p>
 <p><strong>1.</strong> <strong>数据表的个数越少越好</strong> </p>
 <p><strong>2.</strong> <strong>数据表中的字段个数越少越好</strong></p>
@@ -2157,8 +2157,8 @@
 <blockquote>
 <p>注意：这个原则并不是绝对的，有时候我们需要牺牲数据的冗余度来换取数据处理的效率。</p>
 </blockquote>
-<h4 id="6"><strong>6.</strong> <strong>数据库对象编写建议</strong><a class="headerlink" href="#6" title="Permanent link">&para;</a></h4>
-<h5 id="61"><strong>6.1</strong> <strong>关于库</strong><a class="headerlink" href="#61" title="Permanent link">&para;</a></h5>
+<h4 id="6"><strong>6.</strong> <strong>数据库对象编写建议</strong></h4>
+<h5 id="61"><strong>6.1</strong> <strong>关于库</strong></h5>
 <ol>
 <li>
 <p>【强制】库的名称必须控制在32个字符以内，只能使用英文字母、数字和下划线，建议以英文字母开头。</p>
@@ -2182,7 +2182,7 @@
 <p>【建议】临时库以<code>tmp_</code>为前缀，并以日期为后缀；备份库以<code>bak_</code>为前缀，并以日期为后缀。</p>
 </li>
 </ol>
-<h5 id="62"><strong>6.2</strong> <strong>关于表、列</strong><a class="headerlink" href="#62" title="Permanent link">&para;</a></h5>
+<h5 id="62"><strong>6.2</strong> <strong>关于表、列</strong></h5>
 <ol>
 <li>
 <p>【强制】表和列的名称必须控制在32个字符以内，表名只能使用英文字母、数字和下划线，建议以<code>英文字母开头</code>。 </p>
@@ -2233,30 +2233,30 @@
 <p>【示范】一个较为规范的建表语句：</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">user_info</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n n-Quoted">`id`</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="k">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">AUTO_INCREMENT</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;自增主键&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n n-Quoted">`user_id`</span><span class="w"> </span><span class="kt">bigint</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户id&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n n-Quoted">`username`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;真实姓名&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n n-Quoted">`email`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户邮箱&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n n-Quoted">`nickname`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;昵称&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n n-Quoted">`birthday`</span><span class="w"> </span><span class="kt">date</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;生日&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="n n-Quoted">`sex`</span><span class="w"> </span><span class="kt">tinyint</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;性别&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n n-Quoted">`short_introduce`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;一句话介绍自己，最多50个汉字&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="n n-Quoted">`user_resume`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户提交的简历存放地址&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="n n-Quoted">`user_register_ip`</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户注册时的源ip&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="n n-Quoted">`create_time`</span><span class="w"> </span><span class="kt">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;创建时间&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="n n-Quoted">`update_time`</span><span class="w"> </span><span class="kt">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;修改时间&#39;</span><span class="p">,</span><span class="w"> </span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="n n-Quoted">`user_review_status`</span><span class="w"> </span><span class="kt">tinyint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;用户资料审核状态，1为通过，2为审核中，3为未 通过，4为还未提交审核&#39;</span><span class="p">,</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n n-Quoted">`id`</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n n-Quoted">`uniq_user_id`</span><span class="w"> </span><span class="p">(</span><span class="n n-Quoted">`user_id`</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">KEY</span><span class="w"> </span><span class="n n-Quoted">`idx_username`</span><span class="p">(</span><span class="n n-Quoted">`username`</span><span class="p">),</span><span class="w"> </span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">KEY</span><span class="w"> </span><span class="n n-Quoted">`idx_create_time_status`</span><span class="p">(</span><span class="n n-Quoted">`create_time`</span><span class="p">,</span><span class="n n-Quoted">`user_review_status`</span><span class="p">)</span><span class="w"> </span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">)</span><span class="w"> </span><span class="k">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="w"> </span><span class="k">COMMENT</span><span class="o">=</span><span class="s1">&#39;网站用户基本信息&#39;</span>
-</code></pre></div>
+<pre><code class="language-mysql">CREATE TABLE user_info ( 
+    `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键', 
+    `user_id` bigint(11) NOT NULL COMMENT '用户id', 
+    `username` varchar(45) NOT NULL COMMENT '真实姓名', 
+    `email` varchar(30) NOT NULL COMMENT '用户邮箱', 
+    `nickname` varchar(45) NOT NULL COMMENT '昵称', 
+    `birthday` date NOT NULL COMMENT '生日', 
+    `sex` tinyint(4) DEFAULT '0' COMMENT '性别', 
+    `short_introduce` varchar(150) DEFAULT NULL COMMENT '一句话介绍自己，最多50个汉字', 
+    `user_resume` varchar(300) NOT NULL COMMENT '用户提交的简历存放地址', 
+    `user_register_ip` int NOT NULL COMMENT '用户注册时的源ip', 
+    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', 
+    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间', 
+    `user_review_status` tinyint NOT NULL COMMENT '用户资料审核状态，1为通过，2为审核中，3为未 通过，4为还未提交审核',
+    PRIMARY KEY (`id`), 
+    UNIQUE KEY `uniq_user_id` (`user_id`), 
+    KEY `idx_username`(`username`), 
+    KEY `idx_create_time_status`(`create_time`,`user_review_status`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='网站用户基本信息'
+</code></pre>
 <ol>
 <li>【建议】创建表时，可以使用可视化工具。这样可以确保表、字段相关的约定都能设置上。实际上，我们通常很少自己写 DDL 语句，可以使用一些可视化工具来创建和操作数据库和数据表。可视化工具除了方便，还能直接帮我们将数据库的结构定义转化成 SQL 语言，方便数据库和数据表结构的导出和导入。</li>
 </ol>
-<h5 id="63"><strong>6.3</strong> <strong>关于索引</strong><a class="headerlink" href="#63" title="Permanent link">&para;</a></h5>
+<h5 id="63"><strong>6.3</strong> <strong>关于索引</strong></h5>
 <ol>
 <li>
 <p>【强制】InnoDB表必须主键为id int/bigint auto_increment，且主键值<code>禁止被更新</code>。 </p>
@@ -2283,7 +2283,7 @@
 <p>【建议】建表或加索引时，保证表里互相不存在<code>冗余索引</code>。 比如：如果表里已经存在key(a,b)， 则key(a)为冗余索引，需要删除。</p>
 </li>
 </ol>
-<h5 id="64-sql"><strong>6.4 SQL编写</strong><a class="headerlink" href="#64-sql" title="Permanent link">&para;</a></h5>
+<h5 id="64-sql"><strong>6.4 SQL编写</strong></h5>
 <ol>
 <li>
 <p>【强制】程序端SELECT语句必须指定具体字段名称，禁止写成 *。 </p>

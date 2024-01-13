@@ -1928,12 +1928,12 @@
 
   <h1>第13章 事务基础知识</h1>
 
-<h3 id="13">第13章 事务基础知识<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
-<h4 id="1"><strong>1.</strong> <strong>数据库事务概述</strong><a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
-<h5 id="11"><strong>1.1</strong> <strong>基本概念</strong><a class="headerlink" href="#11" title="Permanent link">&para;</a></h5>
-<p>**事务：**一组逻辑操作单元，使数据从一种状态变换到另一种状态。</p>
-<p>**事务处理的原则：**保证所有事务都作为<code>一个工作单元</code>来执行，即使出现了故障，都不能改变这种执行方式。当在一个事务中执行多个操作时，要么所有的事务都被提交(<code>commit</code>)，那么这些修改就<code>永久</code>地保存下来；要么数据库管理系统将<code>放弃</code>所作的所有<code>修改</code>，整个事务回滚(<code>rollback</code>)到最初状态。</p>
-<h5 id="12-acid"><strong>1.2</strong> <strong>事务的ACID特性</strong><a class="headerlink" href="#12-acid" title="Permanent link">&para;</a></h5>
+<h3 id="13">第13章 事务基础知识</h3>
+<h4 id="1"><strong>1.</strong> <strong>数据库事务概述</strong></h4>
+<h5 id="11"><strong>1.1</strong> <strong>基本概念</strong></h5>
+<p><strong>事务：</strong>一组逻辑操作单元，使数据从一种状态变换到另一种状态。</p>
+<p><strong>事务处理的原则：</strong>保证所有事务都作为<code>一个工作单元</code>来执行，即使出现了故障，都不能改变这种执行方式。当在一个事务中执行多个操作时，要么所有的事务都被提交(<code>commit</code>)，那么这些修改就<code>永久</code>地保存下来；要么数据库管理系统将<code>放弃</code>所作的所有<code>修改</code>，整个事务回滚(<code>rollback</code>)到最初状态。</p>
+<h5 id="12-acid"><strong>1.2</strong> <strong>事务的ACID特性</strong></h5>
 <ul>
 <li><strong>原子性（atomicity）：</strong></li>
 </ul>
@@ -1951,7 +1951,7 @@
 </ul>
 <p>持久性是指一个事务一旦被提交，它对数据库中数据的改变就是<code>永久性的</code>，接下来的其他操作和数据库故障不应该对其有任何影响。</p>
 <p>持久性是通过<code>事务日志</code>来保证的。日志包括了<code>重做日志</code>和<code>回滚日志</code>。当我们通过事务对数据进行修改的时候，首先会将数据库的变化信息记录到重做日志中，然后再对数据库中对应的行进行修改。这样做的好处是，即使数据库系统崩溃，数据库重启后也能找到没有更新到数据库系统中的重做日志，重新执行，从而使事务具有持久性。</p>
-<h5 id="13_1"><strong>1.3</strong> <strong>事务的状态</strong><a class="headerlink" href="#13_1" title="Permanent link">&para;</a></h5>
+<h5 id="13_1"><strong>1.3</strong> <strong>事务的状态</strong></h5>
 <ul>
 <li><strong>活动的（active）</strong></li>
 </ul>
@@ -1973,41 +1973,41 @@
 </ul>
 <p>当一个处在<code>部分提交的</code>状态的事务将修改过的数据都<code>同步到磁盘</code>上之后，我们就可以说该事务处在了<code>提交的</code>状态。</p>
 <p><img alt="image-20220403110448951" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204031104063.png" /></p>
-<h4 id="2"><strong>2.</strong> <strong>如何使用事务</strong><a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
-<h5 id="21"><strong>2.1</strong> <strong>显式事务</strong><a class="headerlink" href="#21" title="Permanent link">&para;</a></h5>
+<h4 id="2"><strong>2.</strong> <strong>如何使用事务</strong></h4>
+<h5 id="21"><strong>2.1</strong> <strong>显式事务</strong></h5>
 <p><strong>步骤1：</strong> <code>START TRANSACTION</code>或者<code>BEGIN</code>，作用是显式开启一个事务。</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">BEGIN</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">#或者 </span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span>
-</code></pre></div>
+<pre><code class="language-mysql">mysql&gt; BEGIN; 
+#或者 
+mysql&gt; START TRANSACTION;
+</code></pre>
 <p><code>START TRANSACTION</code>语句相较于<code>BEGIN</code>特别之处在于，后边能跟随几个<code>修饰符</code>： </p>
 <p>①<code>READ ONLY</code>：标识当前事务是一个<code>只读事务</code>，也就是属于该事务的数据库操作只能读取数据，而不能修改数据。</p>
 <p>②<code>READ WRITE</code>：标识当前事务是一个<code>读写事务</code>，也就是属于该事务的数据库操作既可以读取数据，也可以修改数据。</p>
 <p>③<code>WITH CONSISTENT SNAPSHOT</code>：启动一致性读。</p>
-<p>**步骤2：**一系列事务中的操作（主要是DML，不含DDL）</p>
-<p>**步骤3：**提交事务 或 中止事务（即回滚事务）</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 提交事务。当提交事务后，对数据库的修改是永久性的。</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">COMMIT</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># 回滚事务。即撤销正在进行的所有没有提交的修改 </span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ROLLBACK</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># 将事务回滚到某个保存点。 </span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">ROLLBACK</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="err">[</span><span class="k">SAVEPOINT</span><span class="err">]</span>
-</code></pre></div>
+<p><strong>步骤2：</strong>一系列事务中的操作（主要是DML，不含DDL）</p>
+<p><strong>步骤3：</strong>提交事务 或 中止事务（即回滚事务）</p>
+<pre><code class="language-mysql"># 提交事务。当提交事务后，对数据库的修改是永久性的。
+mysql&gt; COMMIT;
+</code></pre>
+<pre><code class="language-mysql"># 回滚事务。即撤销正在进行的所有没有提交的修改 
+mysql&gt; ROLLBACK; 
+
+# 将事务回滚到某个保存点。 
+mysql&gt; ROLLBACK TO [SAVEPOINT]
+</code></pre>
 <p>其中关于SAVEPOINT相关操作有：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 在事务中创建保存点，方便后续针对保存点进行回滚。一个事物中可以存在多个保存点。</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">SAVEPOINT</span><span class="w"> </span><span class="n">保存点名称</span><span class="p">;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 删除某个保存点</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">RELEASE</span><span class="w"> </span><span class="k">SAVEPOINT</span><span class="w"> </span><span class="n">保存点名称</span><span class="p">;</span>
-</code></pre></div>
-<h5 id="22"><strong>2.2</strong> <strong>隐式事务</strong><a class="headerlink" href="#22" title="Permanent link">&para;</a></h5>
+<pre><code class="language-mysql"># 在事务中创建保存点，方便后续针对保存点进行回滚。一个事物中可以存在多个保存点。
+SAVEPOINT 保存点名称;
+</code></pre>
+<pre><code class="language-mysql"># 删除某个保存点
+RELEASE SAVEPOINT 保存点名称;
+</code></pre>
+<h5 id="22"><strong>2.2</strong> <strong>隐式事务</strong></h5>
 <ul>
 <li>显式的的使用<code>START TRANSACTION</code>或者<code>BEGIN</code>语句开启一个事务。这样在本次事务提交或者回滚前会暂时关闭掉自动提交的功能。</li>
 <li>把系统变量<code>autocommit</code>的值设置为<code>OFF</code></li>
 </ul>
-<h5 id="23"><strong>2.3</strong> <strong>隐式提交数据的情况</strong><a class="headerlink" href="#23" title="Permanent link">&para;</a></h5>
+<h5 id="23"><strong>2.3</strong> <strong>隐式提交数据的情况</strong></h5>
 <ul>
 <li>
 <p><strong>数据定义语言（Data definition language，缩写为：DDL）</strong></p>
@@ -2020,8 +2020,8 @@
 <li>当前的<code>autocommit</code>系统变量的值为<code>OFF</code>，我们手动把它调为<code>ON</code>时，也会<code>隐式的提交</code>前边语句所属的事务。</li>
 <li>使用<code>LOCK TABLES</code>、<code>UNLOCK TABLES</code>等关于锁定的语句也会<code>隐式的提交</code>前边语句所属的事务。</li>
 </ul>
-<h4 id="3"><strong>3.</strong> <strong>事务隔离级别</strong><a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
-<h5 id="31"><strong>3.1</strong> <strong>数据并发问题</strong><a class="headerlink" href="#31" title="Permanent link">&para;</a></h5>
+<h4 id="3"><strong>3.</strong> <strong>事务隔离级别</strong></h4>
+<h5 id="31"><strong>3.1</strong> <strong>数据并发问题</strong></h5>
 <p><strong>1.</strong> <strong>脏写（</strong><code>Dirty Write</code><strong>）</strong></p>
 <p>对于两个事务 Session A、Session B，如果事务Session A<code>修改了</code>另一个<code>未提交</code>事务Session B<code>修改过</code>的数据，那就意味着发生了<code>脏写</code></p>
 <p><img alt="image-20220403112416944" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204031124086.png" /></p>
@@ -2038,7 +2038,7 @@
 <p>有的同学会有疑问，那如果Session B中<code>剔除了</code>一些符合<code>studentno &gt; 0</code>的记录而不是插入新记录，那么Session A之后再根据<code>studentno &gt; 0</code>的条件读取的<code>记录变少了</code>，这种现象算不算<code>幻读</code>呢？这种现象<code>不属于幻读</code>，幻读强调的是一个事物按照某个<code>相同条件多次读取</code>记录时，后读取时读到了之前<code>没有读到的记录</code>。</p>
 <p><strong>注意2：</strong></p>
 <p>那对于先前已经读到的记录，之后又读取不到这种情况，算啥呢？这相当于对每一条记录都发生了<code>不可重复读</code>的现象。幻读只是重点强调了读取到之前读取没有获取到的记录。</p>
-<h5 id="32-sql"><strong>3.2 SQL中的四种隔离级别</strong><a class="headerlink" href="#32-sql" title="Permanent link">&para;</a></h5>
+<h5 id="32-sql"><strong>3.2 SQL中的四种隔离级别</strong></h5>
 <p><code>SQL标准</code>中设立了4个<code>隔离级别</code>：</p>
 <ul>
 <li><code>READ UNCOMMITTED</code>：读未提交，在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。不能避免脏读、不可重复读、幻读。</li>
@@ -2047,23 +2047,23 @@
 <li><code>SERIALIZABLE</code>：可串行化，确保事务可以从一个表中读取相同的行。在这个事务持续期间，禁止其他事务对该表执行插入、更新和删除操作。所有的并发问题都可以避免，但性能十分低下。能避免脏读、不可重复读和幻读。</li>
 </ul>
 <p><img alt="image-20220403112740425" src="https://cdn.jsdelivr.net/gh/aoshihuankong/cloudimg@master/img/202204031127542.png" /></p>
-<h5 id="33"><strong>3.3</strong> <strong>如何设置事务的隔离级别</strong><a class="headerlink" href="#33" title="Permanent link">&para;</a></h5>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SET</span><span class="w"> </span><span class="err">[</span><span class="k">GLOBAL</span><span class="o">|</span><span class="k">SESSION</span><span class="err">]</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="w"> </span><span class="k">ISOLATION</span><span class="w"> </span><span class="k">LEVEL</span><span class="w"> </span><span class="n">隔离级别</span><span class="p">;</span><span class="w"> </span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">#其中，隔离级别格式： </span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">UNCOMMITTED</span><span class="w"> </span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">COMMITTED</span><span class="w"> </span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">REPEATABLE</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">SERIALIZABLE</span>
-</code></pre></div>
+<h5 id="33"><strong>3.3</strong> <strong>如何设置事务的隔离级别</strong></h5>
+<pre><code class="language-mysql">SET [GLOBAL|SESSION] TRANSACTION ISOLATION LEVEL 隔离级别; 
+#其中，隔离级别格式： 
+&gt; READ UNCOMMITTED 
+&gt; READ COMMITTED 
+&gt; REPEATABLE READ 
+&gt; SERIALIZABLE
+</code></pre>
 <p>或者：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">SET</span><span class="w"> </span><span class="err">[</span><span class="k">GLOBAL</span><span class="o">|</span><span class="k">SESSION</span><span class="err">]</span><span class="w"> </span><span class="n">TRANSACTION_ISOLATION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;隔离级别&#39;</span><span class="w"> </span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1">#其中，隔离级别格式： </span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">READ</span><span class="o">-</span><span class="k">UNCOMMITTED</span><span class="w"> </span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">READ</span><span class="o">-</span><span class="k">COMMITTED</span><span class="w"> </span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">REPEATABLE</span><span class="o">-</span><span class="k">READ</span><span class="w"> </span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="o">&gt;</span><span class="w"> </span><span class="k">SERIALIZABLE</span>
-</code></pre></div>
-<h3 id="_1"><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<pre><code class="language-mysql">SET [GLOBAL|SESSION] TRANSACTION_ISOLATION = '隔离级别' 
+#其中，隔离级别格式： 
+&gt; READ-UNCOMMITTED 
+&gt; READ-COMMITTED 
+&gt; REPEATABLE-READ 
+&gt; SERIALIZABLE
+</code></pre>
+<h3 id="_1"></h3>
 
 
 
