@@ -12,9 +12,13 @@
         <meta name="author" content="Disaster">
       
       
-        <link rel="canonical" href="https://disaster1-tesk.github.io/note/note/jvm/JVM%E7%B3%BB%E5%88%97-%E7%AC%AC10%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A6%82%E8%BF%B0%E5%92%8C%E7%9B%B8%E5%85%B3%E7%AE%97%E6%B3%95/">
+        <link rel="canonical" href="https://disaster1-tesk.github.ionote/note/jvm/JVM%E7%B3%BB%E5%88%97-%E7%AC%AC10%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A6%82%E8%BF%B0%E5%92%8C%E7%9B%B8%E5%85%B3%E7%AE%97%E6%B3%95/">
       
       
+        <link rel="prev" href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC9%E7%AB%A0-StringTable%28%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%29/">
+      
+      
+        <link rel="next" href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC11%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/">
       
       
       <link rel="icon" href="../../../assets/images/logo.png">
@@ -227,13 +231,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+        <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    disaster1-tesk/note
+    disaster1-tesknote
   </div>
 </a>
       </div>
@@ -249,16 +253,20 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-tabs__link">
           
   
@@ -390,13 +398,13 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+      <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    disaster1-tesk/note
+    disaster1-tesknote
   </div>
 </a>
     </div>
@@ -407,9 +415,661 @@
       
   
   
+    
+  
   
     
     
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    百宝箱
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            百宝箱
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_1" >
+        
+          <label class="md-nav__link" for="__nav_1_1" id="__nav_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    REDISSION
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            REDISSION
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    redisson的中文文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    JVM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            JVM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC1%E7%AB%A0-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第01章_JVM与Java体系结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第02章_类加载子系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC3%E7%AB%A0-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第03章_运行时数据区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC4%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第04章_虚拟机栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC5%E7%AB%A0-%E5%A0%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第05章_堆
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC6%E7%AB%A0-%E6%96%B9%E6%B3%95%E5%8C%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第06章_方法区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC7%E7%AB%A0-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第07章_对象的实例化内存布局与访问定位
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC8%E7%AB%A0-%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第08章_执行引擎
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC9%E7%AB%A0-StringTable%28%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第09章_StringTable(字符串常量池)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    第10章_垃圾回收概述和相关算法
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    第10章_垃圾回收概述和相关算法
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    大厂面试题
+  </a>
+  
+    <nav class="md-nav" aria-label="大厂面试题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    蚂蚁金服
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    百度
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    天猫
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    滴滴
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    京东
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    阿里
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    字节跳动
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    什么是垃圾？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gc" class="md-nav__link">
+    为什么需要GC？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    早期垃圾回收
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    Java 垃圾回收机制
+  </a>
+  
+    <nav class="md-nav" aria-label="Java 垃圾回收机制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    自动内存管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    应该关心哪些区域的回收？
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC11%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第11章_垃圾回收相关概念
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC12%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第12章_垃圾回收器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_3" >
+        
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
       
         
       
@@ -429,14 +1089,11 @@
         
   
   
-    
-  
-  
-    <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+    <a href="../../mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC00%E7%AB%A0_%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/" class="md-nav__link">
       
   
   <span class="md-ellipsis">
-    百宝箱
+    基础篇
   </span>
   
 
@@ -446,8 +1103,118 @@
     </a>
   
 
+      
+    </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC01%E7%AB%A0%20Linux%E4%B8%8BMySQL%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resume/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E7%AE%80%E5%8E%86%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简历
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -737,7 +1504,7 @@
                   
 
   
-    <a href="https://github.com/disaster1-tesk/note/tree/main/docs/note/jvm/JVM系列-第10章-垃圾回收概述和相关算法.md" title="编辑此页" class="md-content__button md-icon">
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第10章-垃圾回收概述和相关算法.md" title="编辑此页" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -746,14 +1513,14 @@
     
       
     
-    <a href="https://github.com/disaster1-tesk/note/tree/main/docs/note/jvm/JVM系列-第10章-垃圾回收概述和相关算法.md" title="查看本页的源代码" class="md-content__button md-icon">
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第10章-垃圾回收概述和相关算法.md" title="查看本页的源代码" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="_1">垃圾回收概述</h1>
+<h1 id="_1">垃圾回收概述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0001.png"></p>
 <ol>
 <li>
@@ -772,41 +1539,41 @@
 </ul>
 </li>
 </ol>
-<h2 id="_2">大厂面试题</h2>
-<h3 id="_3">蚂蚁金服</h3>
+<h2 id="_2">大厂面试题<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">蚂蚁金服<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <ol>
 <li>你知道哪几种垃圾回收器，各自的优缺点，重点讲一下CMS和G1？</li>
 <li>JVM GC算法有哪些，目前的JDK版本采用什么回收算法？</li>
 <li>G1回收器讲下回收过程GC是什么？为什么要有GC？</li>
 <li>GC的两种判定方法？CMS收集器与G1收集器的特点</li>
 </ol>
-<h3 id="_4">百度</h3>
+<h3 id="_4">百度<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <ol>
 <li>说一下GC算法，分代回收说下</li>
 <li>垃圾收集策略和算法</li>
 </ol>
-<h3 id="_5">天猫</h3>
+<h3 id="_5">天猫<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
 <ol>
 <li>JVM GC原理，JVM怎么回收内存</li>
 <li>CMS特点，垃圾回收算法有哪些？各自的优缺点，他们共同的缺点是什么？</li>
 </ol>
-<h3 id="_6">滴滴</h3>
+<h3 id="_6">滴滴<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Java的垃圾回收器都有哪些，说下G1的应用场景，平时你是如何搭配使用垃圾回收器的</li>
 </ol>
-<h3 id="_7">京东</h3>
+<h3 id="_7">京东<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
 <ol>
 <li>你知道哪几种垃圾收集器，各自的优缺点，重点讲下CMS和G1，</li>
 <li>包括原理，流程，优缺点。垃圾回收算法的实现原理</li>
 </ol>
-<h3 id="_8">阿里</h3>
+<h3 id="_8">阿里<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <ol>
 <li>讲一讲垃圾回收算法。</li>
 <li>什么情况下触发垃圾回收？</li>
 <li>如何选择合适的垃圾收集算法？</li>
 <li>JVM有哪三种垃圾回收器？</li>
 </ol>
-<h3 id="_9">字节跳动</h3>
+<h3 id="_9">字节跳动<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
 <ol>
 <li>常见的垃圾回收器算法有哪些，各有什么优劣？</li>
 <li>System.gc()和Runtime.gc()会做什么事情？</li>
@@ -815,15 +1582,15 @@
 <li>CMS和G1了解么，CMS解决什么问题，说一下回收的过程。</li>
 <li>CMS回收停顿了几次，为什么要停顿两次?</li>
 </ol>
-<h2 id="_10">什么是垃圾？</h2>
+<h2 id="_10">什么是垃圾？<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
 <ol>
-<li>垃圾是指<strong>在运行程序中没有任何指针指向的对象</strong>，这个对象就是需要被回收的垃圾。</li>
+<li>垃圾是指**在运行程序中没有任何指针指向的对象**，这个对象就是需要被回收的垃圾。</li>
 <li>外文：An object is considered garbage when it can no longer be reached from any pointer in the running program.</li>
 <li>如果不及时对内存中的垃圾进行清理，那么，这些垃圾对象所占的内存空间会一直保留到应用程序结束，被保留的空间无法被其他对象使用。甚至可能导致内存溢出。</li>
 </ol>
 <p><strong>十几年前磁盘碎片整理的日子</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0002.jpg"></p>
-<h2 id="gc">为什么需要GC？</h2>
+<h2 id="gc">为什么需要GC？<a class="headerlink" href="#gc" title="Permanent link">&para;</a></h2>
 <p><strong>想要学习GC，首先需要理解为什么需要GC？</strong></p>
 <ol>
 <li>
@@ -836,31 +1603,31 @@
 <p>随着应用程序所应付的业务越来越庞大、复杂，用户越来越多，<strong>没有GC就不能保证应用程序的正常进行</strong>。而经常造成STW的GC又跟不上实际的需求，所以才会不断地尝试对GC进行优化。</p>
 </li>
 </ol>
-<h2 id="_11">早期垃圾回收</h2>
+<h2 id="_11">早期垃圾回收<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
 <ol>
 <li>在早期的C/C++时代，垃圾回收基本上是手工进行的。开发人员可以使用new关键字进行内存申请，并使用delete关键字进行内存释放。比如以下代码：</li>
 </ol>
-<p><code>c++
-    MibBridge *pBridge= new cmBaseGroupBridge（）；
-    //如果注册失败，使用Delete释放该对象所占内存区域
-    if（pBridge-&gt;Register（kDestroy）！=NO ERROR）
-        delete pBridge；</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w">  </span><span class="n">MibBridge</span><span class="w"> </span><span class="o">*</span><span class="n">pBridge</span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">cmBaseGroupBridge</span><span class="err">（）；</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="c1">//如果注册失败，使用Delete释放该对象所占内存区域</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="k">if</span><span class="err">（</span><span class="n">pBridge</span><span class="o">-&gt;</span><span class="n">Register</span><span class="err">（</span><span class="n">kDestroy</span><span class="err">）！</span><span class="o">=</span><span class="n">NO</span><span class="w"> </span><span class="n">ERROR</span><span class="err">）</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="k">delete</span><span class="w"> </span><span class="n">pBridge</span><span class="err">；</span>
+</code></pre></div>
 <ol>
 <li>
-<p>这种方式可以灵活控制内存释放的时间，但是会给开发人员带来<strong>频繁申请和释放内存的管理负担</strong>。倘若有一处内存区间由于程序员编码的问题忘记被回收，那么就会产生<strong>内存泄漏</strong>，垃圾对象永远无法被清除，随着系统运行时间的不断增长，垃圾对象所耗内存可能持续上升，直到出现内存溢出并造成<strong>应用程序崩溃</strong>。</p>
+<p>这种方式可以灵活控制内存释放的时间，但是会给开发人员带来**频繁申请和释放内存的管理负担**。倘若有一处内存区间由于程序员编码的问题忘记被回收，那么就会产生**内存泄漏**，垃圾对象永远无法被清除，随着系统运行时间的不断增长，垃圾对象所耗内存可能持续上升，直到出现内存溢出并造成**应用程序崩溃**。</p>
 </li>
 <li>
 <p>有了垃圾回收机制后，上述代码极有可能变成这样</p>
 </li>
 </ol>
-<p><code>c++
-    MibBridge *pBridge=new cmBaseGroupBridge(); 
-    pBridge-&gt;Register(kDestroy);</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="w">  </span><span class="n">MibBridge</span><span class="w"> </span><span class="o">*</span><span class="n">pBridge</span><span class="o">=</span><span class="k">new</span><span class="w"> </span><span class="n">cmBaseGroupBridge</span><span class="p">();</span><span class="w"> </span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="n">pBridge</span><span class="o">-&gt;</span><span class="n">Register</span><span class="p">(</span><span class="n">kDestroy</span><span class="p">);</span>
+</code></pre></div>
 <ol>
 <li>现在，除了Java以外，C#、Python、Ruby等语言都使用了自动垃圾回收的思想，也是未来发展趋势，可以说这种自动化的内存分配和来及回收方式已经成为了现代开发语言必备的标准。</li>
 </ol>
-<h2 id="java">Java 垃圾回收机制</h2>
-<h3 id="_12">自动内存管理</h3>
+<h2 id="java">Java 垃圾回收机制<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
+<h3 id="_12">自动内存管理<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>官网介绍</strong>：https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/toc.html</p>
 </blockquote>
@@ -878,11 +1645,11 @@
 </ol>
 <p><strong>关于自动内存管理的担忧</strong></p>
 <ol>
-<li>对于Java开发人员而言，自动内存管理就像是一个黑匣子，如果过度依赖于“自动”，那么这将会是一场灾难，最严重的就会<strong>弱化Java开发人员在程序出现内存溢出时定位问题和解决问题的能力</strong>。</li>
+<li>对于Java开发人员而言，自动内存管理就像是一个黑匣子，如果过度依赖于“自动”，那么这将会是一场灾难，最严重的就会**弱化Java开发人员在程序出现内存溢出时定位问题和解决问题的能力**。</li>
 <li>此时，了解JVM的自动内存分配和内存回收原理就显得非常重要，只有在真正了解JVM是如何管理内存后，我们才能够在遇见OutofMemoryError时，快速地根据错误异常日志定位问题和解决问题。</li>
-<li>当需要排查各种内存溢出、内存泄漏问题时，当垃圾收集成为系统达到更高并发量的瓶颈时，我们就必须对这些“自动化”的技术<strong>实施必要的监控和调节</strong>。</li>
+<li>当需要排查各种内存溢出、内存泄漏问题时，当垃圾收集成为系统达到更高并发量的瓶颈时，我们就必须对这些“自动化”的技术**实施必要的监控和调节**。</li>
 </ol>
-<h3 id="_13">应该关心哪些区域的回收？</h3>
+<h3 id="_13">应该关心哪些区域的回收？<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0003.png"></p>
 <ol>
 <li>垃圾收集器可以对年轻代回收，也可以对老年代回收，甚至是全栈和方法区的回收，</li>
@@ -896,97 +1663,96 @@
 </ol>
 </li>
 </ol>
-<h1 id="_14">垃圾回收相关算法</h1>
-<h2 id="_15">标记阶段：引用计数算法</h2>
-<h3 id="_16">标记阶段的目的</h3>
+<h1 id="_14">垃圾回收相关算法<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h1>
+<h2 id="_15">标记阶段：引用计数算法<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<h3 id="_16">标记阶段的目的<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
 <p><strong>垃圾标记阶段：主要是为了判断对象是否存活</strong></p>
 <ol>
-<li>在堆里存放着几乎所有的Java对象实例，在GC执行垃圾回收之前，首先<strong>需要区分出内存中哪些是存活对象，哪些是已经死亡的对象。</strong>只有被标记为己经死亡的对象，GC才会在执行垃圾回收时，释放掉其所占用的内存空间，因此这个过程我们可以称为<strong>垃圾标记阶段</strong>。</li>
+<li>在堆里存放着几乎所有的Java对象实例，在GC执行垃圾回收之前，首先**需要区分出内存中哪些是存活对象，哪些是已经死亡的对象。<strong>只有被标记为己经死亡的对象，GC才会在执行垃圾回收时，释放掉其所占用的内存空间，因此这个过程我们可以称为**垃圾标记阶段</strong>。</li>
 <li>那么在JVM中究竟是如何标记一个死亡对象呢？简单来说，当一个对象已经不再被任何的存活对象继续引用时，就可以宣判为已经死亡。</li>
-<li>判断对象存活一般有两种方式：<strong>引用计数算法</strong>和<strong>可达性分析算法</strong>。</li>
+<li>判断对象存活一般有两种方式：<strong>引用计数算法**和**可达性分析算法</strong>。</li>
 </ol>
-<h3 id="_17">引用计数算法</h3>
+<h3 id="_17">引用计数算法<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
 <ol>
 <li>引用计数算法（Reference Counting）比较简单，对每个对象保存一个整型的引用计数器属性。用于记录对象被引用的情况。</li>
 <li>对于一个对象A，只要有任何一个对象引用了A，则A的引用计数器就加1；当引用失效时，引用计数器就减1。只要对象A的引用计数器的值为0，即表示对象A不可能再被使用，可进行回收。</li>
 <li>优点：实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性。</li>
 <li>缺点：<ol>
-<li>它需要单独的字段存储计数器，这样的做法增加了<strong>存储空间的开销</strong>。</li>
-<li>每次赋值都需要更新计数器，伴随着加法和减法操作，这增加了<strong>时间开销</strong>。</li>
-<li>引用计数器有一个严重的问题，即<strong>无法处理循环引用</strong>的情况。这是一条致命缺陷，导致在Java的垃圾回收器中没有使用这类算法。</li>
+<li>它需要单独的字段存储计数器，这样的做法增加了**存储空间的开销**。</li>
+<li>每次赋值都需要更新计数器，伴随着加法和减法操作，这增加了**时间开销**。</li>
+<li>引用计数器有一个严重的问题，即**无法处理循环引用**的情况。这是一条致命缺陷，导致在Java的垃圾回收器中没有使用这类算法。</li>
 </ol>
 </li>
 </ol>
-<h3 id="_18">循环引用</h3>
+<h3 id="_18">循环引用<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0004.png"></p>
 <p>当p的指针断开的时候，内部的引用形成一个循环，计数器都还算1，无法被回收，这就是循环引用，从而造成内存泄漏</p>
-<h3 id="java_1">证明：java使用的不是引用计数算法</h3>
-<pre><code class="language-java">/**
- * -XX:+PrintGCDetails
- * 证明：java使用的不是引用计数算法
- */
-public class RefCountGC {
-    //这个成员属性唯一的作用就是占用一点内存
-    private byte[] bigSize = new byte[5 * 1024 * 1024];//5MB
-
-    Object reference = null;
-
-    public static void main(String[] args) {
-        RefCountGC obj1 = new RefCountGC();
-        RefCountGC obj2 = new RefCountGC();
-
-        obj1.reference = obj2;
-        obj2.reference = obj1;
-
-        obj1 = null;
-        obj2 = null;
-        //显式的执行垃圾回收行为
-        //这里发生GC，obj1和obj2能否被回收？
-        System.gc();
-
-    }
-}
-
-</code></pre>
+<h3 id="java_1">证明：java使用的不是引用计数算法<a class="headerlink" href="#java_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cm">/**</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm"> * -XX:+PrintGCDetails</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm"> * 证明：java使用的不是引用计数算法</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="cm"> */</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RefCountGC</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="c1">//这个成员属性唯一的作用就是占用一点内存</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">bigSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span><span class="c1">//5MB</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="n">Object</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="n">RefCountGC</span><span class="w"> </span><span class="n">obj1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RefCountGC</span><span class="p">();</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="n">RefCountGC</span><span class="w"> </span><span class="n">obj2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RefCountGC</span><span class="p">();</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="n">obj1</span><span class="p">.</span><span class="na">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj2</span><span class="p">;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="n">obj2</span><span class="p">.</span><span class="na">reference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="n">obj1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="n">obj2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="c1">//显式的执行垃圾回收行为</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="c1">//这里发生GC，obj1和obj2能否被回收？</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="p">}</span>
+</code></pre></div>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0005.png"></p>
 <ul>
 <li>如果不小心直接把<code>obj1.reference</code>和<code>obj2.reference</code>置为null。则在Java堆中的两块内存依然保持着互相引用，无法被回收</li>
 </ul>
 <p><strong>没有进行GC时</strong></p>
 <p>把下面的几行代码注释掉，让它来不及</p>
-<pre><code class="language-java">        System.gc();//把这行代码注释掉
-</code></pre>
-<pre><code>Heap
- PSYoungGen      total 38400K, used 14234K [0x00000000d5f80000, 0x00000000d8a00000, 0x0000000100000000)
-  eden space 33280K, 42% used [0x00000000d5f80000,0x00000000d6d66be8,0x00000000d8000000)
-  from space 5120K, 0% used [0x00000000d8500000,0x00000000d8500000,0x00000000d8a00000)
-  to   space 5120K, 0% used [0x00000000d8000000,0x00000000d8000000,0x00000000d8500000)
- ParOldGen       total 87552K, used 0K [0x0000000081e00000, 0x0000000087380000, 0x00000000d5f80000)
-  object space 87552K, 0% used [0x0000000081e00000,0x0000000081e00000,0x0000000087380000)
- Metaspace       used 3496K, capacity 4498K, committed 4864K, reserved 1056768K
-  class space    used 387K, capacity 390K, committed 512K, reserved 1048576K
-
-Process finished with exit code 0
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="c1">//把这行代码注释掉</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Heap
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a> PSYoungGen      total 38400K, used 14234K [0x00000000d5f80000, 0x00000000d8a00000, 0x0000000100000000)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  eden space 33280K, 42% used [0x00000000d5f80000,0x00000000d6d66be8,0x00000000d8000000)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  from space 5120K, 0% used [0x00000000d8500000,0x00000000d8500000,0x00000000d8a00000)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  to   space 5120K, 0% used [0x00000000d8000000,0x00000000d8000000,0x00000000d8500000)
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a> ParOldGen       total 87552K, used 0K [0x0000000081e00000, 0x0000000087380000, 0x00000000d5f80000)
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  object space 87552K, 0% used [0x0000000081e00000,0x0000000081e00000,0x0000000087380000)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a> Metaspace       used 3496K, capacity 4498K, committed 4864K, reserved 1056768K
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  class space    used 387K, capacity 390K, committed 512K, reserved 1048576K
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Process finished with exit code 0
+</code></pre></div>
 <p><strong>进行GC</strong></p>
 <p>打开那行代码的注释</p>
-<pre><code class="language-java">[GC (System.gc()) [PSYoungGen: 13569K-&gt;808K(38400K)] 13569K-&gt;816K(125952K), 0.0012717 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
-[Full GC (System.gc()) [PSYoungGen: 808K-&gt;0K(38400K)] [ParOldGen: 8K-&gt;670K(87552K)] 816K-&gt;670K(125952K), [Metaspace: 3491K-&gt;3491K(1056768K)], 0.0051769 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
-Heap
- PSYoungGen      total 38400K, used 333K [0x00000000d5f80000, 0x00000000d8a00000, 0x0000000100000000)
-  eden space 33280K, 1% used [0x00000000d5f80000,0x00000000d5fd34a8,0x00000000d8000000)
-  from space 5120K, 0% used [0x00000000d8000000,0x00000000d8000000,0x00000000d8500000)
-  to   space 5120K, 0% used [0x00000000d8500000,0x00000000d8500000,0x00000000d8a00000)
- ParOldGen       total 87552K, used 670K [0x0000000081e00000, 0x0000000087380000, 0x00000000d5f80000)
-  object space 87552K, 0% used [0x0000000081e00000,0x0000000081ea7990,0x0000000087380000)
- Metaspace       used 3498K, capacity 4498K, committed 4864K, reserved 1056768K
-  class space    used 387K, capacity 390K, committed 512K, reserved 1048576K
-
-Process finished with exit code 0
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">13569</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">808</span><span class="n">K</span><span class="p">(</span><span class="mi">38400</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">13569</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">816</span><span class="n">K</span><span class="p">(</span><span class="mi">125952</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0012717</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">808</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">38400</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">670</span><span class="n">K</span><span class="p">(</span><span class="mi">87552</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">816</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">670</span><span class="n">K</span><span class="p">(</span><span class="mi">125952</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3491</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3491</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0051769</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">Heap</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">38400</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">333</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000d5f80000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000d8a00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">33280</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000d5f80000</span><span class="p">,</span><span class="mh">0x00000000d5fd34a8</span><span class="p">,</span><span class="mh">0x00000000d8000000</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">5120</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000d8000000</span><span class="p">,</span><span class="mh">0x00000000d8000000</span><span class="p">,</span><span class="mh">0x00000000d8500000</span><span class="p">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">5120</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000d8500000</span><span class="p">,</span><span class="mh">0x00000000d8500000</span><span class="p">,</span><span class="mh">0x00000000d8a00000</span><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">87552</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">670</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x0000000081e00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000087380000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000d5f80000</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">87552</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x0000000081e00000</span><span class="p">,</span><span class="mh">0x0000000081ea7990</span><span class="p">,</span><span class="mh">0x0000000087380000</span><span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3498</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4498</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">387</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">390</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
 <p>1、从打印日志就可以明显看出来，已经进行了GC</p>
 <p>2、如果使用引用计数算法，那么这两个对象将会无法回收。而现在两个对象被回收了，说明Java使用的不是引用计数算法来进行标记的。</p>
-<h3 id="_19">小结</h3>
+<h3 id="_19">小结<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
 <ol>
 <li>引用计数算法，是很多语言的资源回收选择，例如因人工智能而更加火热的Python，它更是同时支持引用计数和垃圾收集机制。</li>
 <li>具体哪种最优是要看场景的，业界有大规模实践中仅保留引用计数机制，以提高吞吐量的尝试。</li>
@@ -997,13 +1763,13 @@ Process finished with exit code 0
 </ul>
 </li>
 </ol>
-<h2 id="_20">标记阶段：可达性分析算法</h2>
+<h2 id="_20">标记阶段：可达性分析算法<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h2>
 <p><strong>可达性分析算法：也可以称为根搜索算法、追踪性垃圾收集</strong></p>
 <ol>
-<li>相对于引用计数算法而言，可达性分析算法不仅同样具备实现简单和执行高效等特点，更重要的是该算法可以有效地<strong>解决在引用计数算法中循环引用的问题，防止内存泄漏的发生</strong>。</li>
-<li>相较于引用计数算法，这里的可达性分析就是Java、C#选择的。这种类型的垃圾收集通常也叫作<strong>追踪性垃圾收集</strong>（Tracing Garbage Collection）</li>
+<li>相对于引用计数算法而言，可达性分析算法不仅同样具备实现简单和执行高效等特点，更重要的是该算法可以有效地**解决在引用计数算法中循环引用的问题，防止内存泄漏的发生**。</li>
+<li>相较于引用计数算法，这里的可达性分析就是Java、C#选择的。这种类型的垃圾收集通常也叫作**追踪性垃圾收集**（Tracing Garbage Collection）</li>
 </ol>
-<h3 id="_21">可达性分析实现思路</h3>
+<h3 id="_21">可达性分析实现思路<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>所谓"GCRoots”根集合就是一组必须活跃的引用</p>
@@ -1012,14 +1778,14 @@ Process finished with exit code 0
 <p>其基本思路如下：</p>
 </li>
 <li>
-<p>可达性分析算法是以根对象集合（GCRoots）为起始点，按照从上至下的方式<strong>搜索被根对象集合所连接的目标对象是否可达。</strong></p>
+<p>可达性分析算法是以根对象集合（GCRoots）为起始点，按照从上至下的方式**搜索被根对象集合所连接的目标对象是否可达。**</p>
 </li>
-<li>使用可达性分析算法后，内存中的存活对象都会被根对象集合直接或间接连接着，搜索所走过的路径称为<strong>引用链</strong>（Reference Chain）</li>
+<li>使用可达性分析算法后，内存中的存活对象都会被根对象集合直接或间接连接着，搜索所走过的路径称为**引用链**（Reference Chain）</li>
 <li>如果目标对象没有任何引用链相连，则是不可达的，就意味着该对象己经死亡，可以标记为垃圾对象。</li>
 <li>在可达性分析算法中，只有能够被根对象集合直接或者间接连接的对象才是存活对象。</li>
 </ul>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0006.png"></p>
-<h3 id="gc-roots">GC Roots可以是哪些元素？</h3>
+<h3 id="gc-roots">GC Roots可以是哪些元素？<a class="headerlink" href="#gc-roots" title="Permanent link">&para;</a></h3>
 <ol>
 <li>虚拟机栈中引用的对象<ul>
 <li>比如：各个线程被调用的方法中使用到的参数、局部变量等。</li>
@@ -1044,24 +1810,24 @@ Process finished with exit code 0
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0007.png"></p>
 <ol>
 <li>总结一句话就是，除了堆空间的周边，比如：虚拟机栈、本地方法栈、方法区、字符串常量池等地方对堆空间进行引用的，都可以作为GC Roots进行可达性分析</li>
-<li>除了这些固定的GC Roots集合以外，根据用户所选用的垃圾收集器以及当前回收的内存区域不同，还可以有其他对象“临时性”地加入，共同构成完整GC Roots集合。比如：<strong>分代收集</strong>和局部回收（PartialGC）。<ul>
+<li>除了这些固定的GC Roots集合以外，根据用户所选用的垃圾收集器以及当前回收的内存区域不同，还可以有其他对象“临时性”地加入，共同构成完整GC Roots集合。比如：**分代收集**和局部回收（PartialGC）。<ul>
 <li>如果只针对Java堆中的某一块区域进行垃圾回收（比如：典型的只针对新生代），必须考虑到内存区域是虚拟机自己的实现细节，更不是孤立封闭的，这个区域的对象完全有可能被其他区域的对象所引用，这时候就需要一并将关联的区域对象也加入GC Roots集合中去考虑，才能保证可达性分析的准确性。</li>
 </ul>
 </li>
 </ol>
 <p><strong>小技巧</strong></p>
 <p>由于Root采用栈方式存放变量和指针，所以如果一个指针，它保存了堆内存里面的对象，但是自己又不存放在堆内存里面，那它就是一个Root。</p>
-<h3 id="_22">注意</h3>
+<h3 id="_22">注意<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
 <ol>
 <li>如果要使用可达性分析算法来判断内存是否可回收，那么分析工作必须在一个能保障一致性的快照中进行。这点不满足的话分析结果的准确性就无法保证。</li>
 <li>这点也是导致GC进行时必须“Stop The World”的一个重要原因。即使是号称（几乎）不会发生停顿的CMS收集器中，<strong>枚举根节点时也是必须要停顿的</strong>。</li>
 </ol>
-<h2 id="finalization">对象的 finalization 机制</h2>
-<h3 id="finalize">finalize() 方法机制</h3>
+<h2 id="finalization">对象的 finalization 机制<a class="headerlink" href="#finalization" title="Permanent link">&para;</a></h2>
+<h3 id="finalize">finalize() 方法机制<a class="headerlink" href="#finalize" title="Permanent link">&para;</a></h3>
 <p><strong>对象销毁前的回调函数：finalize()</strong></p>
 <ol>
 <li>
-<p>Java语言提供了对象终止（finalization）机制来允许开发人员提供<strong>对象被销毁之前的自定义处理逻辑</strong>。</p>
+<p>Java语言提供了对象终止（finalization）机制来允许开发人员提供**对象被销毁之前的自定义处理逻辑**。</p>
 </li>
 <li>
 <p>当垃圾回收器发现没有引用指向一个对象，即：垃圾回收此对象之前，总会先调用这个对象的finalize()方法。</p>
@@ -1071,9 +1837,9 @@ Process finished with exit code 0
 </li>
 </ol>
 <p>Object 类中 finalize() 源码</p>
-<pre><code>// 等待被重写
+<div class="highlight"><pre><span></span><code>// 等待被重写
 protected void finalize() throws Throwable { }
-</code></pre>
+</code></pre></div>
 <ol>
 <li>永远不要主动调用某个对象的finalize()方法，应该交给垃圾回收机制调用。理由包括下面三点：<ol>
 <li>在finalize()时可能会导致对象复活。</li>
@@ -1081,10 +1847,10 @@ protected void finalize() throws Throwable { }
 <li>一个糟糕的finalize()会严重影响GC的性能。比如finalize是个死循环</li>
 </ol>
 </li>
-<li>从功能上来说，finalize()方法与C++中的析构函数比较相似，但是Java采用的是基于垃圾回收器的自动内存管理机制，所以finalize()方法在<strong>本质上不同于C++中的析构函数</strong>。</li>
+<li>从功能上来说，finalize()方法与C++中的析构函数比较相似，但是Java采用的是基于垃圾回收器的自动内存管理机制，所以finalize()方法在**本质上不同于C++中的析构函数**。</li>
 <li>finalize()方法对应了一个finalize线程，因为优先级比较低，即使主动调用该方法，也不会因此就直接进行回收</li>
 </ol>
-<h3 id="_23">生存还是死亡？</h3>
+<h3 id="_23">生存还是死亡？<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
 <p>由于finalize()方法的存在，<strong>虚拟机中的对象一般处于三种可能的状态。</strong></p>
 <ol>
 <li>如果从所有的根节点都无法访问到某个对象，说明对象己经不再使用了。一般来说，此对象需要被回收。但事实上，也并非是“非死不可”的，这时候它们暂时处于“缓刑”阶段。<strong>一个无法触及的对象有可能在某一个条件下“复活”自己</strong>，如果这样，那么对它立即进行回收就是不合理的。为此，定义虚拟机中的对象可能的三种状态。如下：<ol>
@@ -1095,7 +1861,7 @@ protected void finalize() throws Throwable { }
 </li>
 <li>以上3种状态中，是由于finalize()方法的存在，进行的区分。只有在对象不可触及时才可以被回收。</li>
 </ol>
-<h3 id="_24">具体过程</h3>
+<h3 id="_24">具体过程<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
 <p>判定一个对象objA是否可回收，至少要经历两次标记过程：</p>
 <ol>
 <li>如果对象objA到GC Roots没有引用链，则进行第一次标记。</li>
@@ -1108,84 +1874,82 @@ protected void finalize() throws Throwable { }
 </ol>
 <p><strong>通过 JVisual VM 查看 Finalizer 线程</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0008.png"></p>
-<h3 id="finalize_1">代码演示 finalize() 方法可复活对象</h3>
+<h3 id="finalize_1">代码演示 finalize() 方法可复活对象<a class="headerlink" href="#finalize_1" title="Permanent link">&para;</a></h3>
 <p>我们重写 CanReliveObj 类的 finalize()方法，在调用其 finalize()方法时，将 obj 指向当前类对象 this</p>
-<pre><code class="language-java">/**
- * 测试Object类中finalize()方法，即对象的finalization机制。
- *
- */
-public class CanReliveObj {
-    public static CanReliveObj obj;//类变量，属于 GC Root
-
-
-    //此方法只能被调用一次
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        System.out.println(&quot;调用当前类重写的finalize()方法&quot;);
-        obj = this;//当前待回收的对象在finalize()方法中与引用链上的一个对象obj建立了联系
-    }
-
-
-    public static void main(String[] args) {
-        try {
-            obj = new CanReliveObj();
-            // 对象第一次成功拯救自己
-            obj = null;
-            System.gc();//调用垃圾回收器
-            System.out.println(&quot;第1次 gc&quot;);
-            // 因为Finalizer线程优先级很低，暂停2秒，以等待它
-            Thread.sleep(2000);
-            if (obj == null) {
-                System.out.println(&quot;obj is dead&quot;);
-            } else {
-                System.out.println(&quot;obj is still alive&quot;);
-            }
-            System.out.println(&quot;第2次 gc&quot;);
-            // 下面这段代码与上面的完全相同，但是这次自救却失败了
-            obj = null;
-            System.gc();
-            // 因为Finalizer线程优先级很低，暂停2秒，以等待它
-            Thread.sleep(2000);
-            if (obj == null) {
-                System.out.println(&quot;obj is dead&quot;);
-            } else {
-                System.out.println(&quot;obj is still alive&quot;);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cm">/**</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cm"> * 测试Object类中finalize()方法，即对象的finalization机制。</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="cm"> *</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="cm"> */</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CanReliveObj</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">CanReliveObj</span><span class="w"> </span><span class="n">obj</span><span class="p">;</span><span class="c1">//类变量，属于 GC Root</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="c1">//此方法只能被调用一次</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">finalize</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">finalize</span><span class="p">();</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;调用当前类重写的finalize()方法&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="c1">//当前待回收的对象在finalize()方法中与引用链上的一个对象obj建立了联系</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">            </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CanReliveObj</span><span class="p">();</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">            </span><span class="c1">// 对象第一次成功拯救自己</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">            </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="c1">//调用垃圾回收器</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;第1次 gc&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">            </span><span class="c1">// 因为Finalizer线程优先级很低，暂停2秒，以等待它</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj is dead&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj is still alive&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;第2次 gc&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">            </span><span class="c1">// 下面这段代码与上面的完全相同，但是这次自救却失败了</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">            </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">            </span><span class="c1">// 因为Finalizer线程优先级很低，暂停2秒，以等待它</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj is dead&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj is still alive&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-42" name="__codelineno-6-42" href="#__codelineno-6-42"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-6-43" name="__codelineno-6-43" href="#__codelineno-6-43"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-44" name="__codelineno-6-44" href="#__codelineno-6-44"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-6-45" name="__codelineno-6-45" href="#__codelineno-6-45"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-46" name="__codelineno-6-46" href="#__codelineno-6-46"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-47" name="__codelineno-6-47" href="#__codelineno-6-47"></a><span class="p">}</span>
+</code></pre></div>
 <p><strong>如果注释掉finalize()方法</strong></p>
-<pre><code class="language-java"> //此方法只能被调用一次
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        System.out.println(&quot;调用当前类重写的finalize()方法&quot;);
-        obj = this;//当前待回收的对象在finalize()方法中与引用链上的一个对象obj建立了联系
-    }
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w"> </span><span class="c1">//此方法只能被调用一次</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">finalize</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">finalize</span><span class="p">();</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;调用当前类重写的finalize()方法&quot;</span><span class="p">);</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="c1">//当前待回收的对象在finalize()方法中与引用链上的一个对象obj建立了联系</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="p">}</span>
+</code></pre></div>
 <p>输出结果：</p>
-<pre><code class="language-java">第1次 gc
-obj is dead
-第2次 gc
-obj is dead
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">第1次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">obj</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">dead</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">第2次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">obj</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">dead</span>
+</code></pre></div>
 <p><strong>放开finalize()方法</strong></p>
 <p>输出结果：</p>
-<pre><code class="language-java">第1次 gc
-调用当前类重写的finalize()方法
-obj is still alive
-第2次 gc
-obj is dead
-
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">第1次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nf">调用当前类重写的finalize</span><span class="p">()</span><span class="n">方法</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">obj</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">still</span><span class="w"> </span><span class="n">alive</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">第2次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">obj</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">dead</span>
+</code></pre></div>
 <p>第一次自救成功，但由于 finalize() 方法只会执行一次，所以第二次自救失败</p>
-<h2 id="matjprofilergc-roots">MAT与JProfiler的GC Roots溯源</h2>
-<h3 id="mat">MAT 介绍</h3>
+<h2 id="matjprofilergc-roots">MAT与JProfiler的GC Roots溯源<a class="headerlink" href="#matjprofilergc-roots" title="Permanent link">&para;</a></h2>
+<h3 id="mat">MAT 介绍<a class="headerlink" href="#mat" title="Permanent link">&para;</a></h3>
 <ol>
 <li>MAT是Memory Analyzer的简称，它是一款功能强大的Java堆内存分析器。用于查找内存泄漏以及查看内存消耗情况。</li>
 <li>MAT是基于Eclipse开发的，是一款免费的性能分析工具。</li>
@@ -1195,7 +1959,7 @@ obj is dead
 <p>1、虽然Jvisualvm很强大，但是在内存分析方面，还是MAT更好用一些</p>
 <p>2、此小节主要是为了实时分析GC Roots是哪些东西，中间需要用到一个dump的文件</p>
 </blockquote>
-<h3 id="dump">获取 dump 文件方式</h3>
+<h3 id="dump">获取 dump 文件方式<a class="headerlink" href="#dump" title="Permanent link">&para;</a></h3>
 <p><strong>方式一：命令行使用 jmap</strong></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0009.png"></p>
 <p><strong>方式二：使用JVisualVM</strong></p>
@@ -1203,38 +1967,37 @@ obj is dead
 <li>捕获的heap dump文件是一个临时文件，关闭JVisualVM后自动删除，若要保留，需要将其另存为文件。可通过以下方法捕获heap dump：</li>
 <li>操作步骤下面演示</li>
 </ol>
-<h3 id="dump_1">捕捉 dump 示例</h3>
-<h4 id="jvisualvm-heap-dump">使用JVisualVM捕捉 heap dump</h4>
+<h3 id="dump_1">捕捉 dump 示例<a class="headerlink" href="#dump_1" title="Permanent link">&para;</a></h3>
+<h4 id="jvisualvm-heap-dump">使用JVisualVM捕捉 heap dump<a class="headerlink" href="#jvisualvm-heap-dump" title="Permanent link">&para;</a></h4>
 <p>代码：
 *   numList 和 birth 在第一次捕捉内存快照的时候，为 GC Roots
 *   之后 numList 和 birth 置为 null ，对应的引用对象被回收，在第二次捕捉内存快照的时候，就不再是 GC Roots</p>
-<pre><code class="language-java">public class GCRootsTest {
-    public static void main(String[] args) {
-        List&lt;Object&gt; numList = new ArrayList&lt;&gt;();
-        Date birth = new Date();
-
-        for (int i = 0; i &lt; 100; i++) {
-            numList.add(String.valueOf(i));
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println(&quot;数据添加完毕，请操作：&quot;);
-        new Scanner(System.in).next();
-        numList = null;
-        birth = null;
-
-        System.out.println(&quot;numList、birth已置空，请操作：&quot;);
-        new Scanner(System.in).next();
-
-        System.out.println(&quot;结束&quot;);
-    }
-}
-
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">GCRootsTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">birth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">            </span><span class="n">numList</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">                </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;数据添加完毕，请操作：&quot;</span><span class="p">);</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">).</span><span class="na">next</span><span class="p">();</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="n">numList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">        </span><span class="n">birth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;numList、birth已置空，请操作：&quot;</span><span class="p">);</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">).</span><span class="na">next</span><span class="p">();</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;结束&quot;</span><span class="p">);</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="p">}</span>
+</code></pre></div>
 <p><strong>如何捕捉堆内存快照</strong></p>
 <p>1、先执行第一步，然后停下来，去生成此步骤dump文件</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0010.png"></p>
@@ -1246,49 +2009,48 @@ obj is dead
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0013.png"></p>
 <p>5、我们接着捕获第二张堆内存快照</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0014.jpg"></p>
-<h4 id="mat_1">使用 MAT 查看堆内存快照</h4>
-<p>1、打开 MAT ，选择File --&gt; Open File，打开刚刚的两个dump文件，<strong>我们先打开第一个dump文件</strong></p>
+<h4 id="mat_1">使用 MAT 查看堆内存快照<a class="headerlink" href="#mat_1" title="Permanent link">&para;</a></h4>
+<p>1、打开 MAT ，选择File &rarr; Open File，打开刚刚的两个dump文件，<strong>我们先打开第一个dump文件</strong></p>
 <blockquote>
 <p>点击Open Heap Dump也行</p>
 </blockquote>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0015.png"></p>
-<p>2、选择Java Basics --&gt; GC Roots</p>
+<p>2、选择Java Basics &rarr; GC Roots</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0016.png"></p>
 <p>3、第一次捕捉堆内存快照时，GC Roots 中包含我们定义的两个局部变量，类型分别为 ArrayList 和 Date，Total:21</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0017.jpg"></p>
 <p>4、打开第二个dump文件，第二次捕获内存快照时，由于两个局部变量引用的对象被释放，所以这两个局部变量不再作为 GC Roots ，从 Total Entries = 19 也可以看出（少了两个 GC Roots）</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0018.jpg"></p>
-<h3 id="jprofiler-gc-roots">JProfiler GC Roots 溯源</h3>
-<p>1、在实际开发中，我们很少会查看所有的GC Roots。一般都是查看某一个或几个对象的GC Root是哪个，这个过程叫<strong>GC Roots 溯源</strong></p>
+<h3 id="jprofiler-gc-roots">JProfiler GC Roots 溯源<a class="headerlink" href="#jprofiler-gc-roots" title="Permanent link">&para;</a></h3>
+<p>1、在实际开发中，我们很少会查看所有的GC Roots。一般都是查看某一个或几个对象的GC Root是哪个，这个过程叫**GC Roots 溯源**</p>
 <p>2、下面我们使用使用 JProfiler 进行 GC Roots 溯源演示</p>
 <p>依然用下面这个代码</p>
-<pre><code class="language-java">public class GCRootsTest {
-    public static void main(String[] args) {
-        List&lt;Object&gt; numList = new ArrayList&lt;&gt;();
-        Date birth = new Date();
-
-        for (int i = 0; i &lt; 100; i++) {
-            numList.add(String.valueOf(i));
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println(&quot;数据添加完毕，请操作：&quot;);
-        new Scanner(System.in).next();
-        numList = null;
-        birth = null;
-
-        System.out.println(&quot;numList、birth已置空，请操作：&quot;);
-        new Scanner(System.in).next();
-
-        System.out.println(&quot;结束&quot;);
-    }
-}
-
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">GCRootsTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">        </span><span class="n">Date</span><span class="w"> </span><span class="n">birth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">();</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">            </span><span class="n">numList</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">                </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;数据添加完毕，请操作：&quot;</span><span class="p">);</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">).</span><span class="na">next</span><span class="p">();</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">        </span><span class="n">numList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">        </span><span class="n">birth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;numList、birth已置空，请操作：&quot;</span><span class="p">);</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">).</span><span class="na">next</span><span class="p">();</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;结束&quot;</span><span class="p">);</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="p">}</span>
+</code></pre></div>
 <p>1、</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0019.jpg"></p>
 <p>2、</p>
@@ -1303,49 +2065,49 @@ obj is dead
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0024.jpg"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0025.png"></p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0026.png"></p>
-<h3 id="jprofiler-oom">JProfiler 分析 OOM</h3>
+<h3 id="jprofiler-oom">JProfiler 分析 OOM<a class="headerlink" href="#jprofiler-oom" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>这里是简单的讲一下，后面篇章会详解</p>
 </blockquote>
-<pre><code class="language-java">/**
- * -Xms8m -Xmx8m 
- * -XX:+HeapDumpOnOutOfMemoryError  这个参数的意思是当程序出现OOM的时候就会在当前工程目录生成一个dump文件
- */
-public class HeapOOM {
-    byte[] buffer = new byte[1 * 1024 * 1024];//1MB
-
-    public static void main(String[] args) {
-        ArrayList&lt;HeapOOM&gt; list = new ArrayList&lt;&gt;();
-
-        int count = 0;
-        try{
-            while(true){
-                list.add(new HeapOOM());
-                count++;
-            }
-        }catch (Throwable e){
-            System.out.println(&quot;count = &quot; + count);
-            e.printStackTrace();
-        }
-    }
-}
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cm">/**</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="cm"> * -Xms8m -Xmx8m </span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="cm"> * -XX:+HeapDumpOnOutOfMemoryError  这个参数的意思是当程序出现OOM的时候就会在当前工程目录生成一个dump文件</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="cm"> */</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HeapOOM</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span><span class="c1">//1MB</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">        </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">HeapOOM</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">        </span><span class="k">try</span><span class="p">{</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">            </span><span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">){</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">                </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">HeapOOM</span><span class="p">());</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">                </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">        </span><span class="p">}</span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">e</span><span class="p">){</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;count = &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="p">}</span>
+</code></pre></div>
 <p>程序输出日志</p>
-<pre><code class="language-java">com.atguigu.java.HeapOOM
-java.lang.OutOfMemoryError: Java heap space
-Dumping heap to java_pid14608.hprof ...
-java.lang.OutOfMemoryError: Java heap space
-    at com.atguigu.java.HeapOOM.&lt;init&gt;(HeapOOM.java:12)
-    at com.atguigu.java.HeapOOM.main(HeapOOM.java:20)
-Heap dump file created [7797849 bytes in 0.010 secs]
-count = 6
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">HeapOOM</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">OutOfMemoryError</span><span class="p">:</span><span class="w"> </span><span class="n">Java</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">space</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">Dumping</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">java_pid14608</span><span class="p">.</span><span class="na">hprof</span><span class="w"> </span><span class="p">...</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">OutOfMemoryError</span><span class="p">:</span><span class="w"> </span><span class="n">Java</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">space</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">HeapOOM</span><span class="p">.</span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span><span class="p">(</span><span class="n">HeapOOM</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">12</span><span class="p">)</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">HeapOOM</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="n">HeapOOM</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">20</span><span class="p">)</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">Heap</span><span class="w"> </span><span class="n">dump</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="o">[</span><span class="mi">7797849</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="mf">0.010</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
+</code></pre></div>
 <p>打开这个dump文件</p>
 <p>1、看这个超大对象</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0027.png"></p>
 <p>2、揪出 main() 线程中出问题的代码</p>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0028.png"></p>
-<h2 id="-">清除阶段：标记-清除算法</h2>
+<h2 id="-">清除阶段：标记-清除算法<a class="headerlink" href="#-" title="Permanent link">&para;</a></h2>
 <p><strong>垃圾清除阶段</strong></p>
 <ul>
 <li>
@@ -1389,7 +2151,7 @@ count = 6
 </ul>
 </li>
 </ol>
-<h2 id="_25">清除阶段：复制算法</h2>
+<h2 id="_25">清除阶段：复制算法<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h2>
 <p><strong>背景</strong></p>
 <ol>
 <li>为了解决标记-清除算法在垃圾收集效率方面的缺陷，M.L.Minsky于1963年发表了著名的论文，“使用双存储区的Lisp语言垃圾收集器CA LISP Garbage Collector Algorithm Using Serial Secondary Storage）”。M.L.Minsky在该论文中描述的算法被人们称为复制（Copying）算法，它也被M.L.Minsky本人成功地引入到了Lisp语言的一个实现版本中。</li>
@@ -1416,7 +2178,7 @@ count = 6
 <li>在新生代，对常规应用的垃圾回收，一次通常可以回收70% - 99% 的内存空间。回收性价比很高。所以现在的商业虚拟机都是用这种收集算法回收新生代。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0031.png"></p>
-<h2 id="-_1">清除阶段：标记-压缩算法</h2>
+<h2 id="-_1">清除阶段：标记-压缩算法<a class="headerlink" href="#-_1" title="Permanent link">&para;</a></h2>
 <p><strong>标记-压缩（或标记-整理、Mark - Compact）算法</strong></p>
 <p><strong>背景</strong></p>
 <ol>
@@ -1446,7 +2208,7 @@ count = 6
 <p>标记-压缩算法的最终效果等同于标记-清除算法执行完成后，再进行一次内存碎片整理，因此，也可以把它称为标记-清除-压缩（Mark-Sweep-Compact）算法。</p>
 </li>
 <li>
-<p>二者的本质差异在于标记-清除算法是一种<strong>非移动式的回收算法</strong>，标记-压缩是<strong>移动式的</strong>。是否移动回收后的存活对象是一项优缺点并存的风险决策。</p>
+<p>二者的本质差异在于标记-清除算法是一种**非移动式的回收算法**，标记-压缩是**移动式的**。是否移动回收后的存活对象是一项优缺点并存的风险决策。</p>
 </li>
 <li>
 <p>可以看到，标记的存活对象将会被整理，按照内存地址依次排列，而未被标记的内存会被清理掉。如此一来，当我们需要给新对象分配内存时，JVM只需要持有一个内存的起始地址即可，这比维护一个空闲列表显然少了许多开销。</p>
@@ -1464,7 +2226,7 @@ count = 6
 <li>移动对象的同时，如果对象被其他对象引用，则还需要调整引用的地址（因为HotSpot虚拟机采用的不是句柄池的方式，而是直接指针）</li>
 <li>移动过程中，需要全程暂停用户应用程序。即：STW</li>
 </ol>
-<h2 id="_26">垃圾回收算法小结</h2>
+<h2 id="_26">垃圾回收算法小结<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p><strong>对比三种清除阶段的算法</strong></p>
 </blockquote>
@@ -1506,7 +2268,7 @@ count = 6
 </tr>
 </tbody>
 </table>
-<h2 id="_27">分代收集算法</h2>
+<h2 id="_27">分代收集算法<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h2>
 <p>Q：难道就没有一种最优的算法吗？</p>
 <p>A：无，没有最好的算法，只有最合适的算法</p>
 <p><strong>为什么要使用分代收集算法</strong></p>
@@ -1515,7 +2277,7 @@ count = 6
 <p>前面所有这些算法中，并没有一种算法可以完全替代其他算法，它们都具有自己独特的优势和特点。分代收集算法应运而生。</p>
 </li>
 <li>
-<p>分代收集算法，是基于这样一个事实：<strong>不同的对象的生命周期是不一样的。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。</strong>一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点使用不同的回收算法，以提高垃圾回收的效率。</p>
+<p>分代收集算法，是基于这样一个事实：**不同的对象的生命周期是不一样的。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。**一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点使用不同的回收算法，以提高垃圾回收的效率。</p>
 </li>
 <li>
 <p>在Java程序运行的过程中，会产生大量的对象，其中有些对象是与业务信息相关:</p>
@@ -1558,17 +2320,17 @@ count = 6
 </li>
 <li>分代的思想被现有的虚拟机广泛使用。几乎所有的垃圾回收器都区分新生代和老年代</li>
 </ol>
-<h2 id="_28">增量收集算法和分区算法</h2>
-<h3 id="_29">增量收集算法</h3>
-<p>上述现有的算法，在垃圾回收过程中，应用软件将处于一种Stop the World的状态。在<strong>Stop the World</strong>状态下，应用程序所有的线程都会挂起，暂停一切正常的工作，等待垃圾回收的完成。如果垃圾回收时间过长，应用程序会被挂起很久，将严重影响用户体验或者系统的稳定性。为了解决这个问题，即对实时垃圾收集算法的研究直接导致了增量收集（Incremental Collecting）算法的诞生。</p>
+<h2 id="_28">增量收集算法和分区算法<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h2>
+<h3 id="_29">增量收集算法<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h3>
+<p>上述现有的算法，在垃圾回收过程中，应用软件将处于一种Stop the World的状态。在**Stop the World**状态下，应用程序所有的线程都会挂起，暂停一切正常的工作，等待垃圾回收的完成。如果垃圾回收时间过长，应用程序会被挂起很久，将严重影响用户体验或者系统的稳定性。为了解决这个问题，即对实时垃圾收集算法的研究直接导致了增量收集（Incremental Collecting）算法的诞生。</p>
 <p><strong>增量收集算法基本思想</strong></p>
 <ol>
 <li>如果一次性将所有的垃圾进行处理，需要造成系统长时间的停顿，那么就可以让垃圾收集线程和应用程序线程交替执行。<strong>每次，垃圾收集线程只收集一小片区域的内存空间，接着切换到应用程序线程。依次反复，直到垃圾收集完成。</strong></li>
-<li>总的来说，增量收集算法的基础仍是传统的标记-清除和复制算法。增量收集算法通过<strong>对线程间冲突的妥善处理，允许垃圾收集线程以分阶段的方式完成标记、清理或复制工作</strong></li>
+<li>总的来说，增量收集算法的基础仍是传统的标记-清除和复制算法。增量收集算法通过**对线程间冲突的妥善处理，允许垃圾收集线程以分阶段的方式完成标记、清理或复制工作**</li>
 </ol>
 <p><strong>增量收集算法的缺点</strong></p>
 <p>使用这种方式，由于在垃圾回收过程中，间断性地还执行了应用程序代码，所以能减少系统的停顿时间。但是，因为线程切换和上下文转换的消耗，会使得垃圾回收的总体成本上升，<strong>造成系统吞吐量的下降</strong>。</p>
-<h3 id="_30">分区算法</h3>
+<h3 id="_30">分区算法<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>主要针对G1收集器来说的</p>
 </blockquote>
@@ -1577,7 +2339,7 @@ count = 6
 <li>分代算法将按照对象的生命周期长短划分成两个部分，分区算法将整个堆空间划分成连续的不同小区间。每一个小区间都独立使用，独立回收。这种算法的好处是可以控制一次回收多少个小区间。</li>
 </ol>
 <p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_010/0033.png"></p>
-<h2 id="_31">写在最后</h2>
+<h2 id="_31">写在最后<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h2>
 <p>注意，这些只是基本的算法思路，实际GC实现过程要复杂的多，目前还在发展中的前沿GC都是复合算法，并且并行和并发兼备。</p>
 
 
@@ -1603,6 +2365,44 @@ count = 6
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC9%E7%AB%A0-StringTable%28%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%29/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第09章_StringTable(字符串常量池)" rel="prev">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第09章_StringTable(字符串常量池)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC11%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第11章_垃圾回收相关概念" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第11章_垃圾回收相关概念
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
