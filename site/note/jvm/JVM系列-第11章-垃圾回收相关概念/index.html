@@ -1,0 +1,1718 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JVM系列-第11章-垃圾回收相关概念。">
+      
+      
+        <meta name="author" content="Disaster">
+      
+      
+        <link rel="canonical" href="https://disaster1-tesk.github.io/note/note/jvm/JVM%E7%B3%BB%E5%88%97-%E7%AC%AC11%E7%AB%A0-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+    
+    
+      
+        <title>JVM系列-第11章-垃圾回收相关概念 - Disaster的提升之路</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0e669242.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.85d0ee34.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再显示此消息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+              </button>
+            
+            
+  For updates follow <strong>@Disaster</strong> on
+<!--  <a rel="me" href="https://fosstodon.org/@squidfunk">-->
+<!--    <span class="twemoji mastodon">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M433 179.11c0-97.2-63.71-125.7-63.71-125.7-62.52-28.7-228.56-28.4-290.48 0 0 0-63.72 28.5-63.72 125.7 0 115.7-6.6 259.4 105.63 289.1 40.51 10.7 75.32 13 103.33 11.4 50.81-2.8 79.32-18.1 79.32-18.1l-1.7-36.9s-36.31 11.4-77.12 10.1c-40.41-1.4-83-4.4-89.63-54a102.54 102.54 0 0 1-.9-13.9c85.63 20.9 158.65 9.1 178.75 6.7 56.12-6.7 105-41.3 111.23-72.9 9.8-49.8 9-121.5 9-121.5zm-75.12 125.2h-46.63v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.33V197c0-58.5-64-56.6-64-6.9v114.2H90.19c0-122.1-5.2-147.9 18.41-175 25.9-28.9 79.82-30.8 103.83 6.1l11.6 19.5 11.6-19.5c24.11-37.1 78.12-34.8 103.83-6.1 23.71 27.3 18.4 53 18.4 175z"/></svg>-->
+<!--    </span>-->
+<!--    <strong>Fosstodon</strong>-->
+<!--  </a>-->
+<!--  and-->
+  <a href="https://twitter.com/DisasterWang">
+    <span class="twemoji twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </span>
+    <strong>Twitter</strong>
+  </a>
+
+          </div>
+          
+            <script>var content,el=document.querySelector("[data-md-component=announce]");el&&(content=el.querySelector(".md-typeset"),__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0))</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Disaster的提升之路" class="md-header__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Disaster的提升之路
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JVM系列-第11章-垃圾回收相关概念
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07 19.07 3.5m-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13.51 1.67m-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87.4 1.31M19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35-2.53-2.2m4.33-2.7 1.15-2.77 2.2 2.54-3.35.23m1.15-4.96-1.14-2.78 3.34.24-2.2 2.54M9.63 18.93l2.77 1.15-2.53 2.19-.24-3.34Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07 19.07 3.5m-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13.51 1.67m-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87.4 1.31M19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35-2.53-2.2m4.33-2.7 1.15-2.77 2.2 2.54-3.35.23m1.15-4.96-1.14-2.78 3.34.24-2.2 2.54M9.63 18.93l2.77 1.15-2.53 2.19-.24-3.34Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesk/note
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-tabs__link">
+          
+  
+    
+  
+  百宝箱
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-tabs__link">
+          
+  
+    
+  
+  博客
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../lelts/part-1/1-understanding/" class="md-tabs__link">
+          
+  
+    
+  
+  LELTS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../whisper/chapter1/" class="md-tabs__link">
+          
+  
+    
+  
+  个人杂谈
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Disaster的提升之路" class="md-nav__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Disaster的提升之路
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/disaster1-tesk/note" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesk/note
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    百宝箱
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    博客
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../lelts/part-1/1-understanding/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    LELTS
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../whisper/chapter1/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    个人杂谈
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#systemgc" class="md-nav__link">
+    System.gc() 的理解
+  </a>
+  
+    <nav class="md-nav" aria-label="System.gc() 的理解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gc" class="md-nav__link">
+    手动 GC 理解不可达对象的回收行为
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    内存溢出与内存泄漏
+  </a>
+  
+    <nav class="md-nav" aria-label="内存溢出与内存泄漏">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    内存溢出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    内存泄漏
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stop-the-world" class="md-nav__link">
+    Stop the World
+  </a>
+  
+    <nav class="md-nav" aria-label="Stop the World">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stop-the-world_1" class="md-nav__link">
+    代码感受 Stop the World
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    垃圾回收的并行与并发
+  </a>
+  
+    <nav class="md-nav" aria-label="垃圾回收的并行与并发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    并发的概念
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    并行的概念
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    垃圾回收的并发与并行
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hotspot" class="md-nav__link">
+    HotSpot的算法实现细节
+  </a>
+  
+    <nav class="md-nav" aria-label="HotSpot的算法实现细节">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    根节点枚举
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    安全点与安全区域
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    记忆集与卡表
+  </a>
+  
+    <nav class="md-nav" aria-label="记忆集与卡表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    什么是跨代引用？
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    记忆集与卡表
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    再谈引用概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    再谈引用：强引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    再谈引用：软引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    再谈引用：弱引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    再谈引用：虚引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    再谈引用：终结器引用（了解）
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/disaster1-tesk/note/tree/main/docs/note/jvm/JVM系列-第11章-垃圾回收相关概念.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/disaster1-tesk/note/tree/main/docs/note/jvm/JVM系列-第11章-垃圾回收相关概念.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="_1">垃圾回收相关概念<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="systemgc">System.gc() 的理解<a class="headerlink" href="#systemgc" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>在默认情况下，通过System.gc()者Runtime.getRuntime().gc() 的调用，<strong>会显式触发Full GC</strong>，同时对老年代和新生代进行回收，尝试释放被丢弃对象占用的内存。</p>
+</li>
+<li>
+<p>然而System.gc()调用附带一个免责声明，无法保证对垃圾收集器的调用(不能确保立即生效)</p>
+</li>
+<li>
+<p>JVM实现者可以通过System.gc() 调用来决定JVM的GC行为。而一般情况下，垃圾回收应该是自动进行的，**无须手动触发，否则就太过于麻烦了。**在一些特殊情况下，如我们正在编写一个性能基准，我们可以在运行之间调用System.gc()</p>
+</li>
+</ol>
+<p><strong>代码示例：手动执行 GC 操作</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SystemGCTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="n">SystemGCTest</span><span class="p">();</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="c1">//提醒jvm的垃圾回收器执行gc,但是不确定是否马上执行gc</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="c1">//与Runtime.getRuntime().gc();的作用一样。</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">//        System.runFinalization();//强制调用使用引用的对象的finalize()方法</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="c1">//如果发生了GC，这个finalize()一定会被调用</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">finalize</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">finalize</span><span class="p">();</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;SystemGCTest 重写了finalize()&quot;</span><span class="p">);</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</code></pre></div>
+<p>输出结果不确定：有时候会调用 finalize() 方法，有时候并不会调用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">SystemGCTest</span><span class="w"> </span><span class="nf">重写了finalize</span><span class="p">()</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">或</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">空</span>
+</code></pre></div>
+<h3 id="gc">手动 GC 理解不可达对象的回收行为<a class="headerlink" href="#gc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">//加上参数：  -XX:+PrintGCDetails</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">LocalVarGC</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">localvarGC1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span><span class="c1">//10MB</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">localvarGC2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">localvarGC3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">localvarGC4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">localvarGC5</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">        </span><span class="n">localvarGC1</span><span class="p">();</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">        </span><span class="n">LocalVarGC</span><span class="w"> </span><span class="n">local</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalVarGC</span><span class="p">();</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">        </span><span class="c1">//通过在main方法调用这几个方法进行测试</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">        </span><span class="n">local</span><span class="p">.</span><span class="na">localvarGC1</span><span class="p">();</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="p">}</span>
+</code></pre></div>
+<p>JVM参数：</p>
+<p><code>-Xms256m -Xmx256m -XX:+PrintGCDetails -XX:PretenureSizeThreshold=15m</code></p>
+<p>1、第四个参数是设置大对象直接进入老年代的阈值，由于我的电脑8G和视频里老师的电脑16G不太一样。我测试的时候10M的数组都是直接进入到了老年代，为了保持一样的效果，我同时设置了堆内存和大对象阈值，尽量和宋红康老师保持一致</p>
+<p>2、我也查过了大对象阈值的默认值</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0001.png"></p>
+<p>我不太懂这个默认值为啥是0，我猜测可能是代表什么比例，目前也没有搜到相关的东西。这个不太重要，暂时就没有太深究，希望读者有知道的可以告知我一声。</p>
+<blockquote>
+<p>看不懂GC日志请看笔者的  **堆**那篇文章</p>
+</blockquote>
+<p><strong>1、调用 localvarGC1() 方法</strong></p>
+<p>执行 System.gc() 仅仅是将年轻代的 buffer 数组对象放到了老年代，buffer对象仍然没有回收</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10728</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">11000</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0066473</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.08</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">10728</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">272</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10911</span><span class="n">K</span><span class="p">(</span><span class="mi">175104</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">11000</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10911</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3492</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0097940</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">Heap</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">76288</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">655</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">65536</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="mh">0x00000000faba3ee8</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">)</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">10911</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="mh">0x00000000f0aa7d08</span><span class="p">,</span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3498</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4498</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">387</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">390</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
+</code></pre></div>
+<p><strong>2、调用 localvarGC2() 方法</strong></p>
+<p>由于 buffer 数组对象没有引用指向它，执行 System.gc() 将被回收</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">808</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">816</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0294475</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.04</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">808</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">640</span><span class="n">K</span><span class="p">(</span><span class="mi">175104</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">816</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">640</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3385</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3385</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0054210</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">Heap</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">76288</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">1966</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">65536</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="mh">0x00000000faceb9e0</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">640</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="mh">0x00000000f00a01a8</span><span class="p">,</span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3392</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4496</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">379</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">388</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
+</code></pre></div>
+<p><strong>3、调用 localvarGC3() 方法</strong></p>
+<p>虽然出了代码块的作用域，但是 buffer 数组对象并没有被回收</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">840</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">11088</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0070281</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.08</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">840</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">10248</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10900</span><span class="n">K</span><span class="p">(</span><span class="mi">175104</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">11088</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10900</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3386</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3386</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0084464</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">Heap</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">76288</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">1966</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">65536</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="mh">0x00000000faceb9e0</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">10900</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="mh">0x00000000f0aa52e8</span><span class="p">,</span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3393</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4496</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">379</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">388</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
+</code></pre></div>
+<p><strong>原因：</strong></p>
+<p>1、来看看字节码：实例方法局部变量表第一个变量肯定是 this</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0002.png"></p>
+<p>2、你有没有看到，局部变量表的大小是 2。但是局部变量表里只有一个索引为0的啊？那索引为1的是哪个局部变量呢？实际上索引为1的位置是buffer在占用着，执行 System.gc() 时，栈中还有 buffer 变量指向堆中的字节数组，所以没有进行GC</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0003.png"></p>
+<p>3、那么这种代码块的情况，什么时候会被GC呢？我们来看第四个方法</p>
+<p><strong>4、调用 localvarGC4() 方法</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[GC (System.gc()) [PSYoungGen: 15492K-&gt;776K(76288K)] 15492K-&gt;784K(251392K), 0.0009430 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] 
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>[Full GC (System.gc()) [PSYoungGen: 776K-&gt;0K(76288K)] [ParOldGen: 8K-&gt;646K(175104K)] 784K-&gt;646K(251392K), [Metaspace: 3485K-&gt;3485K(1056768K)], 0.0065829 secs] [Times: user=0.02 sys=0.00, real=0.01 secs] 
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Heap
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a> PSYoungGen      total 76288K, used 1966K [0x00000000fab00000, 0x0000000100000000, 0x0000000100000000)
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  eden space 65536K, 3% used [0x00000000fab00000,0x00000000faceb9f8,0x00000000feb00000)
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  from space 10752K, 0% used [0x00000000feb00000,0x00000000feb00000,0x00000000ff580000)
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  to   space 10752K, 0% used [0x00000000ff580000,0x00000000ff580000,0x0000000100000000)
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a> ParOldGen       total 175104K, used 646K [0x00000000f0000000, 0x00000000fab00000, 0x00000000fab00000)
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  object space 175104K, 0% used [0x00000000f0000000,0x00000000f00a1b88,0x00000000fab00000)
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a> Metaspace       used 3498K, capacity 4498K, committed 4864K, reserved 1056768K
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  class space    used 387K, capacity 390K, committed 512K, reserved 1048576K
+</code></pre></div>
+<p>Q：就多定义了一个局部变量 value ，就可以把字节数组回收了呢？</p>
+<p>A：局部变量表长度为 2 ，这说明了出了代码块时，buffer 就出了其作用域范围，此时没有为 value 开启新的槽，value 变量直接占据了 buffer 变量的槽（Slot），导致堆中的字节数组没有引用再指向它，执行 System.gc() 时被回收。看，value 位于局部变量表中索引为 1 的位置。value这个局部变量把原本属于buffer的slot给占用了，这样栈上就没有buffer变量指向<code>new byte[10 * 1024 * 1024]</code>实例了。</p>
+<blockquote>
+<p>这点看不懂的可以看我前面的文章：虚拟机栈 &rarr; Slot的重复利用</p>
+</blockquote>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0004.png"></p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0005.png"></p>
+<p><strong>调用 localvarGC5() 方法</strong></p>
+<p>局部变量除了方法范围就是失效了，堆中的字节数组铁定被回收</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">840</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">15492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">11088</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0070281</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">840</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">10248</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10911</span><span class="n">K</span><span class="p">(</span><span class="mi">175104</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">11088</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10911</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3492</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0082011</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.03</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="o">[</span><span class="n">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">10911</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">10911</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="mf">0.0004440</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.00</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.00</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="o">[</span><span class="n">Full</span><span class="w"> </span><span class="nf">GC</span><span class="w"> </span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">())</span><span class="w"> </span><span class="o">[</span><span class="n">PSYoungGen</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">0</span><span class="n">K</span><span class="p">(</span><span class="mi">76288</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ParOldGen</span><span class="p">:</span><span class="w"> </span><span class="mi">10911</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">671</span><span class="n">K</span><span class="p">(</span><span class="mi">175104</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="w"> </span><span class="mi">10911</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">671</span><span class="n">K</span><span class="p">(</span><span class="mi">251392</span><span class="n">K</span><span class="p">),</span><span class="w"> </span><span class="o">[</span><span class="n">Metaspace</span><span class="p">:</span><span class="w"> </span><span class="mi">3492</span><span class="n">K</span><span class="o">-&gt;</span><span class="mi">3492</span><span class="n">K</span><span class="p">(</span><span class="mi">1056768</span><span class="n">K</span><span class="p">)</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0108555</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">Times</span><span class="p">:</span><span class="w"> </span><span class="n">user</span><span class="o">=</span><span class="mf">0.08</span><span class="w"> </span><span class="n">sys</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span><span class="w"> </span><span class="n">real</span><span class="o">=</span><span class="mf">0.01</span><span class="w"> </span><span class="n">secs</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">Heap</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w"> </span><span class="n">PSYoungGen</span><span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="mi">76288</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">655</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="n">eden</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">65536</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="mh">0x00000000faba3ee8</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">)</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">,</span><span class="mh">0x0000000100000000</span><span class="p">)</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="n">to</span><span class="w">   </span><span class="n">space</span><span class="w"> </span><span class="mi">10752</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000feb00000</span><span class="p">,</span><span class="mh">0x00000000ff580000</span><span class="p">)</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w"> </span><span class="n">ParOldGen</span><span class="w">       </span><span class="n">total</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="mi">671</span><span class="n">K</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">  </span><span class="n">object</span><span class="w"> </span><span class="n">space</span><span class="w"> </span><span class="mi">175104</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">%</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">[</span><span class="mh">0x00000000f0000000</span><span class="p">,</span><span class="mh">0x00000000f00a7cf8</span><span class="p">,</span><span class="mh">0x00000000fab00000</span><span class="p">)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w"> </span><span class="n">Metaspace</span><span class="w">       </span><span class="n">used</span><span class="w"> </span><span class="mi">3499</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">4502</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">4864</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1056768</span><span class="n">K</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">  </span><span class="kd">class</span> <span class="nc">space</span><span class="w">    </span><span class="n">used</span><span class="w"> </span><span class="mi">387</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">390</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">committed</span><span class="w"> </span><span class="mi">512</span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">reserved</span><span class="w"> </span><span class="mi">1048576</span><span class="n">K</span>
+</code></pre></div>
+<h2 id="_2">内存溢出与内存泄漏<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">内存溢出<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ol>
+<li>内存溢出相对于内存泄漏来说，尽管更容易被理解，但是同样的，内存溢出也是引发程序崩溃的罪魁祸首之一。</li>
+<li>由于GC一直在发展，所有一般情况下，除非应用程序占用的内存增长速度非常快，造成垃圾回收已经跟不上内存消耗的速度，否则不太容易出现OOM的情况。</li>
+<li>大多数情况下，GC会进行各种年龄段的垃圾回收，实在不行了就放大招，来一次独占式的Full GC操作，这时候会回收大量的内存，供应用程序继续使用。</li>
+<li>Javadoc中对OutofMemoryError的解释是，没有空闲内存，并且垃圾收集器也无法提供更多内存。</li>
+</ol>
+<p><strong>内存溢出（OOM）原因分析</strong></p>
+<p>首先说没有空闲内存的情况：说明Java虚拟机的堆内存不够。原因有二：</p>
+<ol>
+<li>Java虚拟机的堆内存设置不够。<ul>
+<li>比如：可能存在内存泄漏问题；也很有可能就是堆的大小不合理，比如我们要处理比较可观的数据量，但是没有显式指定JVM堆大小或者指定数值偏小。我们可以通过参数-Xms 、-Xmx来调整。</li>
+</ul>
+</li>
+<li>
+<p>代码中创建了大量大对象，并且长时间不能被垃圾收集器收集（存在被引用）</p>
+<ul>
+<li>对于老版本的Oracle JDK，因为永久代的大小是有限的，并且JVM对永久代垃圾回收（如，常量池回收、卸载不再需要的类型）非常不积极，所以当我们不断添加新类型的时候，永久代出现OutOfMemoryError也非常多见。尤其是在运行时存在大量动态类型生成的场合；类似intern字符串缓存占用太多空间，也会导致OOM问题。对应的异常信息，会标记出来和永久代相关：“java.lang.OutOfMemoryError:PermGen space"。</li>
+<li>随着元数据区的引入，方法区内存已经不再那么窘迫，所以相应的OOM有所改观，出现OOM，异常信息则变成了：“java.lang.OutofMemoryError:Metaspace"。直接内存不足，也会导致OOM。</li>
+</ul>
+</li>
+<li>
+<p>这里面隐含着一层意思是，在抛出OutofMemoryError之前，通常垃圾收集器会被触发，尽其所能去清理出空间。</p>
+<ul>
+<li>例如：在引用机制分析中，涉及到JVM会去尝试**回收软引用指向的对象**等。</li>
+<li>在java.nio.Bits.reserveMemory()方法中，我们能清楚的看到，System.gc()会被调用，以清理空间。</li>
+</ul>
+</li>
+<li>当然，也不是在任何情况下垃圾收集器都会被触发的<ul>
+<li>比如，我们去分配一个超大对象，类似一个超大数组超过堆的最大值，JVM可以判断出垃圾收集并不能解决这个问题，所以直接抛出OutofMemoryError。</li>
+</ul>
+</li>
+</ol>
+<h3 id="_4">内存泄漏<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>也称作“存储渗漏”。严格来说，<strong>只有对象不会再被程序用到了，但是GC又不能回收他们的情况，才叫内存泄漏。</strong></p>
+</li>
+<li>
+<p>但实际情况很多时候一些不太好的实践（或疏忽）会导致对象的生命周期变得很长甚至导致OOM，也可以叫做宽泛意义上的“内存泄漏”。</p>
+</li>
+<li>
+<p>尽管内存泄漏并不会立刻引起程序崩溃，但是一旦发生内存泄漏，程序中的可用内存就会被逐步蚕食，直至耗尽所有内存，最终出现OutofMemory异常，导致程序崩溃。</p>
+</li>
+<li>
+<p>注意，这里的存储空间并不是指物理内存，而是指虚拟内存大小，这个虚拟内存大小取决于磁盘交换区设定的大小。</p>
+</li>
+</ol>
+<p><strong>内存泄露官方例子</strong></p>
+<p>左边的图：Java使用可达性分析算法，最上面的数据不可达，就是需要被回收的对象。</p>
+<p>右边的图：后期有一些对象不用了，按道理应该断开引用，但是存在一些链没有断开（图示中的Forgotten Reference Memory Leak），从而导致没有办法被回收。</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0006.png"></p>
+<p><strong>常见例子</strong></p>
+<ol>
+<li>单例模式<ul>
+<li>单例的生命周期和应用程序是一样长的，所以在单例程序中，如果持有对外部对象的引用的话，那么这个外部对象是不能被回收的，则会导致内存泄漏的产生。</li>
+</ul>
+</li>
+<li>一些提供close()的资源未关闭导致内存泄漏<ul>
+<li>数据库连接 dataSourse.getConnection()，网络连接socket和io连接必须手动close，否则是不能被回收的。</li>
+</ul>
+</li>
+</ol>
+<h2 id="stop-the-world">Stop the World<a class="headerlink" href="#stop-the-world" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Stop-the-World，简称STW，指的是GC事件发生过程中，会产生应用程序的停顿。<strong>停顿产生时整个应用程序线程都会被暂停，没有任何响应</strong>，有点像卡死的感觉，这个停顿称为STW。</p>
+</li>
+<li>
+<p>可达性分析算法中枚举根节点（GC Roots）会导致所有Java执行线程停顿，为什么需要停顿所有 Java 执行线程呢？</p>
+<ul>
+<li>
+<p>分析工作必须在一个能确保一致性的快照中进行</p>
+</li>
+<li>
+<p>一致性指整个分析期间整个执行系统看起来像被冻结在某个时间点上</p>
+</li>
+<li>
+<p><strong>如果出现分析过程中对象引用关系还在不断变化，则分析结果的准确性无法保证</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>被STW中断的应用程序线程会在完成GC之后恢复，频繁中断会让用户感觉像是网速不快造成电影卡带一样，所以我们需要减少STW的发生。</p>
+</li>
+<li>
+<p>STW事件和采用哪款GC无关，所有的GC都有这个事件。</p>
+</li>
+<li>
+<p>哪怕是G1也不能完全避免Stop-the-world情况发生，只能说垃圾回收器越来越优秀，回收效率越来越高，尽可能地缩短了暂停时间。</p>
+</li>
+<li>
+<p>STW是JVM在**后台自动发起和自动完成**的。在用户不可见的情况下，把用户正常的工作线程全部停掉。</p>
+</li>
+<li>
+<p>开发中不要用System.gc() ，这会导致Stop-the-World的发生。</p>
+</li>
+</ol>
+<h3 id="stop-the-world_1">代码感受 Stop the World<a class="headerlink" href="#stop-the-world_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StopTheWorldDemo</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WorkThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span><span class="p">();</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">                    </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">                        </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">                        </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">                    </span><span class="p">}</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">                    </span><span class="k">if</span><span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span><span class="p">){</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">                        </span><span class="n">list</span><span class="p">.</span><span class="na">clear</span><span class="p">();</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">                        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="c1">//会触发full gc，进而会出现STW事件</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">                    </span><span class="p">}</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">                </span><span class="n">ex</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PrintThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">();</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">            </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">                    </span><span class="c1">// 每秒打印时间信息</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="w">                    </span><span class="kt">long</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">startTime</span><span class="p">;</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a><span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">1000</span><span class="p">);</span>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">                    </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="w">                </span><span class="n">ex</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a><span class="w">        </span><span class="n">WorkThread</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WorkThread</span><span class="p">();</span>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a><span class="w">        </span><span class="n">PrintThread</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PrintThread</span><span class="p">();</span>
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a><span class="w">        </span><span class="n">w</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a><span class="p">}</span>
+</code></pre></div>
+<p>关闭工作线程 w ，观察输出：当前时间间隔与上次时间间隔**基本**是每隔1秒打印一次</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="mf">0.1</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="mf">1.1</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="mf">2.2</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="mf">3.2</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="mf">4.3</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="mf">5.3</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="mf">6.3</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="mf">7.3</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+<p>开启工作线程 w ，观察打印输出：当前时间间隔与上次时间间隔相差 1.3s ，可以明显感受到 Stop the World 的存在</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="mf">0.1</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="mf">1.4</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="mf">2.7</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="mf">3.8</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="mf">4.12</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="mf">5.13</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+<h2 id="_5">垃圾回收的并行与并发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="_6">并发的概念<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>在操作系统中，是指**一个时间段**中有几个程序都处于已启动运行到运行完毕之间，且这几个程序都是在同一个处理器上运行</p>
+</li>
+<li>
+<p>并发不是真正意义上的“同时进行”，只是CPU把一个时间段划分成几个时间片段（时间区间），然后在这几个时间区间之间来回切换。由于CPU处理的速度非常快，只要时间间隔处理得当，即可让用户感觉是多个应用程序同时在进行</p>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0007.png"></p>
+<h3 id="_7">并行的概念<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>当系统有一个以上CPU时，当一个CPU执行一个进程时，另一个CPU可以执行另一个进程，两个进程互不抢占CPU资源，可以**同时**进行，我们称之为并行（Parallel）</p>
+</li>
+<li>
+<p>其实决定并行的因素不是CPU的数量，而是CPU的核心数量，比如一个CPU多个核也可以并行</p>
+</li>
+<li>
+<p>适合科学计算，后台处理等弱交互场景</p>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0008.png"></p>
+<blockquote>
+<p><strong>并发与并行的对比</strong></p>
+</blockquote>
+<ol>
+<li>并发，指的是多个事情，在同一时间段内同时发生了。</li>
+<li>并行，指的是多个事情，在同一时间点上（或者说同一时刻）同时发生了。</li>
+<li>并发的多个任务之间是互相抢占资源的。并行的多个任务之间是不互相抢占资源的。</li>
+<li>只有在多CPU或者一个CPU多核的情况中，才会发生并行。否则，看似同时发生的事情，其实都是并发执行的。</li>
+</ol>
+<h3 id="_8">垃圾回收的并发与并行<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<ol>
+<li>并行（Parallel）：指多条垃圾收集线程并行工作，但此时用户线程仍处于等待状态。<ul>
+<li>如ParNew、Parallel Scavenge、Parallel Old</li>
+</ul>
+</li>
+<li>串行（Serial）<ul>
+<li>相较于并行的概念，单线程执行。</li>
+<li>如果内存不够，则程序暂停，启动JVM垃圾回收器进行垃圾回收（单线程）</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0009.png"></p>
+<p>并发和并行，在谈论垃圾收集器的上下文语境中，它们可以解释如下：</p>
+<ol>
+<li>并发（Concurrent）：指**用户线程与垃圾收集线程同时执行**（但不一定是并行的，可能会交替执行），垃圾回收线程在执行时不会停顿用户程序的运行。<ul>
+<li>比如用户程序在继续运行，而垃圾收集程序线程运行于另一个CPU上；</li>
+</ul>
+</li>
+<li>典型垃圾回收器：CMS、G1</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0010.png"></p>
+<h2 id="hotspot">HotSpot的算法实现细节<a class="headerlink" href="#hotspot" title="Permanent link">&para;</a></h2>
+<h3 id="_9">根节点枚举<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>1、固定可作为GC Roots的节点主要在全局性的引用（例如常量或类静态属性）与执行上下文（例如栈帧中的本地变量表）中，尽管目标明确，但查找过程要做到高效并非一件容易的事情，现在Java应用越做越庞大，光是方法区的大小就常有数百上千兆，里面的类、常量等更是恒河沙数，若要逐个检查以这里为起源的引用肯定得消耗不少时间。 </p>
+<p>2、迄今为止，<strong>所有收集器在根节点枚举这一步骤时都是必须暂停用户线程的</strong>，因此毫无疑问根节点 枚举与之前提及的整理内存碎片一样会面临相似的“Stop The World”的困扰。现在可达性分析算法耗时 最长的查找引用链的过程已经可以做到与用户线程一起并发，<strong>但根节点枚举始终还 是必须在一个能保障一致性的快照中才得以进行</strong>——这里“一致性”的意思是整个枚举期间执行子系统 看起来就像被冻结在某个时间点上，不会出现分析过程中，根节点集合的对象引用关系还在不断变化 的情况，若这点不能满足的话，分析结果准确性也就无法保证。这是导致垃圾收集过程必须停顿所有 用户线程的其中一个重要原因，即使是号称停顿时间可控，或者（几乎）不会发生停顿的CMS、G1、 ZGC等收集器，枚举根节点时也是必须要停顿的。</p>
+<p>3、由于目前主流Java虚拟机使用的都是**准确式垃圾收集**，所以当用户线程停顿下来之后，其实并不需要一个不漏地检查完所有 执行上下文和全局的引用位置，虚拟机应当是有办法直接得到哪些地方存放着对象引用的。在HotSpot 的解决方案里，是使用一组称为**OopMap的数据结构**来达到这个目的。一旦类加载动作完成的时候， HotSpot就会把对象内什么偏移量上是什么类型的数据计算出来，在即时编译过程中，也 会在特定的位置记录下栈里和寄存器里哪些位置是引用。这样收集器在扫描时就可以直接得知这些信 息了，<strong>并不需要真正一个不漏地从方法区等GC Roots开始查找</strong>。</p>
+<p>4、Exact VM因它使用**准确式内存管理**（Exact Memory Management，也可以叫Non-Con- servative/Accurate Memory Management）而得名。准确式内存管理是指虚拟机可以知道内存中某个位 置的数据具体是什么类型。譬如内存中有一个32bit的整数123456，虚拟机将有能力分辨出它到底是一 个指向了123456的内存地址的引用类型还是一个数值为123456的整数，准确分辨出哪些内存是引用类 型，这也是在垃圾收集时准确判断堆上的数据是否还可能被使用的前提。【<strong>这个不是特别重要，了解一下即可</strong>】</p>
+<blockquote>
+<p>常考面试：<strong>在OopMap的协助下，HotSpot可以快速准确地完成GC Roots枚举</strong></p>
+</blockquote>
+<h3 id="_10">安全点与安全区域<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p><strong>安全点（Safepoint）</strong></p>
+<ol>
+<li>
+<p>程序执行时并非在所有地方都能停顿下来开始GC，只有在特定的位置才能停顿下来开始GC，这些位置称为“安全点（Safepoint）”。</p>
+</li>
+<li>
+<p>Safe Point的选择很重要，<strong>如果太少可能导致GC等待的时间太长，如果太频繁可能导致运行时的性能问题</strong>。大部分指令的执行时间都非常短暂，通常会根据“<strong>是否具有让程序长时间执行的特征</strong>”为标准。比如：选择一些执行时间较长的指令作为Safe Point，<strong>如方法调用、循环跳转和异常跳转等</strong>。</p>
+</li>
+</ol>
+<p><strong>如何在GC发生时，检查所有线程都跑到最近的安全点停顿下来呢？</strong></p>
+<ol>
+<li>抢先式中断：（目前没有虚拟机采用了）首先中断所有线程。如果还有线程不在安全点，就恢复线程，让线程跑到安全点。</li>
+<li>主动式中断：设置一个中断标志，各个线程运行到Safe Point的时候**主动轮询**这个标志，如果中断标志为真，则将自己进行中断挂起。</li>
+</ol>
+<p><strong>安全区域（Safe Region）</strong></p>
+<ol>
+<li>Safepoint 机制保证了程序执行时，在不太长的时间内就会遇到可进入GC的Safepoint。但是，程序“不执行”的时候呢？</li>
+<li>例如线程处于Sleep状态或Blocked 状态，这时候线程无法响应JVM的中断请求，“走”到安全点去中断挂起，JVM也不太可能等待线程被唤醒。对于这种情况，就需要安全区域（Safe Region）来解决。</li>
+<li><strong>安全区域是指在一段代码片段中，对象的引用关系不会发生变化，在这个区域中的任何位置开始GC都是安全的</strong>。我们也可以把Safe Region看做是被扩展了的Safepoint。</li>
+</ol>
+<p><strong>安全区域的执行流程</strong></p>
+<ol>
+<li>当线程运行到Safe Region的代码时，首先标识已经进入了Safe Region，如果这段时间内发生GC，JVM会忽略标识为Safe Region状态的线程</li>
+<li>当线程即将离开Safe Region时，会检查JVM是否已经完成根节点枚举（即GC Roots的枚举），如果完成了，则继续运行，否则线程必须等待直到收到可以安全离开Safe Region的信号为止；</li>
+</ol>
+<h3 id="_11">记忆集与卡表<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<h4 id="_12">什么是跨代引用？<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<p>1、一般的垃圾回收算法至少会划分出两个年代，年轻代和老年代。但是单纯的分代理论在垃圾回收的时候存在一个巨大的缺陷：为了找到年轻代中的存活对象，却不得不遍历整个老年代，反过来也是一样的。</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0011.png"></p>
+<p>2、如果我们从年轻代开始遍历，那么可以断定N, S, P, Q都是存活对象。但是，V却不会被认为是存活对象，其占据的内存会被回收了。这就是一个惊天的大漏洞！因为U本身是老年代对象，而且有外部引用指向它，也就是说U是存活对象，而U指向了V，也就是说V也应该是存活对象才是！而这都是因为我们只遍历年轻代对象！</p>
+<p>3、所以，为了解决这种跨代引用的问题，最笨的办法就是遍历老年代的对象，找出这些跨代引用来。这种方案存在极大的性能浪费。因为从两个分代假说里面，其实隐含了一个推论：跨代引用是极少的。也就是为了找出那么一点点跨代引用，我们却得遍历整个老年代！从上图来说，很显然的是，我们根本不必遍历R。</p>
+<p>4、因此，为了避免这种遍历老年代的性能开销，通常的分代垃圾回收器会引入一种称为**记忆集**的技术。<strong>简单来说，记忆集就是用来记录跨代引用的表。</strong></p>
+<h4 id="_13">记忆集与卡表<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<p>1、为解决对象跨代引用所带来的问题，垃圾收集器在新生代中建 立了名为**记忆集（Remembered Set）的数据结构**，用以避免把整个老年代加进GC Roots扫描范围。事实上并不只是新生代、老年代之间才有跨代引用的问题，所有涉及部分区域收集（Partial GC）行为的 垃圾收集器，典型的如G1、ZGC和Shenandoah收集器，都会面临相同的问题，因此我们有必要进一步 理清记忆集的原理和实现方式，以便在后续章节里介绍几款最新的收集器相关知识时能更好地理解。</p>
+<p>2、记忆集是一种用于记录**从非收集区域指向收集区域的指针集合的抽象数据结构**。如果我们不考虑效率和成本的话，最简单的实现可以用非收集区域中所有含跨代引用的对象数组来实现这个数据结构。</p>
+<blockquote>
+<p>比如说我们有老年代（非收集区域）和年轻代（收集区域）的对象之间有一条引用链</p>
+</blockquote>
+<p>3、这种记录全部含跨代引用对象的实现方案，无论是空间占用还是维护成本都相当高昂。而在垃圾 收集的场景中，收集器只需要通过记忆集判断出某一块非收集区域是否存在有指向了收集区域的指针 就可以了，并不需要了解这些跨代指针的全部细节。那设计者在实现记忆集的时候，便可以选择更为 粗犷的记录粒度来节省记忆集的存储和维护成本，下面列举了一些可供选择（当然也可以选择这个范 围以外的）的记录精度：</p>
+<ul>
+<li>字长精度：每个记录精确到一个机器字长（就是处理器的寻址位数，如常见的32位或64位，这个 精度决定了机器访问物理内存地址的指针长度），该字包含跨代指针。 </li>
+<li>对象精度：每个记录精确到一个对象，该对象里有字段含有跨代指针。 </li>
+<li>卡精度：每个记录精确到一块内存区域，该区域内有对象含有跨代指针。</li>
+</ul>
+<p>4、其中，第三种“卡精度”所指的是用一种称为“卡表”（Card Table）的方式去实现记忆集，这也是 目前最常用的一种记忆集实现形式，一些资料中甚至直接把它和记忆集混为一谈。前面定义中提到记 忆集其实是一种“抽象”的数据结构，抽象的意思是只定义了记忆集的行为意图，并没有定义其行为的 具体实现。卡表就是记忆集的一种具体实现，它定义了记忆集的记录精度、与堆内存的映射关系等。 关于卡表与记忆集的关系，读者不妨按照Java语言中HashMap与Map的关系来类比理解。 卡表最简单的形式可以只是一个字节数组，而HotSpot虚拟机确实也是这样做的</p>
+<blockquote>
+<p>读者只需要知道有这个东西，面试的时候能说出来，再细致一点的就需要看周志明老师的第三版书了</p>
+</blockquote>
+<h2 id="_14">再谈引用概述<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>我们希望能描述这样一类对象：当内存空间还足够时，则能保留在内存中；如果内存空间在进行垃圾收集后还是很紧张，则可以抛弃这些对象。</p>
+</li>
+<li>
+<p>既偏门又非常高频的面试题：强引用、软引用、弱引用、虚引用有什么区别？具体使用场景是什么？</p>
+</li>
+<li>
+<p>在JDK1.2版之后，Java对引用的概念进行了扩充，将引用分为：</p>
+<ul>
+<li>强引用（Strong Reference）</li>
+<li>软引用（Soft Reference）</li>
+<li>弱引用（Weak Reference）</li>
+<li>虚引用（Phantom Reference）</li>
+<li>这4种引用强度依次逐渐减弱。除强引用外，其他3种引用均可以在java.lang.ref包中找到它们的身影。如下图，显示了这3种引用类型对应的类，开发人员可以在应用程序中直接使用它们。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0012.png" ></p>
+<p>Reference子类中只有终结器引用是包内可见的，其他3种引用类型均为public，可以在应用程序中直接使用</p>
+<ol>
+<li>强引用（StrongReference）：最传统的“引用”的定义，是指在程序代码之中普遍存在的引用赋值，即类似“<code>object obj=new Object()</code>”这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。宁可报OOM，也不会GC强引用</li>
+<li>软引用（SoftReference）：在系统将要发生内存溢出之前，将会把这些对象列入回收范围之中进行第二次回收。如果这次回收后还没有足够的内存，才会抛出内存溢出异常。</li>
+<li>弱引用（WeakReference）：被弱引用关联的对象只能生存到下一次垃圾收集之前。当垃圾收集器工作时，无论内存空间是否足够，都会回收掉被弱引用关联的对象。</li>
+<li>虚引用（PhantomReference）：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来获得一个对象的实例。为一个对象设置虚引用关联的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。</li>
+</ol>
+<h2 id="_15">再谈引用：强引用<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>在Java程序中，最常见的引用类型是强引用（普通系统99%以上都是强引用），也就是我们最常见的普通对象引用，<strong>也是默认的引用类型</strong>。</p>
+</li>
+<li>
+<p>当在Java语言中使用new操作符创建一个新的对象，并将其赋值给一个变量的时候，这个变量就成为指向该对象的一个强引用。</p>
+</li>
+<li>
+<p>**只要强引用的对象是可触及的，垃圾收集器就永远不会回收掉被引用的对象。**只要强引用的对象是可达的，jvm宁可报OOM，也不会回收强引用。</p>
+</li>
+<li>
+<p>对于一个普通的对象，如果没有其他的引用关系，只要超过了引用的作用域或者显式地将相应（强）引用赋值为null，就是可以当做垃圾被收集了，当然具体回收时机还是要看垃圾收集策略。</p>
+</li>
+<li>
+<p>相对的，软引用、弱引用和虚引用的对象是软可触及、弱可触及和虚可触及的，在一定条件下，都是可以被回收的。所以，强引用是造成Java内存泄漏的主要原因之一。</p>
+</li>
+</ol>
+<p><strong>强引用代码举例</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">StrongReferenceTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">        </span><span class="n">StringBuffer</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuffer</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;Hello,尚硅谷&quot;</span><span class="p">);</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">        </span><span class="n">StringBuffer</span><span class="w"> </span><span class="n">str1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str</span><span class="p">;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">        </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">str1</span><span class="p">);</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="p">}</span>
+</code></pre></div>
+<p>输出</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">Hello</span><span class="p">,</span><span class="n">尚硅谷</span>
+</code></pre></div>
+<p>局部变量str指向stringBuffer实例所在堆空间，通过str可以操作该实例，那么str就是stringBuffer实例的强引用对应内存结构：</p>
+<p><code>StringBuffer str = new StringBuffer("hello,尚硅谷");</code></p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_011/0013.png"></p>
+<p><strong>总结</strong></p>
+<p>本例中的两个引用，都是强引用，强引用具备以下特点：</p>
+<ol>
+<li>强引用可以直接访问目标对象。</li>
+<li>强引用所指向的对象在任何时候都不会被系统回收，虚拟机宁愿抛出OOM异常，也不会回收强引用所指向对象。</li>
+<li>强引用可能导致内存泄漏。</li>
+</ol>
+<h2 id="_16">再谈引用：软引用<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<p><strong>软引用（Soft Reference）：内存不足即回收</strong></p>
+<ol>
+<li>
+<p>软引用是用来描述一些还有用，但非必需的对象。只被软引用关联着的对象，在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存，才会抛出内存溢出异常。注意，这里的第一次回收是不可达的对象</p>
+</li>
+<li>
+<p>软引用通常用来实现内存敏感的缓存。比如：高速缓存就有用到软引用。如果还有空闲内存，就可以暂时保留缓存，当内存不足时清理掉，这样就保证了使用缓存的同时，不会耗尽内存。</p>
+</li>
+<li>
+<p>垃圾回收器在某个时刻决定回收软可达的对象的时候，会清理软引用，并可选地把引用存放到一个引用队列（Reference Queue）。</p>
+</li>
+<li>
+<p>类似弱引用，只不过Java虚拟机会尽量让软引用的存活时间长一些，迫不得已才清理。</p>
+</li>
+<li>
+<p>一句话概括：当内存足够时，不会回收软引用可达的对象。内存不够时，会回收软引用的可达对象</p>
+</li>
+</ol>
+<p>在JDK1.2版之后提供了SoftReference类来实现软引用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span><span class="c1">// 声明强引用</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">SoftReference</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SoftReference</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">//销毁强引用</span>
+</code></pre></div>
+<p><strong>软引用代码举例</strong></p>
+<p>代码</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SoftReferenceTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="nf">User</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">        </span><span class="nd">@Override</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;[id=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, name=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;] &quot;</span><span class="p">;</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">        </span><span class="c1">//创建对象，建立软引用</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="c1">//        SoftReference&lt;User&gt; userSoftRef = new SoftReference&lt;User&gt;(new User(1, &quot;songhk&quot;));</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">        </span><span class="c1">//上面的一行代码，等价于如下的三行代码</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">        </span><span class="n">User</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;songhk&quot;</span><span class="p">);</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">        </span><span class="n">SoftReference</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">userSoftRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SoftReference</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="p">(</span><span class="n">u1</span><span class="p">);</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="w">        </span><span class="n">u1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="c1">//取消强引用</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="w">        </span><span class="c1">//从软引用中重新获得强引用对象</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">userSoftRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span>
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;---目前内存还不紧张---&quot;</span><span class="p">);</span>
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;After GC:&quot;</span><span class="p">);</span>
+<a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a><span class="c1">//        //垃圾回收之后获得软引用中的对象</span>
+<a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">userSoftRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span><span class="c1">//由于堆空间内存足够，所有不会回收软引用的可达对象。</span>
+<a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;---下面开始内存紧张了---&quot;</span><span class="p">);</span>
+<a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a><span class="w">            </span><span class="c1">//让系统认为内存资源紧张、不够</span>
+<a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a><span class="c1">//            byte[] b = new byte[1024 * 1024 * 7];</span>
+<a id="__codelineno-14-38" name="__codelineno-14-38" href="#__codelineno-14-38"></a><span class="w">            </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">7168</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">635</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-14-39" name="__codelineno-14-39" href="#__codelineno-14-39"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-40" name="__codelineno-14-40" href="#__codelineno-14-40"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-14-41" name="__codelineno-14-41" href="#__codelineno-14-41"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-42" name="__codelineno-14-42" href="#__codelineno-14-42"></a><span class="w">            </span><span class="c1">//再次从软引用中获取数据</span>
+<a id="__codelineno-14-43" name="__codelineno-14-43" href="#__codelineno-14-43"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">userSoftRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span><span class="c1">//在报OOM之前，垃圾回收器会回收软引用的可达对象。</span>
+<a id="__codelineno-14-44" name="__codelineno-14-44" href="#__codelineno-14-44"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-14-45" name="__codelineno-14-45" href="#__codelineno-14-45"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-46" name="__codelineno-14-46" href="#__codelineno-14-46"></a><span class="p">}</span>
+</code></pre></div>
+<p>JVM参数</p>
+<p><code>-Xms10m -Xmx10m</code></p>
+<p>在 JVM 内存不足时，会清理软引用对象</p>
+<p>输出结果：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="o">[</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="n">songhk</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="o">---</span><span class="n">目前内存还不紧张</span><span class="o">---</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">After</span><span class="w"> </span><span class="n">GC</span><span class="p">:</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="o">[</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="n">songhk</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="o">---</span><span class="n">下面开始内存紧张了</span><span class="o">---</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="kc">null</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">OutOfMemoryError</span><span class="p">:</span><span class="w"> </span><span class="n">Java</span><span class="w"> </span><span class="n">heap</span><span class="w"> </span><span class="n">space</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="n">at</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java1</span><span class="p">.</span><span class="na">SoftReferenceTest</span><span class="p">.</span><span class="na">main</span><span class="p">(</span><span class="n">SoftReferenceTest</span><span class="p">.</span><span class="na">java</span><span class="p">:</span><span class="mi">48</span><span class="p">)</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
+<h2 id="_17">再谈引用：弱引用<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>弱引用（Weak Reference）发现即回收</strong></p>
+</blockquote>
+<ol>
+<li>
+<p>弱引用也是用来描述那些非必需对象，<strong>只被弱引用关联的对象只能生存到下一次垃圾收集发生为止。在系统GC时，只要发现弱引用，不管系统堆空间使用是否充足，都会回收掉只被弱引用关联的对象</strong>。</p>
+</li>
+<li>
+<p>但是，由于垃圾回收器的线程通常优先级很低，因此，并不一定能很快地发现持有弱引用的对象。在这种情况下，弱引用对象可以存在较长的时间。</p>
+</li>
+<li>
+<p>弱引用和软引用一样，在构造弱引用时，也可以指定一个引用队列，当弱引用对象被回收时，就会加入指定的引用队列，通过这个队列可以跟踪对象的回收情况。</p>
+</li>
+<li>
+<p>软引用、弱引用都非常适合来保存那些可有可无的缓存数据。如果这么做，当系统内存不足时，这些缓存数据会被回收，不会导致内存溢出。而当内存资源充足时，这些缓存数据又可以存在相当长的时间，从而起到加速系统的作用。</p>
+</li>
+</ol>
+<p>在JDK1.2版之后提供了WeakReference类来实现弱引用</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">// 声明强引用</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">WeakReference</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WeakReference</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">//销毁强引用</span>
+</code></pre></div>
+<p>弱引用对象与软引用对象的最大不同就在于，当GC在进行回收时，需要通过算法检查是否回收软引用对象，而对于弱引用对象，GC总是进行回收。弱引用对象更容易、更快被GC回收。</p>
+<p><strong>面试题：你开发中使用过WeakHashMap吗？</strong></p>
+<p><strong>弱引用代码举例</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WeakReferenceTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="nf">User</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">            </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">        </span><span class="nd">@Override</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;[id=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;, name=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;] &quot;</span><span class="p">;</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="w">        </span><span class="c1">//构造了弱引用</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="w">        </span><span class="n">WeakReference</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="n">userWeakRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WeakReference</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;songhk&quot;</span><span class="p">));</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">        </span><span class="c1">//从弱引用中重新获取对象</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">userWeakRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="w">        </span><span class="c1">// 不管当前内存空间足够与否，都会回收它的内存</span>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;After GC:&quot;</span><span class="p">);</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a><span class="w">        </span><span class="c1">//重新尝试从弱引用中获取对象</span>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">userWeakRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="p">}</span>
+</code></pre></div>
+<p>执行垃圾回收后，软引用对象必定被清除</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">[</span><span class="n">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="n">songhk</span><span class="o">]</span><span class="w"> </span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">After</span><span class="w"> </span><span class="n">GC</span><span class="p">:</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="kc">null</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
+<h2 id="_18">再谈引用：虚引用<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<p><strong>虚引用（Phantom Reference）：对象回收跟踪</strong></p>
+<ol>
+<li>
+<p>也称为“幽灵引用”或者“幻影引用”，是所有引用类型中最弱的一个</p>
+</li>
+<li>
+<p>一个对象是否有虚引用的存在，完全不会决定对象的生命周期。如果一个对象仅持有虚引用，那么它和没有引用几乎是一样的，随时都可能被垃圾回收器回收。</p>
+</li>
+<li>
+<p>它不能单独使用，也无法通过虚引用来获取被引用的对象。当试图通过虚引用的get()方法取得对象时，总是null 。<strong>即通过虚引用无法获取到我们的数据</strong></p>
+</li>
+<li>
+<p><strong>为一个对象设置虚引用关联的唯一目的在于跟踪垃圾回收过程。比如：能在这个对象被收集器回收时收到一个系统通知。</strong></p>
+</li>
+<li>
+<p>虚引用必须和引用队列一起使用。虚引用在创建时必须提供一个引用队列作为参数。当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象后，将这个虚引用加入引用队列，以通知应用程序对象的回收情况。</p>
+</li>
+<li>
+<p>由于虚引用可以跟踪对象的回收时间，因此，也可以将一些资源释放操作放置在虚引用中执行和记录。</p>
+</li>
+</ol>
+<p>在JDK1.2版之后提供了PhantomReference类来实现虚引用。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1">// 声明强引用</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">Object</span><span class="w"> </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1">// 声明引用队列</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">ReferenceQueue</span><span class="w"> </span><span class="n">phantomQueue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReferenceQueue</span><span class="p">();</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1">// 声明虚引用（还需要传入引用队列）</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">PhantomReference</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PhantomReference</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">phantomQueue</span><span class="p">);</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span>
+</code></pre></div>
+<p><strong>虚引用代码示例</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PhantomReferenceTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">PhantomReferenceTest</span><span class="w"> </span><span class="n">obj</span><span class="p">;</span><span class="c1">//当前类对象的声明</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="n">ReferenceQueue</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="w"> </span><span class="n">phantomQueue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="c1">//引用队列</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CheckRefQueue</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">        </span><span class="nd">@Override</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">phantomQueue</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">                    </span><span class="n">PhantomReference</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="w"> </span><span class="n">objt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">                    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">                        </span><span class="n">objt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">PhantomReference</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="n">phantomQueue</span><span class="p">.</span><span class="na">remove</span><span class="p">();</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">                        </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">                    </span><span class="p">}</span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">objt</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="w">                        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;追踪垃圾回收过程：PhantomReferenceTest实例被GC了&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">                    </span><span class="p">}</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a>
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">    </span><span class="nd">@Override</span>
+<a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">finalize</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//finalize()方法只能被调用一次！</span>
+<a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">finalize</span><span class="p">();</span>
+<a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;调用当前类的finalize()方法&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a><span class="w">        </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<a id="__codelineno-20-29" name="__codelineno-20-29" href="#__codelineno-20-29"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-30" name="__codelineno-20-30" href="#__codelineno-20-30"></a>
+<a id="__codelineno-20-31" name="__codelineno-20-31" href="#__codelineno-20-31"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-32" name="__codelineno-20-32" href="#__codelineno-20-32"></a><span class="w">        </span><span class="n">Thread</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CheckRefQueue</span><span class="p">();</span>
+<a id="__codelineno-20-33" name="__codelineno-20-33" href="#__codelineno-20-33"></a><span class="w">        </span><span class="n">t</span><span class="p">.</span><span class="na">setDaemon</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="c1">//设置为守护线程：当程序中没有非守护线程时，守护线程也就执行结束。</span>
+<a id="__codelineno-20-34" name="__codelineno-20-34" href="#__codelineno-20-34"></a><span class="w">        </span><span class="n">t</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+<a id="__codelineno-20-35" name="__codelineno-20-35" href="#__codelineno-20-35"></a>
+<a id="__codelineno-20-36" name="__codelineno-20-36" href="#__codelineno-20-36"></a><span class="w">        </span><span class="n">phantomQueue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReferenceQueue</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="p">();</span>
+<a id="__codelineno-20-37" name="__codelineno-20-37" href="#__codelineno-20-37"></a><span class="w">        </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PhantomReferenceTest</span><span class="p">();</span>
+<a id="__codelineno-20-38" name="__codelineno-20-38" href="#__codelineno-20-38"></a><span class="w">        </span><span class="c1">//构造了 PhantomReferenceTest 对象的虚引用，并指定了引用队列</span>
+<a id="__codelineno-20-39" name="__codelineno-20-39" href="#__codelineno-20-39"></a><span class="w">        </span><span class="n">PhantomReference</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="w"> </span><span class="n">phantomRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PhantomReference</span><span class="o">&lt;</span><span class="n">PhantomReferenceTest</span><span class="o">&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">phantomQueue</span><span class="p">);</span>
+<a id="__codelineno-20-40" name="__codelineno-20-40" href="#__codelineno-20-40"></a>
+<a id="__codelineno-20-41" name="__codelineno-20-41" href="#__codelineno-20-41"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-42" name="__codelineno-20-42" href="#__codelineno-20-42"></a><span class="w">            </span><span class="c1">//不可获取虚引用中的对象</span>
+<a id="__codelineno-20-43" name="__codelineno-20-43" href="#__codelineno-20-43"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">phantomRef</span><span class="p">.</span><span class="na">get</span><span class="p">());</span>
+<a id="__codelineno-20-44" name="__codelineno-20-44" href="#__codelineno-20-44"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;第 1 次 gc&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-45" name="__codelineno-20-45" href="#__codelineno-20-45"></a><span class="w">            </span><span class="c1">//将强引用去除</span>
+<a id="__codelineno-20-46" name="__codelineno-20-46" href="#__codelineno-20-46"></a><span class="w">            </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-20-47" name="__codelineno-20-47" href="#__codelineno-20-47"></a><span class="w">            </span><span class="c1">//第一次进行GC,由于对象可复活，GC无法回收该对象</span>
+<a id="__codelineno-20-48" name="__codelineno-20-48" href="#__codelineno-20-48"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span>
+<a id="__codelineno-20-49" name="__codelineno-20-49" href="#__codelineno-20-49"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<a id="__codelineno-20-50" name="__codelineno-20-50" href="#__codelineno-20-50"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-51" name="__codelineno-20-51" href="#__codelineno-20-51"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj 是 null&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-52" name="__codelineno-20-52" href="#__codelineno-20-52"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-53" name="__codelineno-20-53" href="#__codelineno-20-53"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj 可用&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-54" name="__codelineno-20-54" href="#__codelineno-20-54"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-20-55" name="__codelineno-20-55" href="#__codelineno-20-55"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;第 2 次 gc&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-56" name="__codelineno-20-56" href="#__codelineno-20-56"></a><span class="w">            </span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+<a id="__codelineno-20-57" name="__codelineno-20-57" href="#__codelineno-20-57"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="w"> </span><span class="c1">//一旦将obj对象回收，就会将此虚引用存放到引用队列中。</span>
+<a id="__codelineno-20-58" name="__codelineno-20-58" href="#__codelineno-20-58"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<a id="__codelineno-20-59" name="__codelineno-20-59" href="#__codelineno-20-59"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-60" name="__codelineno-20-60" href="#__codelineno-20-60"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj 是 null&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-61" name="__codelineno-20-61" href="#__codelineno-20-61"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-62" name="__codelineno-20-62" href="#__codelineno-20-62"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;obj 可用&quot;</span><span class="p">);</span>
+<a id="__codelineno-20-63" name="__codelineno-20-63" href="#__codelineno-20-63"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-20-64" name="__codelineno-20-64" href="#__codelineno-20-64"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-65" name="__codelineno-20-65" href="#__codelineno-20-65"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+<a id="__codelineno-20-66" name="__codelineno-20-66" href="#__codelineno-20-66"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-20-67" name="__codelineno-20-67" href="#__codelineno-20-67"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-68" name="__codelineno-20-68" href="#__codelineno-20-68"></a><span class="p">}</span>
+</code></pre></div>
+<p>1、第一次尝试获取虚引用的值，发现无法获取的，这是因为虚引用是无法直接获取对象的值，然后进行第一次GC，因为会调用finalize方法，将对象复活了，所以对象没有被回收</p>
+<p>2、但是调用第二次GC操作的时候，因为finalize方法只能执行一次，所以就触发了GC操作，将对象回收了，同时将会触发第二个操作就是将待回收的对象存入到引用队列中。</p>
+<p>输出结果：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kc">null</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">第</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nf">调用当前类的finalize</span><span class="p">()</span><span class="n">方法</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="n">obj</span><span class="w"> </span><span class="n">可用</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">第</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">次</span><span class="w"> </span><span class="n">gc</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">追踪垃圾回收过程</span><span class="err">：</span><span class="n">PhantomReferenceTest实例被GC了</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="n">obj</span><span class="w"> </span><span class="n">是</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="n">Process</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">exit</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="mi">0</span>
+</code></pre></div>
+<h2 id="_19">再谈引用：终结器引用（了解）<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>它用于实现对象的finalize() 方法，也可以称为终结器引用</p>
+</li>
+<li>
+<p>无需手动编码，其内部配合引用队列使用</p>
+</li>
+<li>
+<p>在GC时，终结器引用入队。由Finalizer线程通过终结器引用找到被引用对象调用它的finalize()方法，第二次GC时才回收被引用的对象</p>
+</li>
+</ol>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Disaster
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "header.autohide", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.prune", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>
