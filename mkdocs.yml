@@ -162,18 +162,18 @@ nav:
         - 后记: everyone-can-us-english/end.md
       - grammar:
           - 前言: lelts/grammar/README.md
-          - IT的用法: lelts/grammar/IT的用法.md
-          - 一致关系: lelts/grammar/一致关系.md
+          - IT的用法: lelts/grammar/IT的用法/IT的用法.md
+          - 一致关系: lelts/grammar/一致关系/一致关系.md
           - 不定式:
               - 不定式的时态、复合结构及省略: lelts/grammar/不定式/不定式的时态、复合结构及省略.md
               - 不定式（短语）作主语、表语、宾语、补足语: lelts/grammar/不定式/不定式（短语）作主语、表语、宾语、补足语.md
               - 不定式（短语）作定语、状语、独立成分: lelts/grammar/不定式/不定式（短语）作定语、状语、独立成分.md
-          - 介词: lelts/grammar/介词的种类、短语及搭配.md
+          - 介词: lelts/grammar/介词/介词的种类、短语及搭配.md
           - 代词:
               - 5种基本代词: lelts/grammar/代词/5种基本代词.md
               - 不定代词: lelts/grammar/代词/不定代词.md
               - 疑问代词和关系代词: lelts/grammar/代词/疑问代词和关系代词.md
-          - 倒装: lelts/grammar/倒装.md
+          - 倒装: lelts/grammar/倒装/倒装.md
           - 冠词:
               - 不定冠词: lelts/grammar/冠词/不定冠词.md
               - 定冠词: lelts/grammar/冠词/定冠词.md
@@ -193,12 +193,12 @@ nav:
               - 名词的性: lelts/grammar/名词/名词的性.md
               - 名词的数: lelts/grammar/名词/名词的数.md
               - 名词的格: lelts/grammar/名词/名词的格.md
-          - 名词性从句: lelts/grammar/名词性从句.md
+          - 名词性从句: lelts/grammar/名词性从句/名词性从句.md
           - 定语从句:
               - 定语从句: lelts/grammar/名词性从句/名词性从句.md
               - 非限制性定语从句: lelts/grammar/名词性从句/非限制性定语从句.md
-          - 并列连词: lelts/grammar/并列连词.md
-          - 强调结构: lelts/grammar/强调结构.md
+          - 并列连词: lelts/grammar/并列连词/并列连词.md
+          - 强调结构: lelts/grammar/强调结构/强调结构.md
           - 形容词和副词:
               - 副词的功用: lelts/grammar/形容词和副词/副词的功用.md
               - 形容词和副词的比较级: lelts/grammar/形容词和副词/形容词和副词的比较级.md
@@ -213,9 +213,9 @@ nav:
           - 现在分词:
               - 现在分词在句子中的成分: lelts/grammar/现在分词/现在分词在句子中的成分.md
               - 现在分词的结构和时态: lelts/grammar/现在分词/现在分词的结构和时态.md
-          - 省略: lelts/grammar/省略.md
-          - 虚拟语气: lelts/grammar/虚拟语气.md
-          - 被动语态: lelts/grammar/被动语态.md
+          - 省略: lelts/grammar/省略/省略.md
+          - 虚拟语气: lelts/grammar/虚拟语气/虚拟语气.md
+          - 被动语态: lelts/grammar/被动语态/被动语态.md
           - 过去分词:
               - 过去分词在句子中的成分: lelts/grammar/过去分词/过去分词在句子中的成分.md
               - 过去分词的结构: lelts/grammar/过去分词/过去分词的结构.md
