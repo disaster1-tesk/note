@@ -160,6 +160,71 @@ nav:
         - 第七章：精读: lelts/everyone-can-us-english/chapter7.md
         - 第八章：叮嘱: lelts/everyone-can-us-english/chapter8.md
         - 后记: everyone-can-us-english/end.md
+      - Grammar:
+          - 前言: lelts/Grammar/README.md
+          - IT的用法: lelts/Grammar/IT的用法.md
+          - 一致关系: lelts/Grammar/一致关系.md
+          - 不定式:
+              - 不定式的时态、复合结构及省略: lelts/Grammar/不定式/不定式的时态、复合结构及省略.md
+              - 不定式（短语）作主语、表语、宾语、补足语: lelts/Grammar/不定式/不定式（短语）作主语、表语、宾语、补足语.md
+              - 不定式（短语）作定语、状语、独立成分: lelts/Grammar/不定式/不定式（短语）作定语、状语、独立成分.md
+          - 介词: lelts/Grammar/介词的种类、短语及搭配.md
+          - 代词:
+              - 5种基本代词: lelts/Grammar/代词/5种基本代词.md
+              - 不定代词: lelts/Grammar/代词/不定代词.md
+              - 疑问代词和关系代词: lelts/Grammar/代词/疑问代词和关系代词.md
+          - 倒装: lelts/Grammar/倒装.md
+          - 冠词:
+              - 不定冠词: lelts/Grammar/冠词/不定冠词.md
+              - 定冠词: lelts/Grammar/冠词/定冠词.md
+              - 零冠词: lelts/Grammar/冠词/零冠词.md
+          - 动名词:
+              - 动名词在句子中的成分: lelts/Grammar/动名词/动名词在句子中的成分.md
+              - 动名词的结构和形式: lelts/Grammar/动名词/动名词的结构和形式.md
+          - 动词的时态:
+              - 动词的将来时: lelts/Grammar/动词的时态/动词的将来时.md
+              - 动词的现在时: lelts/Grammar/动词的时态/动词的现在时.md
+              - 动词的过去时: lelts/Grammar/动词的时态/动词的过去时.md
+          - 助动词和情态动词:
+              - 助动词: lelts/Grammar/助动词和情态动词/助动词.md
+              - 情态动词can、may、must的用法: lelts/Grammar/助动词和情态动词/情态动词can、may、must的用法.md
+              - 情态动词的其他形式: lelts/Grammar/助动词和情态动词/情态动词的其他形式.md
+          - 名词:
+              - 名词的性: lelts/Grammar/名词/名词的性.md
+              - 名词的数: lelts/Grammar/名词/名词的数.md
+              - 名词的格: lelts/Grammar/名词/名词的格.md
+          - 名词性从句: lelts/Grammar/名词性从句.md
+          - 定语从句:
+              - 定语从句: lelts/Grammar/名词性从句/名词性从句.md
+              - 非限制性定语从句: lelts/Grammar/名词性从句/非限制性定语从句.md
+          - 并列连词: lelts/Grammar/并列连词.md
+          - 强调结构: lelts/Grammar/强调结构.md
+          - 形容词和副词:
+              - 副词的功用: lelts/Grammar/形容词和副词/副词的功用.md
+              - 形容词和副词的比较级: lelts/Grammar/形容词和副词/形容词和副词的比较级.md
+              - 形容词的功用: lelts/Grammar/形容词和副词/形容词和副词的功用.md
+          - 数词:
+              - 基数词和序数词: lelts/Grammar/数词/基数词和序数词.md
+              - 小数、分数、百分数: lelts/Grammar/数词/小数、分数、百分数.md
+              - 时间、货币和编码: lelts/Grammar/数词/时间、货币和编码.md
+          - 状语从句:
+              - 状语从句(1): lelts/Grammar/状语从句/状语从句(1).md
+              - 状语从句(2): lelts/Grammar/状语从句/状语从句(2).md
+          - 现在分词:
+              - 现在分词在句子中的成分: lelts/Grammar/现在分词/现在分词在句子中的成分.md
+              - 现在分词的结构和时态: lelts/Grammar/现在分词/现在分词的结构和时态.md
+          - 省略: lelts/Grammar/省略.md
+          - 虚拟语气: lelts/Grammar/虚拟语气.md
+          - 被动语态: lelts/Grammar/被动语态.md
+          - 过去分词:
+              - 过去分词在句子中的成分: lelts/Grammar/过去分词/过去分词在句子中的成分.md
+              - 过去分词的结构: lelts/Grammar/过去分词/过去分词的结构.md
+          - 附录:
+              - 公共场所常见提示用语: lelts/Grammar/附录/公共场所常见提示用语.md
+              - 常见英文名字: lelts/Grammar/附录/常见英文名字.md
+              - 标点符号的用法: lelts/Grammar/附录/标点符号的用法.md
+              - 生活中常见的英语缩略词: lelts/Grammar/附录/生活中常见的英语缩略词.md
+              - 英语学习网站资源域名: lelts/Grammar/附录/英语学习网站资源域名.md
       - TheCompleteTrainingManual:
           - TheCompleteTrainingManual: lelts/TheCompleteTrainingManual/TheCompleteTrainingManual.md
           - TheCompleteTrainingManual_pdf: lelts/TheCompleteTrainingManual/TheCompleteTrainingManual.pdf
