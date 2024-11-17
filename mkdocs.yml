@@ -270,7 +270,7 @@ nav:
           - 什么时候说结论: talkskill/ch38.md
           - 如何克服紧张？: talkskill/ch39.md
           - 何来激情？: talkskill/ch40.md
-  - 个人杂谈:
+#  - 个人杂谈:
 #      - 面试总结: note/whisper/chapter1.md
 
 extra_javascript:
