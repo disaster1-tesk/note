@@ -271,7 +271,7 @@ nav:
           - 如何克服紧张？: talkskill/ch39.md
           - 何来激情？: talkskill/ch40.md
   - 个人杂谈:
-      - 面试总结: note/whisper/chapter1.md
+#      - 面试总结: note/whisper/chapter1.md
 
 extra_javascript:
   - javascripts/mathjax.js
