@@ -1,0 +1,1987 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JVM系列-第3章-运行时数据区。">
+      
+      
+        <meta name="author" content="Disaster">
+      
+      
+        <link rel="canonical" href="https://disaster1-tesk.github.ionote/note/jvm/JVM%E7%B3%BB%E5%88%97-%E7%AC%AC3%E7%AB%A0-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/">
+      
+      
+        <link rel="prev" href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/">
+      
+      
+        <link rel="next" href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC4%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/">
+      
+      
+      <link rel="icon" href="../../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>JVM系列-第3章-运行时数据区 - Disaster的提升之路</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再显示此消息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  For updates follow <strong>@Disaster</strong> on
+<!--  <a rel="me" href="https://fosstodon.org/@squidfunk">-->
+<!--    <span class="twemoji mastodon">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M433 179.11c0-97.2-63.71-125.7-63.71-125.7-62.52-28.7-228.56-28.4-290.48 0 0 0-63.72 28.5-63.72 125.7 0 115.7-6.6 259.4 105.63 289.1 40.51 10.7 75.32 13 103.33 11.4 50.81-2.8 79.32-18.1 79.32-18.1l-1.7-36.9s-36.31 11.4-77.12 10.1c-40.41-1.4-83-4.4-89.63-54a102.5 102.5 0 0 1-.9-13.9c85.63 20.9 158.65 9.1 178.75 6.7 56.12-6.7 105-41.3 111.23-72.9 9.8-49.8 9-121.5 9-121.5m-75.12 125.2h-46.63v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.33V197c0-58.5-64-56.6-64-6.9v114.2H90.19c0-122.1-5.2-147.9 18.41-175 25.9-28.9 79.82-30.8 103.83 6.1l11.6 19.5 11.6-19.5c24.11-37.1 78.12-34.8 103.83-6.1 23.71 27.3 18.4 53 18.4 175z"/></svg>-->
+<!--    </span>-->
+<!--    <strong>Fosstodon</strong>-->
+<!--  </a>-->
+<!--  and-->
+  <a href="https://twitter.com/DisasterWang">
+    <span class="twemoji twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </span>
+    <strong>Twitter</strong>
+  </a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Disaster的提升之路" class="md-header__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Disaster的提升之路
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JVM系列-第3章-运行时数据区
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesknote
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-tabs__link">
+          
+  
+    
+  
+  百宝箱
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-tabs__link">
+          
+  
+    
+  
+  博客
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../lelts/part-1/1-understanding/" class="md-tabs__link">
+          
+  
+    
+  
+  LELTS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../talkskill/ch01/" class="md-tabs__link">
+          
+  
+    
+  
+  Talk Skills
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Disaster的提升之路" class="md-nav__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Disaster的提升之路
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesknote
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    百宝箱
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            百宝箱
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_1" id="__nav_1_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    REDISSION
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            REDISSION
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    redisson的中文文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    JVM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            JVM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    基础篇
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            基础篇
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC1%E7%AB%A0-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第01章_JVM与Java体系结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第02章_类加载子系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    第03章_运行时数据区
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    第03章_运行时数据区
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      运行时数据区结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="运行时数据区结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      运行时数据区与内存
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      线程的内存空间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime类
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      线程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="线程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM 线程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM 系统线程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC4%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第04章_虚拟机栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC5%E7%AB%A0-%E5%A0%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第05章_堆
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC6%E7%AB%A0-%E6%96%B9%E6%B3%95%E5%8C%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第06章_方法区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC7%E7%AB%A0-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC00%E7%AB%A0_%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    基础篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC01%E7%AB%A0%20Linux%E4%B8%8BMySQL%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resume/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E7%AE%80%E5%8E%86%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简历
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    博客
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../lelts/part-1/1-understanding/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    LELTS
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../talkskill/ch01/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Talk Skills
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      运行时数据区结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="运行时数据区结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      运行时数据区与内存
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      线程的内存空间
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runtime类
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      线程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="线程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM 线程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM 系统线程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第3章-运行时数据区.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第3章-运行时数据区.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<blockquote>
+<p>此章把运行时数据区里比较少的地方讲一下。虚拟机栈，堆，方法区这些地方后续再讲。</p>
+</blockquote>
+<h1 id="_1">运行时数据区概述及线程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">前言<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>本节主要讲的是运行时数据区，也就是下图这部分，它是在类加载完成后的阶段</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0001.png"></p>
+<p>当我们通过前面的：类的加载 &rarr; 验证 &rarr; 准备 &rarr; 解析 --&gt; 初始化，这几个阶段完成后，就会用到执行引擎对我们的类进行使用，同时执行引擎将会使用到我们运行时数据区</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0002.png"></p>
+<p>类比一下也就是大厨做饭，我们把大厨后面的东西（切好的菜，刀，调料），比作是运行时数据区。而厨师可以类比于执行引擎，将通过准备的东西进行制作成精美的菜品。</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0003.png"></p>
+<h2 id="_3">运行时数据区结构<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="_4">运行时数据区与内存<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>内存是非常重要的系统资源，是硬盘和CPU的中间仓库及桥梁，承载着操作系统和应用程序的实时运行。JVM内存布局规定了Java在运行过程中内存申请、分配、管理的策略，保证了JVM的高效稳定运行。<strong>不同的JVM对于内存的划分方式和管理机制存在着部分差异</strong>。结合JVM虚拟机规范，来探讨一下经典的JVM内存布局。</p>
+</li>
+<li>
+<p>我们通过磁盘或者网络IO得到的数据，都需要先加载到内存中，然后CPU从内存中获取数据进行读取，也就是说内存充当了CPU和磁盘之间的桥梁</p>
+</li>
+</ol>
+<blockquote>
+<p>下图来自阿里巴巴手册JDK8</p>
+</blockquote>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0004.jpg"></p>
+<h3 id="_5">线程的内存空间<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Java虚拟机定义了若干种程序运行期间会使用到的运行时数据区：其中有一些会随着虚拟机启动而创建，随着虚拟机退出而销毁。另外一些则是与线程一一对应的，这些与线程对应的数据区域会随着线程开始和结束而创建和销毁。</p>
+</li>
+<li>
+<p>灰色的为单独线程私有的，红色的为多个线程共享的。即：</p>
+</li>
+<li>线程独有：独立包括程序计数器、栈、本地方法栈</li>
+<li>线程间共享：堆、堆外内存（永久代或元空间、代码缓存）</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0005.png"></p>
+<h3 id="runtime">Runtime类<a class="headerlink" href="#runtime" title="Permanent link">&para;</a></h3>
+<p><strong>每个JVM只有一个Runtime实例</strong>。即为运行时环境，相当于内存结构的中间的那个框框：运行时环境。</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0006.png"></p>
+<h2 id="_6">线程<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="jvm">JVM 线程<a class="headerlink" href="#jvm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>线程是一个程序里的运行单元。JVM允许一个应用有多个线程并行的执行</li>
+<li><strong>在Hotspot JVM里，每个线程都与操作系统的本地线程直接映射</strong><ul>
+<li>当一个Java线程准备好执行以后，此时一个操作系统的本地线程也同时创建。Java线程执行终止后，本地线程也会回收</li>
+</ul>
+</li>
+<li>操作系统负责将线程安排调度到任何一个可用的CPU上。一旦本地线程初始化成功，它就会调用Java线程中的run()方法</li>
+</ol>
+<blockquote>
+<p>关于线程，并发可以看笔者的Java并发系列</p>
+</blockquote>
+<h3 id="jvm_1">JVM 系统线程<a class="headerlink" href="#jvm_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>如果你使用jconsole或者是任何一个调试工具，都能看到在后台有许多线程在运行。这些后台线程不包括调用<code>public static void main(String[])</code>的main线程以及所有这个main线程自己创建的线程。</p>
+</li>
+<li>
+<p>这些主要的后台系统线程在Hotspot JVM里主要是以下几个：</p>
+</li>
+<li>
+<p><strong>虚拟机线程</strong>：这种线程的操作是需要JVM达到安全点才会出现。这些操作必须在不同的线程中发生的原因是他们都需要JVM达到安全点，这样堆才不会变化。这种线程的执行类型括"stop-the-world"的垃圾收集，线程栈收集，线程挂起以及偏向锁撤销</p>
+</li>
+<li><strong>周期任务线程</strong>：这种线程是时间周期事件的体现（比如中断），他们一般用于周期性操作的调度执行</li>
+<li><strong>GC线程</strong>：这种线程对在JVM里不同种类的垃圾收集行为提供了支持</li>
+<li><strong>编译线程</strong>：这种线程在运行时会将字节码编译成到本地代码</li>
+<li><strong>信号调度线程</strong>：这种线程接收信号并发送给JVM，在它内部通过调用适当的方法进行处理</li>
+</ul>
+<h1 id="pc">程序计数器(PC寄存器)<a class="headerlink" href="#pc" title="Permanent link">&para;</a></h1>
+<h2 id="pc_1">PC寄存器介绍<a class="headerlink" href="#pc_1" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>官方文档网址：https://docs.oracle.com/javase/specs/jvms/se8/html/index.html</p>
+</blockquote>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0007.png"></p>
+<ol>
+<li>JVM中的程序计数寄存器（Program Counter Register）中，Register的命名源于CPU的寄存器，<strong>寄存器存储指令相关的现场信息</strong>。CPU只有把数据装载到寄存器才能够运行。</li>
+<li>这里，并非是广义上所指的物理寄存器，或许将其翻译为PC计数器（或指令计数器）会更加贴切（也称为程序钩子），并且也不容易引起一些不必要的误会。<strong>JVM中的PC寄存器是对物理PC寄存器的一种抽象模拟</strong>。</li>
+<li>它是一块很小的内存空间，几乎可以忽略不记。也是运行速度最快的存储区域。</li>
+<li>在JVM规范中，每个线程都有它自己的程序计数器，是线程私有的，生命周期与线程的生命周期保持一致。</li>
+<li>任何时间一个线程都只有一个方法在执行，也就是所谓的**当前方法**。程序计数器会存储当前线程正在执行的Java方法的JVM指令地址；或者，如果是在执行native方法，则是未指定值（undefned）。</li>
+<li>它是**程序控制流**的指示器，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。</li>
+<li>字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令。</li>
+<li>它是**唯一一个**在Java虚拟机规范中没有规定任何OutofMemoryError情况的区域。</li>
+</ol>
+<h2 id="pc_2">PC寄存器的作用<a class="headerlink" href="#pc_2" title="Permanent link">&para;</a></h2>
+<p>PC寄存器用来存储指向下一条指令的地址，也即将要执行的指令代码。由执行引擎读取下一条指令，并执行该指令。</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0008.png"></p>
+<h2 id="_7">举例<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PCRegisterTest</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">k</span><span class="p">);</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">}</span>
+</code></pre></div>
+<p>查看字节码</p>
+<blockquote>
+<p>看字节码的方法：https://blog.csdn.net/21aspnet/article/details/88351875</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Classfile</span><span class="w"> </span><span class="o">/</span><span class="n">F</span><span class="p">:</span><span class="o">/</span><span class="n">IDEAWorkSpaceSourceCode</span><span class="o">/</span><span class="n">JVMDemo</span><span class="o">/</span><span class="n">out</span><span class="o">/</span><span class="n">production</span><span class="o">/</span><span class="n">chapter04</span><span class="o">/</span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">PCRegisterTest</span><span class="p">.</span><span class="na">class</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="n">Last</span><span class="w"> </span><span class="n">modified</span><span class="w"> </span><span class="mi">2020</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="mi">675</span><span class="w"> </span><span class="n">bytes</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">MD5</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="mi">53</span><span class="n">b3ef104479ec9e9b7ce5319e5881d3</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="n">Compiled</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="s">&quot;PCRegisterTest.java&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">PCRegisterTest</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="n">minor</span><span class="w"> </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="n">major</span><span class="w"> </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="mi">52</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span><span class="p">,</span><span class="w"> </span><span class="n">ACC_SUPER</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">Constant</span><span class="w"> </span><span class="n">pool</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">   </span><span class="err">#</span><span class="mi">1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Methodref</span><span class="w">          </span><span class="err">#</span><span class="mf">6.</span><span class="err">#</span><span class="mi">26</span><span class="w">         </span><span class="c1">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">   </span><span class="err">#</span><span class="mi">2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="w">             </span><span class="err">#</span><span class="mi">27</span><span class="w">            </span><span class="c1">// abc</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">   </span><span class="err">#</span><span class="mi">3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Fieldref</span><span class="w">           </span><span class="err">#</span><span class="mf">28.</span><span class="err">#</span><span class="mi">29</span><span class="w">        </span><span class="c1">// java/lang/System.out:Ljava/io/PrintStream;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">   </span><span class="err">#</span><span class="mi">4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Methodref</span><span class="w">          </span><span class="err">#</span><span class="mf">30.</span><span class="err">#</span><span class="mi">31</span><span class="w">        </span><span class="c1">// java/io/PrintStream.println:(I)V</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">   </span><span class="err">#</span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">32</span><span class="w">            </span><span class="c1">// com/atguigu/java/PCRegisterTest</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">   </span><span class="err">#</span><span class="mi">6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">33</span><span class="w">            </span><span class="c1">// java/lang/Object</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">   </span><span class="err">#</span><span class="mi">7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">   </span><span class="err">#</span><span class="mi">8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="p">()</span><span class="n">V</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">   </span><span class="err">#</span><span class="mi">9</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Code</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="err">#</span><span class="mi">10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">LineNumberTable</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="err">#</span><span class="mi">11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">LocalVariableTable</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="err">#</span><span class="mi">12</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="k">this</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">  </span><span class="err">#</span><span class="mi">13</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">PCRegisterTest</span><span class="p">;</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">  </span><span class="err">#</span><span class="mi">14</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">main</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">  </span><span class="err">#</span><span class="mi">15</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="p">(</span><span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;)</span><span class="n">V</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="err">#</span><span class="mi">16</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">args</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">  </span><span class="err">#</span><span class="mi">17</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">  </span><span class="err">#</span><span class="mi">18</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">i</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">  </span><span class="err">#</span><span class="mi">19</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">I</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">  </span><span class="err">#</span><span class="mi">20</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">j</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">  </span><span class="err">#</span><span class="mi">21</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">k</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">  </span><span class="err">#</span><span class="mi">22</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">s</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">  </span><span class="err">#</span><span class="mi">23</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">  </span><span class="err">#</span><span class="mi">24</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">SourceFile</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">  </span><span class="err">#</span><span class="mi">25</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">PCRegisterTest</span><span class="p">.</span><span class="na">java</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">  </span><span class="err">#</span><span class="mi">26</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">7</span><span class="p">:</span><span class="err">#</span><span class="mi">8</span><span class="w">          </span><span class="c1">// &quot;&lt;init&gt;&quot;:()V</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">  </span><span class="err">#</span><span class="mi">27</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">abc</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="err">#</span><span class="mi">28</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">34</span><span class="w">            </span><span class="c1">// java/lang/System</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">  </span><span class="err">#</span><span class="mi">29</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">35</span><span class="p">:</span><span class="err">#</span><span class="mi">36</span><span class="w">        </span><span class="c1">// out:Ljava/io/PrintStream;</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">  </span><span class="err">#</span><span class="mi">30</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Class</span><span class="w">              </span><span class="err">#</span><span class="mi">37</span><span class="w">            </span><span class="c1">// java/io/PrintStream</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">  </span><span class="err">#</span><span class="mi">31</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NameAndType</span><span class="w">        </span><span class="err">#</span><span class="mi">38</span><span class="p">:</span><span class="err">#</span><span class="mi">39</span><span class="w">        </span><span class="c1">// println:(I)V</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">  </span><span class="err">#</span><span class="mi">32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">com</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">PCRegisterTest</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">  </span><span class="err">#</span><span class="mi">33</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">Object</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">  </span><span class="err">#</span><span class="mi">34</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">System</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">  </span><span class="err">#</span><span class="mi">35</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">out</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">  </span><span class="err">#</span><span class="mi">36</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">Ljava</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span><span class="p">;</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">  </span><span class="err">#</span><span class="mi">37</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">java</span><span class="o">/</span><span class="n">io</span><span class="o">/</span><span class="n">PrintStream</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">  </span><span class="err">#</span><span class="mi">38</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="n">println</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">  </span><span class="err">#</span><span class="mi">39</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utf8</span><span class="w">               </span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="n">V</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="p">{</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">atguigu</span><span class="p">.</span><span class="na">java</span><span class="p">.</span><span class="na">PCRegisterTest</span><span class="p">();</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="n">V</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">aload_0</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="w">         </span><span class="mi">1</span><span class="p">:</span><span class="w"> </span><span class="n">invokespecial</span><span class="w"> </span><span class="err">#</span><span class="mi">1</span><span class="w">                  </span><span class="c1">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="w">         </span><span class="mi">4</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
+<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="w">            </span><span class="mi">0</span><span class="w">       </span><span class="mi">5</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="k">this</span><span class="w">   </span><span class="n">Lcom</span><span class="o">/</span><span class="n">atguigu</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">PCRegisterTest</span><span class="p">;</span>
+<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a>
+<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">String</span><span class="o">[]</span><span class="p">);</span>
+<a id="__codelineno-1-65" name="__codelineno-1-65" href="#__codelineno-1-65"></a><span class="w">    </span><span class="n">descriptor</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;)</span><span class="n">V</span>
+<a id="__codelineno-1-66" name="__codelineno-1-66" href="#__codelineno-1-66"></a><span class="w">    </span><span class="n">flags</span><span class="p">:</span><span class="w"> </span><span class="n">ACC_PUBLIC</span><span class="p">,</span><span class="w"> </span><span class="n">ACC_STATIC</span>
+<a id="__codelineno-1-67" name="__codelineno-1-67" href="#__codelineno-1-67"></a><span class="w">    </span><span class="n">Code</span><span class="p">:</span>
+<a id="__codelineno-1-68" name="__codelineno-1-68" href="#__codelineno-1-68"></a><span class="w">      </span><span class="n">stack</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">locals</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">args_size</span><span class="o">=</span><span class="mi">1</span>
+<a id="__codelineno-1-69" name="__codelineno-1-69" href="#__codelineno-1-69"></a><span class="w">         </span><span class="mi">0</span><span class="p">:</span><span class="w"> </span><span class="n">bipush</span><span class="w">        </span><span class="mi">10</span>
+<a id="__codelineno-1-70" name="__codelineno-1-70" href="#__codelineno-1-70"></a><span class="w">         </span><span class="mi">2</span><span class="p">:</span><span class="w"> </span><span class="n">istore_1</span>
+<a id="__codelineno-1-71" name="__codelineno-1-71" href="#__codelineno-1-71"></a><span class="w">         </span><span class="mi">3</span><span class="p">:</span><span class="w"> </span><span class="n">bipush</span><span class="w">        </span><span class="mi">20</span>
+<a id="__codelineno-1-72" name="__codelineno-1-72" href="#__codelineno-1-72"></a><span class="w">         </span><span class="mi">5</span><span class="p">:</span><span class="w"> </span><span class="n">istore_2</span>
+<a id="__codelineno-1-73" name="__codelineno-1-73" href="#__codelineno-1-73"></a><span class="w">         </span><span class="mi">6</span><span class="p">:</span><span class="w"> </span><span class="n">iload_1</span>
+<a id="__codelineno-1-74" name="__codelineno-1-74" href="#__codelineno-1-74"></a><span class="w">         </span><span class="mi">7</span><span class="p">:</span><span class="w"> </span><span class="n">iload_2</span>
+<a id="__codelineno-1-75" name="__codelineno-1-75" href="#__codelineno-1-75"></a><span class="w">         </span><span class="mi">8</span><span class="p">:</span><span class="w"> </span><span class="n">iadd</span>
+<a id="__codelineno-1-76" name="__codelineno-1-76" href="#__codelineno-1-76"></a><span class="w">         </span><span class="mi">9</span><span class="p">:</span><span class="w"> </span><span class="n">istore_3</span>
+<a id="__codelineno-1-77" name="__codelineno-1-77" href="#__codelineno-1-77"></a><span class="w">        </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="n">ldc</span><span class="w">           </span><span class="err">#</span><span class="mi">2</span><span class="w">                  </span><span class="c1">// String abc</span>
+<a id="__codelineno-1-78" name="__codelineno-1-78" href="#__codelineno-1-78"></a><span class="w">        </span><span class="mi">12</span><span class="p">:</span><span class="w"> </span><span class="n">astore</span><span class="w">        </span><span class="mi">4</span>
+<a id="__codelineno-1-79" name="__codelineno-1-79" href="#__codelineno-1-79"></a><span class="w">        </span><span class="mi">14</span><span class="p">:</span><span class="w"> </span><span class="n">getstatic</span><span class="w">     </span><span class="err">#</span><span class="mi">3</span><span class="w">                  </span><span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
+<a id="__codelineno-1-80" name="__codelineno-1-80" href="#__codelineno-1-80"></a><span class="w">        </span><span class="mi">17</span><span class="p">:</span><span class="w"> </span><span class="n">iload_1</span>
+<a id="__codelineno-1-81" name="__codelineno-1-81" href="#__codelineno-1-81"></a><span class="w">        </span><span class="mi">18</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w">                  </span><span class="c1">// Method java/io/PrintStream.println:(I)V</span>
+<a id="__codelineno-1-82" name="__codelineno-1-82" href="#__codelineno-1-82"></a><span class="w">        </span><span class="mi">21</span><span class="p">:</span><span class="w"> </span><span class="n">getstatic</span><span class="w">     </span><span class="err">#</span><span class="mi">3</span><span class="w">                  </span><span class="c1">// Field java/lang/System.out:Ljava/io/PrintStream;</span>
+<a id="__codelineno-1-83" name="__codelineno-1-83" href="#__codelineno-1-83"></a><span class="w">        </span><span class="mi">24</span><span class="p">:</span><span class="w"> </span><span class="n">iload_3</span>
+<a id="__codelineno-1-84" name="__codelineno-1-84" href="#__codelineno-1-84"></a><span class="w">        </span><span class="mi">25</span><span class="p">:</span><span class="w"> </span><span class="n">invokevirtual</span><span class="w"> </span><span class="err">#</span><span class="mi">4</span><span class="w">                  </span><span class="c1">// Method java/io/PrintStream.println:(I)V</span>
+<a id="__codelineno-1-85" name="__codelineno-1-85" href="#__codelineno-1-85"></a><span class="w">        </span><span class="mi">28</span><span class="p">:</span><span class="w"> </span><span class="k">return</span>
+<a id="__codelineno-1-86" name="__codelineno-1-86" href="#__codelineno-1-86"></a><span class="w">      </span><span class="n">LineNumberTable</span><span class="p">:</span>
+<a id="__codelineno-1-87" name="__codelineno-1-87" href="#__codelineno-1-87"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-1-88" name="__codelineno-1-88" href="#__codelineno-1-88"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">11</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<a id="__codelineno-1-89" name="__codelineno-1-89" href="#__codelineno-1-89"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">12</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<a id="__codelineno-1-90" name="__codelineno-1-90" href="#__codelineno-1-90"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">14</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<a id="__codelineno-1-91" name="__codelineno-1-91" href="#__codelineno-1-91"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">15</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span>
+<a id="__codelineno-1-92" name="__codelineno-1-92" href="#__codelineno-1-92"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">16</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span>
+<a id="__codelineno-1-93" name="__codelineno-1-93" href="#__codelineno-1-93"></a><span class="w">        </span><span class="n">line</span><span class="w"> </span><span class="mi">18</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span>
+<a id="__codelineno-1-94" name="__codelineno-1-94" href="#__codelineno-1-94"></a><span class="w">      </span><span class="n">LocalVariableTable</span><span class="p">:</span>
+<a id="__codelineno-1-95" name="__codelineno-1-95" href="#__codelineno-1-95"></a><span class="w">        </span><span class="n">Start</span><span class="w">  </span><span class="n">Length</span><span class="w">  </span><span class="n">Slot</span><span class="w">  </span><span class="n">Name</span><span class="w">   </span><span class="n">Signature</span>
+<a id="__codelineno-1-96" name="__codelineno-1-96" href="#__codelineno-1-96"></a><span class="w">            </span><span class="mi">0</span><span class="w">      </span><span class="mi">29</span><span class="w">     </span><span class="mi">0</span><span class="w">  </span><span class="n">args</span><span class="w">   </span><span class="o">[</span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;</span>
+<a id="__codelineno-1-97" name="__codelineno-1-97" href="#__codelineno-1-97"></a><span class="w">            </span><span class="mi">3</span><span class="w">      </span><span class="mi">26</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="n">i</span><span class="w">   </span><span class="n">I</span>
+<a id="__codelineno-1-98" name="__codelineno-1-98" href="#__codelineno-1-98"></a><span class="w">            </span><span class="mi">6</span><span class="w">      </span><span class="mi">23</span><span class="w">     </span><span class="mi">2</span><span class="w">     </span><span class="n">j</span><span class="w">   </span><span class="n">I</span>
+<a id="__codelineno-1-99" name="__codelineno-1-99" href="#__codelineno-1-99"></a><span class="w">           </span><span class="mi">10</span><span class="w">      </span><span class="mi">19</span><span class="w">     </span><span class="mi">3</span><span class="w">     </span><span class="n">k</span><span class="w">   </span><span class="n">I</span>
+<a id="__codelineno-1-100" name="__codelineno-1-100" href="#__codelineno-1-100"></a><span class="w">           </span><span class="mi">14</span><span class="w">      </span><span class="mi">15</span><span class="w">     </span><span class="mi">4</span><span class="w">     </span><span class="n">s</span><span class="w">   </span><span class="n">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">String</span><span class="p">;</span>
+<a id="__codelineno-1-101" name="__codelineno-1-101" href="#__codelineno-1-101"></a><span class="p">}</span>
+<a id="__codelineno-1-102" name="__codelineno-1-102" href="#__codelineno-1-102"></a><span class="nl">SourceFile</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;PCRegisterTest.java&quot;</span>
+</code></pre></div>
+<ul>
+<li>左边的数字代表**指令地址（指令偏移）**，即 PC 寄存器中可能存储的值，然后执行引擎读取 PC 寄存器中的值，并执行该指令</li>
+</ul>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0009.png"></p>
+<h2 id="_8">两个面试题<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p><strong>使用PC寄存器存储字节码指令地址有什么用呢？**或者问**为什么使用 PC 寄存器来记录当前线程的执行地址呢？</strong></p>
+<ol>
+<li>
+<p>因为CPU需要不停的切换各个线程，这时候切换回来以后，就得知道接着从哪开始继续执行</p>
+</li>
+<li>
+<p>JVM的字节码解释器就需要通过改变PC寄存器的值来明确下一条应该执行什么样的字节码指令</p>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0010.png"></p>
+<p><strong>PC寄存器为什么被设定为私有的？</strong></p>
+<ol>
+<li>我们都知道所谓的多线程在一个特定的时间段内只会执行其中某一个线程的方法，CPU会不停地做任务切换，这样必然导致经常中断或恢复，如何保证分毫无差呢？<strong>为了能够准确地记录各个线程正在执行的当前字节码指令地址，最好的办法自然是为每一个线程都分配一个PC寄存器</strong>，这样一来各个线程之间便可以进行独立计算，从而不会出现相互干扰的情况。</li>
+<li>由于CPU时间片轮限制，众多线程在并发执行过程中，任何一个确定的时刻，一个处理器或者多核处理器中的一个内核，只会执行某个线程中的一条指令。</li>
+<li>这样必然导致经常中断或恢复，如何保证分毫无差呢？每个线程在创建后，都会产生自己的程序计数器和栈帧，程序计数器在各个线程之间互不影响。</li>
+</ol>
+<blockquote>
+<p>注意并行和并发的区别，笔者的并发系列有讲</p>
+</blockquote>
+<h2 id="cpu">CPU 时间片<a class="headerlink" href="#cpu" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>CPU时间片即CPU分配给各个程序的时间，每个线程被分配一个时间段，称作它的时间片。</p>
+</li>
+<li>
+<p>在宏观上：我们可以同时打开多个应用程序，每个程序并行不悖，同时运行。</p>
+</li>
+<li>
+<p>但在微观上：由于只有一个CPU，一次只能处理程序要求的一部分，如何处理公平，一种方法就是引入时间片，<strong>每个程序轮流执行</strong>。</p>
+</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0011.png"></p>
+<h1 id="_9">本地方法接口<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h1>
+<h2 id="_10">本地方法<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0012.png"></p>
+<ol>
+<li>简单地讲，**一个Native Method是一个Java调用非Java代码的接囗**一个Native Method是这样一个Java方法：该方法的实现由非Java语言实现，比如C。这个特征并非Java所特有，很多其它的编程语言都有这一机制，比如在C++中，你可以用extern 告知C++编译器去调用一个C的函数。</li>
+<li>“A native method is a Java method whose implementation is provided by non-java code.”（本地方法是一个非Java的方法，它的具体实现是非Java代码的实现）</li>
+<li>在定义一个native method时，并不提供实现体（有些像定义一个Java interface），因为其实现体是由非java语言在外面实现的。</li>
+<li>本地接口的作用是融合不同的编程语言为Java所用，它的初衷是融合C/C++程序。</li>
+</ol>
+<h2 id="_11">举例<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>需要注意的是：标识符native可以与其它java标识符连用，但是abstract除外</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IHaveNatives</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Native1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">);</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">Native2</span><span class="p">();</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="kd">synchronized</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">Native3</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">o</span><span class="p">);</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="kd">native</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Native4</span><span class="p">(</span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">ary</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="p">;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="native-method">为什么要使用 Native Method？<a class="headerlink" href="#native-method" title="Permanent link">&para;</a></h2>
+<p>Java使用起来非常方便，然而有些层次的任务用Java实现起来不容易，或者我们对程序的效率很在意时，问题就来了。</p>
+<h3 id="java">与Java环境外交互<a class="headerlink" href="#java" title="Permanent link">&para;</a></h3>
+<p><strong>有时Java应用需要与Java外面的硬件环境交互，这是本地方法存在的主要原因</strong>。你可以想想Java需要与一些**底层系统**，如操作系统或某些硬件交换信息时的情况。本地方法正是这样一种交流机制：它为我们提供了一个非常简洁的接口，而且我们无需去了解Java应用之外的繁琐的细节。</p>
+<h3 id="_12">与操作系统的交互<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<ol>
+<li>JVM支持着Java语言本身和运行时库，它是Java程序赖以生存的平台，它由一个解释器（解释字节码）和一些连接到本地代码的库组成。</li>
+<li>然而不管怎样，它毕竟不是一个完整的系统，它经常依赖于一底层系统的支持。这些底层系统常常是强大的操作系统。</li>
+<li><strong>通过使用本地方法，我们得以用Java实现了jre的与底层系统的交互，甚至JVM的一些部分就是用C写的</strong>。</li>
+<li>还有，如果我们要使用一些Java语言本身没有提供封装的操作系统的特性时，我们也需要使用本地方法。</li>
+</ol>
+<h3 id="suns-java">Sun’s Java<a class="headerlink" href="#suns-java" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Sun的解释器是用C实现的，这使得它能像一些普通的C一样与外部交互。jre大部分是用Java实现的，它也通过一些本地方法与外界交互。</li>
+<li>例如：类java.lang.Thread的setPriority()方法是用Java实现的，但是它实现调用的是该类里的本地方法setPriority0()。这个本地方法是用C实现的，并被植入JVM内部在Windows 95的平台上，这个本地方法最终将调用Win32 setpriority() API。这是一个本地方法的具体实现由JVM直接提供，更多的情况是本地方法由外部的动态链接库（external dynamic link library）提供，然后被JVM调用。</li>
+</ol>
+<h3 id="_13">本地方法的现状<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>目前该方法使用的越来越少了，除非是与硬件有关的应用，比如通过Java程序驱动打印机或者Java系统管理生产设备，在企业级应用中已经比较少见。因为现在的异构领域间的通信很发达，比如可以使用Socket通信，也可以使用Web Service等等，不多做介绍。</p>
+<h1 id="_14">本地方法栈<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h1>
+<ol>
+<li><strong>Java虚拟机栈于管理Java方法的调用，而本地方法栈用于管理本地方法的调用</strong>。</li>
+<li>本地方法栈，也是线程私有的。</li>
+<li>允许被实现成固定或者是可动态扩展的内存大小（在内存溢出方面和虚拟机栈相同）</li>
+<li>如果线程请求分配的栈容量超过本地方法栈允许的最大容量，Java虚拟机将会抛出一个stackoverflowError 异常。</li>
+<li>如果本地方法栈可以动态扩展，并且在尝试扩展的时候无法申请到足够的内存，或者在创建新的线程时没有足够的内存去创建对应的本地方法栈，那么Java虚拟机将会抛出一个outofMemoryError异常。</li>
+<li>本地方法一般是使用C语言或C++语言实现的。</li>
+<li>它的具体做法是Native Method Stack中登记native方法，在Execution Engine 执行时加载本地方法库。</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_003/0013.png"></p>
+<p><strong>注意事项</strong></p>
+<ol>
+<li>当某个线程调用一个本地方法时，它就进入了一个全新的并且不再受虚拟机限制的世界。它和虚拟机拥有同样的权限。</li>
+<li>本地方法可以通过本地方法接口来访问虚拟机内部的运行时数据区</li>
+<li>它甚至可以直接使用本地处理器中的寄存器</li>
+<li>直接从本地内存的堆中分配任意数量的内存</li>
+<li>并不是所有的JVM都支持本地方法。因为Java虚拟机规范并没有明确要求本地方法栈的使用语言、具体实现方式、数据结构等。如果JVM产品不打算支持native方法，也可以无需实现本地方法栈。</li>
+<li>在Hotspot JVM中，直接将本地方法栈和虚拟机栈合二为一。</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第02章_类加载子系统">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第02章_类加载子系统
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC4%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第04章_虚拟机栈">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第04章_虚拟机栈
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Disaster
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "header.autohide", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.prune", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>

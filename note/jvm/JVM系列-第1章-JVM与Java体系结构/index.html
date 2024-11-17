@@ -1,0 +1,2919 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="JVM系列-第1章-JVM与Java体系结构。">
+      
+      
+        <meta name="author" content="Disaster">
+      
+      
+        <link rel="canonical" href="https://disaster1-tesk.github.ionote/note/jvm/JVM%E7%B3%BB%E5%88%97-%E7%AC%AC1%E7%AB%A0-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">
+      
+      
+        <link rel="prev" href="../../redission/redission-%E6%96%87%E6%A1%A3/">
+      
+      
+        <link rel="next" href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/">
+      
+      
+      <link rel="icon" href="../../../assets/images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>JVM系列-第1章-JVM与Java体系结构 - Disaster的提升之路</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CFira+Code:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"Fira Code"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-jvmjava" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="不再显示此消息">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  For updates follow <strong>@Disaster</strong> on
+<!--  <a rel="me" href="https://fosstodon.org/@squidfunk">-->
+<!--    <span class="twemoji mastodon">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M433 179.11c0-97.2-63.71-125.7-63.71-125.7-62.52-28.7-228.56-28.4-290.48 0 0 0-63.72 28.5-63.72 125.7 0 115.7-6.6 259.4 105.63 289.1 40.51 10.7 75.32 13 103.33 11.4 50.81-2.8 79.32-18.1 79.32-18.1l-1.7-36.9s-36.31 11.4-77.12 10.1c-40.41-1.4-83-4.4-89.63-54a102.5 102.5 0 0 1-.9-13.9c85.63 20.9 158.65 9.1 178.75 6.7 56.12-6.7 105-41.3 111.23-72.9 9.8-49.8 9-121.5 9-121.5m-75.12 125.2h-46.63v-114.2c0-49.7-64-51.6-64 6.9v62.5h-46.33V197c0-58.5-64-56.6-64-6.9v114.2H90.19c0-122.1-5.2-147.9 18.41-175 25.9-28.9 79.82-30.8 103.83 6.1l11.6 19.5 11.6-19.5c24.11-37.1 78.12-34.8 103.83-6.1 23.71 27.3 18.4 53 18.4 175z"/></svg>-->
+<!--    </span>-->
+<!--    <strong>Fosstodon</strong>-->
+<!--  </a>-->
+<!--  and-->
+  <a href="https://twitter.com/DisasterWang">
+    <span class="twemoji twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </span>
+    <strong>Twitter</strong>
+  </a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Disaster的提升之路" class="md-header__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Disaster的提升之路
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JVM系列-第1章-JVM与Java体系结构
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesknote
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-tabs__link">
+          
+  
+    
+  
+  百宝箱
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-tabs__link">
+          
+  
+    
+  
+  博客
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../lelts/part-1/1-understanding/" class="md-tabs__link">
+          
+  
+    
+  
+  LELTS
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../talkskill/ch01/" class="md-tabs__link">
+          
+  
+    
+  
+  Talk Skills
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Disaster的提升之路" class="md-nav__button md-logo" aria-label="Disaster的提升之路" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.png" alt="logo">
+
+    </a>
+    Disaster的提升之路
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/disaster1-tesknote" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    disaster1-tesknote
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    百宝箱
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            百宝箱
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_1" id="__nav_1_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    REDISSION
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            REDISSION
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    redisson的中文文档
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    JVM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            JVM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_2_1" id="__nav_1_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    基础篇
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_1_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            基础篇
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    第01章_JVM与Java体系结构
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    第01章_JVM与Java体系结构
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      开发人员如何看待上层框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      架构师每天都在思考什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们为什么要学习JVM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-vs-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java VS C++
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么人需要学JVM？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      推荐及参考书籍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      TIOBE排行榜
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java生态圈
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java-跨平台的语言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM-跨语言的平台
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      多语言混合编程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      如何真正搞懂JVM？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java发展重大事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-jdkoracle-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open JDK和Oracle JDK
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="虚拟机">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java虚拟机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的位置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的整体结构
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java代码执行流程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的架构模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM的架构模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      基于栈的指令集架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      基于寄存器的指令级架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      两种架构的举例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM架构总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的生命周期
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM的生命周期">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的启动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的执行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM发展历程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM发展历程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sun-classic-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sun Classic VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exact-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exact VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      HotSpot VM（重点）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jrockit" class="md-nav__link">
+    <span class="md-ellipsis">
+      JRockit（商用三大虚拟机之一）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ibmj9" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBM的J9（商用三大虚拟机之一）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kvmcdccldc-hotspot" class="md-nav__link">
+    <span class="md-ellipsis">
+      KVM和CDC/CLDC Hotspot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azul-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azul VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liquid-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Liquid VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-marmony" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Marmony
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#micorsoft-jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Micorsoft JVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taobao-jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Taobao JVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dalvik-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dalvik VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graal-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graal VM（未来虚拟机）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第02章_类加载子系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC3%E7%AB%A0-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第03章_运行时数据区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC4%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第04章_虚拟机栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC5%E7%AB%A0-%E5%A0%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第05章_堆
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC6%E7%AB%A0-%E6%96%B9%E6%B3%95%E5%8C%BA/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第06章_方法区
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC7%E7%AB%A0-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8E%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../mysql/%E5%9F%BA%E7%A1%80%E7%AF%87/%E7%AC%AC00%E7%AB%A0_%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    基础篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../mysql/%E9%AB%98%E7%BA%A7%E7%AF%87/%E7%AC%AC01%E7%AB%A0%20Linux%E4%B8%8BMySQL%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    高级篇
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../resume/Java%E7%A8%8B%E5%BA%8F%E5%91%98%E7%AE%80%E5%8E%86%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简历
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../blog/microservice/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%B3%BB%E5%88%97%E4%B9%8B%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    博客
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../lelts/part-1/1-understanding/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    LELTS
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../../talkskill/ch01/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Talk Skills
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      前言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      开发人员如何看待上层框架
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      架构师每天都在思考什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们为什么要学习JVM
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-vs-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java VS C++
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么人需要学JVM？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      推荐及参考书籍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiobe" class="md-nav__link">
+    <span class="md-ellipsis">
+      TIOBE排行榜
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java生态圈
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java-跨平台的语言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM-跨语言的平台
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      多语言混合编程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      如何真正搞懂JVM？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java发展重大事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-jdkoracle-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open JDK和Oracle JDK
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="虚拟机">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java虚拟机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的位置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的整体结构
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Java代码执行流程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的架构模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM的架构模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      基于栈的指令集架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      基于寄存器的指令级架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      两种架构的举例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM架构总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM的生命周期
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM的生命周期">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的启动
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的执行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机的退出
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jvm_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      JVM发展历程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM发展历程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sun-classic-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sun Classic VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exact-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exact VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hotspot-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      HotSpot VM（重点）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jrockit" class="md-nav__link">
+    <span class="md-ellipsis">
+      JRockit（商用三大虚拟机之一）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ibmj9" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBM的J9（商用三大虚拟机之一）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kvmcdccldc-hotspot" class="md-nav__link">
+    <span class="md-ellipsis">
+      KVM和CDC/CLDC Hotspot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azul-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azul VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liquid-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Liquid VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apache-marmony" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apache Marmony
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#micorsoft-jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Micorsoft JVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taobao-jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Taobao JVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dalvik-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dalvik VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graal-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graal VM（未来虚拟机）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第1章-JVM与Java体系结构.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/disaster1-tesknote/tree/main/docs/note/jvm/JVM系列-第1章-JVM与Java体系结构.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<blockquote>
+<p>1、本系列博客，主要是面向Java8的虚拟机。如有特殊说明，会进行标注。</p>
+<p>2、本系列博客主要参考**尚硅谷的JVM视频教程**，整理不易，所以图片打上了一些水印，还请读者见谅。后续可能会加上一些补充的东西。</p>
+<p>3、尚硅谷的有些视频还不错（PS：不是广告，毕竟看了人家比较好的教程，得给人家打个call）</p>
+<p>4、转载请注明出处，多谢~，希望大家一起能维护一个良好的开源环境。</p>
+</blockquote>
+<h1 id="1-jvmjava">第1章-JVM和Java体系架构<a class="headerlink" href="#1-jvmjava" title="Permanent link">&para;</a></h1>
+<h2 id="_1">前言<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>你是否也遇到过这些问题？</p>
+<ol>
+<li>运行着的线上系统突然卡死，系统无法访问，甚至直接OOM！</li>
+<li>想解决线上JVM GC问题，但却无从下手。</li>
+<li>新项目上线，对各种JVM参数设置一脸茫然，直接默认吧然后就JJ了。</li>
+<li>每次面试之前都要重新背一遍JVM的一些原理概念性的东西，然而面试官却经常问你在实际项目中如何调优VM参数，如何解决GC、OOM等问题，一脸懵逼。</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0001.png"></p>
+<p>大部分Java开发人员，除了会在项目中使用到与Java平台相关的各种高精尖技术，对于Java技术的核心Java虚拟机了解甚少。</p>
+<h2 id="_2">开发人员如何看待上层框架<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ol>
+<li>一些有一定工作经验的开发人员，打心眼儿里觉得SSM、微服务等上层技术才是重点，基础技术并不重要，这其实是一种本末倒置的“病态”。</li>
+<li>如果我们把核心类库的API比做数学公式的话，那么Java虚拟机的知识就好比公式的推导过程。</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0002.png"></p>
+<ul>
+<li>计算机系统体系对我们来说越来越远，在不了解底层实现方式的前提下，通过高级语言很容易编写程序代码。但事实上计算机并不认识高级语言。</li>
+</ul>
+<h2 id="_3">架构师每天都在思考什么？<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ol>
+<li>应该如何让我的系统更快？</li>
+<li>如何避免系统出现瓶颈？</li>
+</ol>
+<p><strong>知乎上有条帖子：应该如何看招聘信息，直通年薪50万+？</strong></p>
+<ol>
+<li>参与现有系统的性能优化，重构，保证平台性能和稳定性</li>
+<li>根据业务场景和需求，决定技术方向，做技术选型</li>
+<li>能够独立架构和设计海量数据下高并发分布式解决方案，满足功能和非功能需求</li>
+<li>解决各类潜在系统风险，核心功能的架构与代码编写</li>
+<li>分析系统瓶颈，解决各种疑难杂症，性能调优等</li>
+</ol>
+<h2 id="jvm">我们为什么要学习JVM<a class="headerlink" href="#jvm" title="Permanent link">&para;</a></h2>
+<ol>
+<li>面试的需要（BATJ、TMD，PKQ等面试都爱问）</li>
+<li>中高级程序员必备技能</li>
+<li>项目管理、调优的需要</li>
+<li>追求极客的精神，<ul>
+<li>比如：垃圾回收算法、JIT、底层原理</li>
+</ul>
+</li>
+</ol>
+<h2 id="java-vs-c">Java VS C++<a class="headerlink" href="#java-vs-c" title="Permanent link">&para;</a></h2>
+<ol>
+<li>垃圾收集机制为我们打理了很多繁琐的工作，大大提高了开发的效率，但是，垃圾收集也不是万能的，懂得JVM内部的内存结构、工作机制，是设计高扩展性应用和诊断运行时问题的基础，也是Java工程师进阶的必备能力。</li>
+<li>C++语言需要程序员自己来分配内存和回收内存，对于高手来说可能更加舒服，但是对于普通开发者，如果技术实力不够，很容易造成内存泄漏。而Java全部交给JVM进行内存分配和回收，这也是一种趋势，减少程序员的工作量。</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0003.png"></p>
+<h2 id="jvm_1">什么人需要学JVM？<a class="headerlink" href="#jvm_1" title="Permanent link">&para;</a></h2>
+<ol>
+<li>拥有一定开发经验的Java开发人员，希望升职加薪</li>
+<li>软件设计师，架构师</li>
+<li>系统调优人员</li>
+<li>虚拟机爱好者，JVM实践者</li>
+</ol>
+<h2 id="_4">推荐及参考书籍<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><strong>官方文档</strong></p>
+<p><strong>英文文档规范</strong>：https://docs.oracle.com/javase/specs/index.html</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0004.png"></p>
+<p><strong>中文书籍：</strong></p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0005.png"></p>
+<blockquote>
+<p>周志明老师的这本书**非常推荐看**，不过只推荐看第三版，第三版较第二版更新了很多，个人觉得没必要再看第二版。</p>
+</blockquote>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0006.png"></p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0007.png"></p>
+<h2 id="tiobe">TIOBE排行榜<a class="headerlink" href="#tiobe" title="Permanent link">&para;</a></h2>
+<p><strong>TIOBE 排行榜</strong>：https://www.tiobe.com/tiobe-index/</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0008.png"></p>
+<ul>
+<li>世界上没有最好的编程语言，只有最适用于具体应用场景的编程语言。</li>
+<li>目前网上一直流传Java被python，go撼动Java第一的地位。学习者不需要太担心，Java强大的生态圈，也不是说是朝夕之间可以被撼动的。</li>
+</ul>
+<h2 id="java">Java生态圈<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
+<p>Java是目前应用最为广泛的软件开发平台之一。随着Java以及Java社区的不断壮大Java 也早已不再是简简单单的一门计算机语言了，它更是一个平台、一种文化、一个社区。</p>
+<ol>
+<li>作为一个平台，Java虚拟机扮演着举足轻重的作用<ul>
+<li>Groovy、Scala、JRuby、Kotlin等都是Java平台的一部分</li>
+</ul>
+</li>
+<li>作为一种文化，Java几乎成为了“开源”的代名词。<ul>
+<li>第三方开源软件和框架。如Tomcat、Struts，MyBatis，Spring等。</li>
+<li>就连JDK和JVM自身也有不少开源的实现，如openJDK、Harmony。</li>
+</ul>
+</li>
+<li>作为一个社区，Java拥有全世界最多的技术拥护者和开源社区支持，有数不清的论坛和资料。从桌面应用软件、嵌入式开发到企业级应用、后台服务器、中间件，都可以看到Java的身影。其应用形式之复杂、参与人数之众多也令人咋舌。</li>
+</ol>
+<h2 id="java-">Java-跨平台的语言<a class="headerlink" href="#java-" title="Permanent link">&para;</a></h2>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0009.png"></p>
+<h2 id="jvm-">JVM-跨语言的平台<a class="headerlink" href="#jvm-" title="Permanent link">&para;</a></h2>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0010.png"></p>
+<ol>
+<li>随着Java7的正式发布，Java虚拟机的设计者们通过JSR-292规范基本实现在Java虚拟机平台上运行非Java语言编写的程序。</li>
+<li>
+<p>Java虚拟机根本不关心运行在其内部的程序到底是使用何种编程语言编写的，它只关心“字节码”文件。也就是说Java虚拟机拥有语言无关性，并不会单纯地与Java语言“终身绑定”，只要其他编程语言的编译结果满足并包含Java虚拟机的内部指令集、符号表以及其他的辅助信息，它就是一个有效的字节码文件，就能够被虚拟机所识别并装载运行。</p>
+</li>
+<li>
+<p>Java不是最强大的语言，但是JVM是最强大的虚拟机</p>
+</li>
+<li>
+<p>我们平时说的java字节码，指的是用java语言编译成的字节码。准确的说任何能在jvm平台上执行的字节码格式都是一样的。所以应该统称为：jvm字节码。</p>
+</li>
+<li>
+<p>不同的编译器，可以编译出相同的字节码文件，字节码文件也可以在不同的JVM上运行。</p>
+</li>
+<li>
+<p>Java虚拟机与Java语言并没有必然的联系，它只与特定的二进制文件格式——Class文件格式所关联，Class文件中包含了Java虚拟机指令集（或者称为字节码、Bytecodes）和符号表，还有一些其他辅助信息。</p>
+</li>
+</ol>
+<h2 id="_5">多语言混合编程<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Java平台上的多语言混合编程正成为主流，通过特定领域的语言去解决特定领域的问题是当前软件开发应对日趋复杂的项目需求的一个方向。</p>
+</li>
+<li>
+<p>试想一下，在一个项目之中，并行处理用Clojure语言编写，展示层使用JRuby/Rails，中间层则是Java，每个应用层都将使用不同的编程语言来完成，而且，接口对每一层的开发者都是透明的，各种语言之间的交互不存在任何困难，就像使用自己语言的原生API一样方便，因为它们最终都运行在一个虚拟机之上。</p>
+</li>
+<li>
+<p>对这些运行于Java虚拟机之上、Java之外的语言，来自系统级的、底层的支持正在迅速增强，以JSR-292为核心的一系列项目和功能改进（如DaVinci Machine项目、Nashorn引擎、InvokeDynamic指令、java.lang.invoke包等），推动Java虚拟机从“Java语言的虚拟机”向 “多语言虚拟机”的方向发展。</p>
+</li>
+</ol>
+<h2 id="jvm_2">如何真正搞懂JVM？<a class="headerlink" href="#jvm_2" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Java虚拟机非常复杂，要想真正理解它的工作原理，最好的方式就是自己动手编写一个！</li>
+<li>自己动手写一个Java虚拟机，难吗？</li>
+<li>天下事有难易乎？为之，则难者亦易矣；不为，则易者亦难矣</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0011.png"></p>
+<h2 id="java_1">Java发展重大事件<a class="headerlink" href="#java_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>1990年，在Sun计算机公司中，由Patrick Naughton、MikeSheridan及James Gosling领导的小组Green Team，开发出的新的程序语言，命名为Oak，后期命名为Java</li>
+<li>1995年，Sun正式发布Java和HotJava产品，Java首次公开亮相。</li>
+<li>1996年1月23日Sun Microsystems发布了JDK 1.0。</li>
+<li>1998年，JDK1.2版本发布。同时，Sun发布了JSP/Servlet、EJB规范，以及将Java分成了J2EE、J2SE和J2ME。这表明了Java开始向企业、桌面应用和移动设备应用3大领域挺进。</li>
+<li>2000年，JDK1.3发布，Java HotSpot Virtual Machine正式发布，成为Java的默认虚拟机。</li>
+<li>2002年，JDK1.4发布，古老的Classic虚拟机退出历史舞台。</li>
+<li>2003年年底，Java平台的scala正式发布，同年Groovy也加入了Java阵营。</li>
+<li>2004年，JDK1.5发布。同时JDK1.5改名为JavaSE5.0。</li>
+<li>2006年，JDK6发布。同年，Java开源并建立了OpenJDK。顺理成章，Hotspot虚拟机也成为了OpenJDK中的默认虚拟机。</li>
+<li>2007年，Java平台迎来了新伙伴Clojure。</li>
+<li>2008年，oracle收购了BEA，得到了JRockit虚拟机。</li>
+<li>2009年，Twitter宣布把后台大部分程序从Ruby迁移到Scala，这是Java平台的又一次大规模应用。</li>
+<li>2010年，Oracle收购了Sun，获得Java商标和最真价值的HotSpot虚拟机。此时，Oracle拥有市场占用率最高的两款虚拟机HotSpot和JRockit，并计划在未来对它们进行整合：HotRockit。JCP组织管理Java语言</li>
+<li>2011年，JDK7发布。在JDK1.7u4中，正式启用了新的垃圾回收器G1。</li>
+<li><strong>2017年，JDK9发布。将G1设置为默认GC，替代CMS</strong></li>
+<li>同年，IBM的J9开源，形成了现在的Open J9社区</li>
+<li>2018年，Android的Java侵权案判决，Google赔偿Oracle计88亿美元</li>
+<li>同年，Oracle宣告JavagE成为历史名词JDBC、JMS、Servlet赠予Eclipse基金会</li>
+<li><strong>同年，JDK11发布，LTS版本的JDK，发布革命性的ZGC，调整JDK授权许可</strong></li>
+<li>2019年，JDK12发布，加入RedHat领导开发的Shenandoah GC</li>
+</ul>
+<h2 id="open-jdkoracle-jdk">Open JDK和Oracle JDK<a class="headerlink" href="#open-jdkoracle-jdk" title="Permanent link">&para;</a></h2>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0012.png"></p>
+<ul>
+<li>在JDK11之前，Oracle JDK中还会存在一些Open JDK中没有的，闭源的功能。但在JDK11中，我们可以认为Open JDK和Oracle JDK代码实质上已经达到完全一致的程度了。</li>
+<li>主要的区别就是两者更新周期不一样</li>
+</ul>
+<h2 id="_6">虚拟机<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="_7">虚拟机概念<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>所谓虚拟机（Virtual Machine），就是一台虚拟的计算机。它是一款软件，用来执行一系列虚拟计算机指令。大体上，虚拟机可以分为系统虚拟机和程序虚拟机。</p>
+</li>
+<li>
+<p>大名鼎鼎的Virtual Box，VMware就属于系统虚拟机，它们完全是对物理计算机硬件的仿真(模拟)，提供了一个可运行完整操作系统的软件平台。</p>
+</li>
+<li>
+<p>程序虚拟机的典型代表就是Java虚拟机，它专门为执行单个计算机程序而设计，在Java虚拟机中执行的指令我们称为Java字节码指令。</p>
+</li>
+<li>
+<p>无论是系统虚拟机还是程序虚拟机，在上面运行的软件都被限制于虚拟机提供的资源中。</p>
+</li>
+</ul>
+<h3 id="java_2">Java虚拟机<a class="headerlink" href="#java_2" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Java虚拟机是一台执行Java字节码的虚拟计算机，它拥有独立的运行机制，其运行的Java字节码也未必由Java语言编译而成。</li>
+<li>JVM平台的各种语言可以共享Java虚拟机带来的跨平台性、优秀的垃圾回器，以及可靠的即时编译器。</li>
+<li><strong>Java技术的核心就是Java虚拟机</strong>（JVM，Java Virtual Machine），因为所有的Java程序都运行在Java虚拟机内部。</li>
+</ol>
+<p><strong>作用：</strong></p>
+<p>Java虚拟机就是二进制字节码的运行环境，负责装载字节码到其内部，解释/编译为对应平台上的机器指令执行。每一条Java指令，Java虚拟机规范中都有详细定义，如怎么取操作数，怎么处理操作数，处理结果放在哪里。</p>
+<p><strong>特点：</strong></p>
+<ol>
+<li>一次编译，到处运行</li>
+<li>自动内存管理</li>
+<li>自动垃圾回收功能</li>
+</ol>
+<h2 id="jvm_3">JVM的位置<a class="headerlink" href="#jvm_3" title="Permanent link">&para;</a></h2>
+<p>JVM是运行在操作系统之上的，它与硬件没有直接的交互</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0013.png"></p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0014.png"></p>
+<h2 id="jvm_4">JVM的整体结构<a class="headerlink" href="#jvm_4" title="Permanent link">&para;</a></h2>
+<ol>
+<li>HotSpot VM是目前市面上高性能虚拟机的代表作之一。</li>
+<li>它采用解释器与即时编译器并存的架构。</li>
+<li>在今天，Java程序的运行性能早已脱胎换骨，已经达到了可以和C/C++程序一较高下的地步。</li>
+</ol>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0015.png"></p>
+<h2 id="java_3">Java代码执行流程<a class="headerlink" href="#java_3" title="Permanent link">&para;</a></h2>
+<p>凡是能生成被Java虚拟机所能解释、运行的字节码文件，那么理论上我们就可以自己设计一套语言了</p>
+<p><img src="https://npm.elemecdn.com/youthlql@1.0.8/JVM/chapter_001/0016.png"></p>
+<h2 id="jvm_5">JVM的架构模型<a class="headerlink" href="#jvm_5" title="Permanent link">&para;</a></h2>
+<p>Java编译器输入的指令流基本上是一种**基于栈的指令集架构**，另外一种指令集架构则是**基于寄存器的指令集架构**。具体来说：这两种架构之间的区别：</p>
+<h3 id="_8">基于栈的指令集架构<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>基于栈式架构的特点：</p>
+<ol>
+<li>设计和实现更简单，适用于资源受限的系统；</li>
+<li>避开了寄存器的分配难题：使用零地址指令方式分配</li>
+<li>指令流中的指令大部分是零地址指令，其执行过程依赖于操作栈。指令集更小，编译器容易实现</li>
+<li>不需要硬件支持，可移植性更好，更好实现跨平台</li>
+</ol>
+<h3 id="_9">基于寄存器的指令级架构<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>基于寄存器架构的特点：</p>
+<ol>
+<li>典型的应用是x86的二进制指令集：比如传统的PC以及Android的Davlik虚拟机。</li>
+<li>指令集架构则完全依赖硬件，与硬件的耦合度高，可移植性差</li>
+<li>性能优秀和执行更高效</li>
+<li>花费更少的指令去完成一项操作</li>
+<li>在大部分情况下，基于寄存器架构的指令集往往都以一地址指令、二地址指令和三地址指令为主，而基于栈式架构的指令集却是以零地址指令为主</li>
+</ol>
+<h3 id="_10">两种架构的举例<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>同样执行2+3这种逻辑操作，其指令分别如下：</p>
+<ul>
+<li>
+<p><strong>基于栈的计算流程（以Java虚拟机为例）：</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iconst_2</span><span class="w"> </span><span class="c1">//常量2入栈</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">istore_1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">iconst_3</span><span class="w"> </span><span class="c1">// 常量3入栈</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">istore_2</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iload_1</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">iload_2</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">iadd</span><span class="w"> </span><span class="c1">//常量2/3出栈，执行相加</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">istore_0</span><span class="w"> </span><span class="c1">// 结果5入栈</span>
+</code></pre></div>
+<p>8个指令</p>
+</li>
+<li>
+<p><strong>而基于寄存器的计算流程</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">mov</span><span class="w"> </span><span class="n">eax</span><span class="p">,</span><span class="mi">2</span><span class="w"> </span><span class="c1">//将eax寄存器的值设为1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">add</span><span class="w"> </span><span class="n">eax</span><span class="p">,</span><span class="mi">3</span><span class="w"> </span><span class="c1">//使eax寄存器的值加3</span>
+</code></pre></div>
+<p>2个指令</p>
+</li>
+</ul>
+<blockquote>
+<p>具体后面会讲</p>
+</blockquote>
+<h3 id="jvm_6">JVM架构总结<a class="headerlink" href="#jvm_6" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>由于跨平台性的设计，Java的指令都是根据栈来设计的</strong>。不同平台CPU架构不同，所以不能设计为基于寄存器的。栈的优点：跨平台，指令集小，编译器容易实现，缺点是性能比寄存器差一些。</p>
+</li>
+<li>
+<p>时至今日，尽管嵌入式平台已经不是Java程序的主流运行平台了（准确来说应该是HotSpot VM的宿主环境已经不局限于嵌入式平台了），那么为什么不将架构更换为基于寄存器的架构呢？</p>
+</li>
+<li>因为基于栈的架构跨平台性好、指令集小，虽然相对于基于寄存器的架构来说，基于栈的架构编译得到的指令更多，执行性能也不如基于寄存器的架构好，但考虑到其跨平台性与移植性，我们还是选用栈的架构</li>
+</ol>
+<h2 id="jvm_7">JVM的生命周期<a class="headerlink" href="#jvm_7" title="Permanent link">&para;</a></h2>
+<h3 id="_11">虚拟机的启动<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>Java虚拟机的启动是通过引导类加载器（bootstrap class loader）创建一个初始类（initial class）来完成的，这个类是由虚拟机的具体实现指定的。</p>
+<h3 id="_12">虚拟机的执行<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<ol>
+<li>一个运行中的Java虚拟机有着一个清晰的任务：执行Java程序</li>
+<li>程序开始执行时他才运行，程序结束时他就停止</li>
+<li><strong>执行一个所谓的Java程序的时候，真真正正在执行的是一个叫做Java虚拟机的进程</strong></li>
+</ol>
+<h3 id="_13">虚拟机的退出<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p><strong>有如下的几种情况：</strong></p>
+<ol>
+<li>
+<p>程序正常执行结束</p>
+</li>
+<li>
+<p>程序在执行过程中遇到了异常或错误而异常终止</p>
+</li>
+<li>
+<p>由于操作系统用现错误而导致Java虚拟机进程终止</p>
+</li>
+<li>
+<p>某线程调用Runtime类或System类的exit()方法，或Runtime类的halt()方法，并且Java安全管理器也允许这次exit()或halt()操作。</p>
+</li>
+<li>
+<p>除此之外，JNI（Java Native Interface）规范描述了用JNI Invocation API来加载或卸载 Java虚拟机时，Java虚拟机的退出情况。</p>
+</li>
+</ol>
+<h2 id="jvm_8">JVM发展历程<a class="headerlink" href="#jvm_8" title="Permanent link">&para;</a></h2>
+<h3 id="sun-classic-vm">Sun Classic VM<a class="headerlink" href="#sun-classic-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>早在1996年Java1.0版本的时候，Sun公司发布了一款名为sun classic VM的Java虚拟机，它同时也是**世界上第一款商用Java虚拟机**，JDK1.4时完全被淘汰。</li>
+<li>这款虚拟机内部只提供解释器，没有即时编译器，因此效率比较低。【即时编译器会把热点代码的本地机器指令缓存起来，那么以后使用热点代码的时候，效率就比较高】</li>
+<li>如果使用JIT编译器，就需要进行外挂。但是一旦使用了JIT编译器，JIT就会接管虚拟机的执行系统。解释器就不再工作，解释器和编译器不能配合工作。<ul>
+<li>我们将字节码指令翻译成机器指令也是需要花时间的，如果只使用JIT，就需要把所有字节码指令都翻译成机器指令，就会导致翻译时间过长，也就是说在程序刚启动的时候，等待时间会很长。</li>
+<li>而解释器就是走到哪，解释到哪。</li>
+</ul>
+</li>
+<li>现在Hotspot内置了此虚拟机。</li>
+</ol>
+<h3 id="exact-vm">Exact VM<a class="headerlink" href="#exact-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>为了解决上一个虚拟机问题，jdk1.2时，Sun提供了此虚拟机。</p>
+</li>
+<li>
+<p>Exact Memory Management：准确式内存管理</p>
+<ul>
+<li>
+<p>也可以叫Non-Conservative/Accurate Memory Management</p>
+</li>
+<li>
+<p>虚拟机可以知道内存中某个位置的数据具体是什么类型。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>具备现代高性能虚拟机的维形</p>
+<ul>
+<li>
+<p>热点探测（寻找出热点代码进行缓存）</p>
+</li>
+<li>
+<p>编译器与解释器混合工作模式</p>
+</li>
+</ul>
+</li>
+<li>
+<p>只在Solaris平台短暂使用，其他平台上还是classic vm，英雄气短，终被Hotspot虚拟机替换</p>
+</li>
+</ol>
+<h3 id="hotspot-vm">HotSpot VM（重点）<a class="headerlink" href="#hotspot-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>HotSpot历史</p>
+<ul>
+<li>
+<p>最初由一家名为“Longview Technologies”的小公司设计</p>
+</li>
+<li>
+<p>1997年，此公司被Sun收购；2009年，Sun公司被甲骨文收购。</p>
+</li>
+<li>
+<p>JDK1.3时，HotSpot VM成为默认虚拟机</p>
+</li>
+</ul>
+</li>
+<li>
+<p>目前**Hotspot占有绝对的市场地位，称霸武林**。</p>
+<ul>
+<li>
+<p>不管是现在仍在广泛使用的JDK6，还是使用比例较多的JDK8中，默认的虚拟机都是HotSpot</p>
+</li>
+<li>
+<p>Sun/oracle JDK和openJDK的默认虚拟机</p>
+</li>
+<li>
+<p>因此本课程中默认介绍的虚拟机都是HotSpot，相关机制也主要是指HotSpot的GC机制。（比如其他两个商用虚机都没有方法区的概念）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>从服务器、桌面到移动端、嵌入式都有应用。</p>
+</li>
+<li>
+<p>名称中的HotSpot指的就是它的热点代码探测技术。</p>
+<ul>
+<li>
+<p>通过计数器找到最具编译价值代码，触发即时编译或栈上替换</p>
+</li>
+<li>
+<p>通过编译器与解释器协同工作，在最优化的程序响应时间与最佳执行性能中取得平衡</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="jrockit">JRockit（商用三大虚拟机之一）<a class="headerlink" href="#jrockit" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>专注于服务器端应用：它可以不太关注程序启动速度，因此JRockit内部不包含解析器实现，全部代码都靠即时编译器编译后执行。</p>
+</li>
+<li>
+<p>大量的行业基准测试显示，JRockit JVM是世界上最快的JVM：使用JRockit产品，客户已经体验到了显著的性能提高（一些超过了70%）和硬件成本的减少（达50%）。</p>
+</li>
+<li>
+<p>优势：全面的Java运行时解决方案组合</p>
+<ul>
+<li>
+<p>JRockit面向延迟敏感型应用的解决方案JRockit Real Time提供以毫秒或微秒级的JVM响应时间，适合财务、军事指挥、电信网络的需要</p>
+</li>
+<li>
+<p>Mission Control服务套件，它是一组以极低的开销来监控、管理和分析生产环境中的应用程序的工具。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>2008年，JRockit被Oracle收购。</p>
+</li>
+<li>
+<p>Oracle表达了整合两大优秀虚拟机的工作，大致在JDK8中完成。整合的方式是在HotSpot的基础上，移植JRockit的优秀特性。</p>
+</li>
+<li>
+<p>高斯林：目前就职于谷歌，研究人工智能和水下机器人</p>
+</li>
+</ol>
+<h3 id="ibmj9">IBM的J9（商用三大虚拟机之一）<a class="headerlink" href="#ibmj9" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>全称：IBM Technology for Java Virtual Machine，简称IT4J，内部代号：J9</p>
+</li>
+<li>
+<p>市场定位与HotSpot接近，服务器端、桌面应用、嵌入式等多用途VM广泛用于IBM的各种Java产品。</p>
+</li>
+<li>
+<p>目前，有影响力的三大商用虚拟机之一，也号称是世界上最快的Java虚拟机。</p>
+</li>
+<li>
+<p>2017年左右，IBM发布了开源J9VM，命名为openJ9，交给Eclipse基金会管理，也称为Eclipse OpenJ9</p>
+</li>
+<li>
+<p>OpenJDK -&gt; 是JDK开源了，包括了虚拟机</p>
+</li>
+</ol>
+<h3 id="kvmcdccldc-hotspot">KVM和CDC/CLDC Hotspot<a class="headerlink" href="#kvmcdccldc-hotspot" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Oracle在Java ME产品线上的两款虚拟机为：CDC/CLDC HotSpot Implementation VM </li>
+<li>KVM（Kilobyte）是CLDC-HI早期产品</li>
+<li>目前移动领域地位尴尬，智能机被Android和iOS二分天下。</li>
+<li>
+<p>KVM简单、轻量、高度可移植，面向更低端的设备上还维持自己的一片市场</p>
+<ul>
+<li>
+<p>智能控制器、传感器</p>
+</li>
+<li>
+<p>老人手机、经济欠发达地区的功能手机</p>
+</li>
+<li>所有的虚拟机的原则：一次编译，到处运行。</li>
+</ul>
+</li>
+</ol>
+<h3 id="azul-vm">Azul VM<a class="headerlink" href="#azul-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>前面三大“高性能Java虚拟机”使用在**通用硬件平台上**</li>
+<li>这里Azul VW和BEA Liquid VM是与**特定硬件平台绑定**、软硬件配合的专有虚拟机：高性能Java虚拟机中的战斗机。</li>
+<li>Azul VM是Azul Systems公司在HotSpot基础上进行大量改进，运行于Azul Systems公司的专有硬件Vega系统上的Java虚拟机。</li>
+<li>每个Azul VM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的GC时间的垃圾收集器、专有硬件优化的线程调度等优秀特性。</li>
+<li>2010年，Azul Systems公司开始从硬件转向软件，发布了自己的Zing JVM，可以在通用x86平台上提供接近于Vega系统的特性。</li>
+</ol>
+<h3 id="liquid-vm">Liquid VM<a class="headerlink" href="#liquid-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>高性能Java虚拟机中的战斗机。</li>
+<li>BEA公司开发的，直接运行在自家Hypervisor系统上</li>
+<li>Liquid VM即是现在的JRockit VE（Virtual Edition）。<strong>Liquid VM不需要操作系统的支持，或者说它自己本身实现了一个专用操作系统的必要功能，如线程调度、文件系统、网络支持等</strong>。</li>
+<li>随着JRockit虚拟机终止开发，Liquid vM项目也停止了。</li>
+</ol>
+<h3 id="apache-marmony">Apache Marmony<a class="headerlink" href="#apache-marmony" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Apache也曾经推出过与JDK1.5和JDK1.6兼容的Java运行平台Apache Harmony。</p>
+</li>
+<li>
+<p>它是IElf和Intel联合开发的开源JVM，受到同样开源的Open JDK的压制，Sun坚决不让Harmony获得JCP认证，最终于2011年退役，IBM转而参与OpenJDK</p>
+</li>
+<li>
+<p>虽然目前并没有Apache Harmony被大规模商用的案例，但是它的Java类库代码吸纳进了Android SDK。</p>
+</li>
+</ol>
+<h3 id="micorsoft-jvm">Micorsoft JVM<a class="headerlink" href="#micorsoft-jvm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>微软为了在IE3浏览器中支持Java Applets，开发了Microsoft JVM。</p>
+</li>
+<li>
+<p>只能在window平台下运行。但确是当时Windows下性能最好的Java VM。</p>
+</li>
+<li>
+<p>1997年，Sun以侵犯商标、不正当竞争罪名指控微软成功，赔了Sun很多钱。微软WindowsXP SP3中抹掉了其VM。现在Windows上安装的jdk都是HotSpot。</p>
+</li>
+</ol>
+<h3 id="taobao-jvm">Taobao JVM<a class="headerlink" href="#taobao-jvm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>由AliJVM团队发布。阿里，国内使用Java最强大的公司，覆盖云计算、金融、物流、电商等众多领域，需要解决高并发、高可用、分布式的复合问题。有大量的开源产品。</p>
+</li>
+<li>
+<p><strong>基于OpenJDK开发了自己的定制版本AlibabaJDK</strong>，简称AJDK。是整个阿里Java体系的基石。</p>
+</li>
+<li>
+<p>基于OpenJDK Hotspot VM发布的国内第一个优化、深度定制且开源的高性能服务器版Java虚拟机。</p>
+<ul>
+<li>创新的GCIH（GCinvisible heap）技术实现了off-heap，<strong>即将生命周期较长的Java对象从heap中移到heap之外，并且GC不能管理GCIH内部的Java对象，以此达到降低GC的回收频率和提升GC的回收效率的目的</strong>。</li>
+<li>GCIH中的**对象还能够在多个Java虚拟机进程中实现共享**</li>
+<li>使用crc32指令实现JvM intrinsic降低JNI的调用开销</li>
+<li>PMU hardware的Java profiling tool和诊断协助功能</li>
+<li>针对大数据场景的ZenGC</li>
+<li>taobao vm应用在阿里产品上性能高，<strong>硬件严重依赖inte1的cpu，损失了兼容性，但提高了性能</strong></li>
+<li>目前已经在淘宝、天猫上线，把Oracle官方JvM版本全部替换了。</li>
+</ul>
+</li>
+</ol>
+<h3 id="dalvik-vm">Dalvik VM<a class="headerlink" href="#dalvik-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>谷歌开发的，应用于Android系统，并在Android2.2中提供了JIT，发展迅猛。</p>
+</li>
+<li>
+<p><strong>Dalvik VM只能称作虚拟机，而不能称作“Java虚拟机”</strong>，它没有遵循 Java虚拟机规范</p>
+</li>
+<li>
+<p>不能直接执行Java的Class文件</p>
+</li>
+<li>
+<p>基于寄存器架构，不是jvm的栈架构。</p>
+</li>
+<li>
+<p>执行的是编译以后的dex（Dalvik Executable）文件。执行效率比较高。</p>
+</li>
+<li>
+<p>它执行的dex（Dalvik Executable）文件可以通过class文件转化而来，使用Java语法编写应用程序，可以直接使用大部分的Java API等。</p>
+</li>
+<li>
+<p>Android 5.0使用支持提前编译（Ahead of Time Compilation，AoT）的ART VM替换Dalvik VM。</p>
+</li>
+</ol>
+<h3 id="graal-vm">Graal VM（未来虚拟机）<a class="headerlink" href="#graal-vm" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>2018年4月，Oracle Labs公开了GraalvM，号称 “<strong>Run Programs Faster Anywhere</strong>”，勃勃野心。与1995年java的”write once，run anywhere"遥相呼应。</p>
+</li>
+<li>
+<p>GraalVM在HotSpot VM基础上增强而成的**跨语言全栈虚拟机，可以作为“任何语言”**的运行平台使用。语言包括：Java、Scala、Groovy、Kotlin；C、C++、Javascript、Ruby、Python、R等</p>
+</li>
+<li>
+<p>支持不同语言中混用对方的接口和对象，支持这些语言使用已经编写好的本地库文件</p>
+</li>
+<li>
+<p>工作原理是将这些语言的源代码或源代码编译后的中间格式，通过解释器转换为能被Graal VM接受的中间表示。Graal VM提供Truffle工具集快速构建面向一种新语言的解释器。在运行时还能进行即时编译优化，获得比原生编译器更优秀的执行效率。</p>
+</li>
+<li>
+<p><strong>如果说HotSpot有一天真的被取代，Graalvm希望最大</strong>。但是Java的软件生态没有丝毫变化。</p>
+</li>
+</ol>
+<h3 id="_14">总结<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>具体JVM的内存结构，其实取决于其实现，不同厂商的JVM，或者同一厂商发布的不同版本，都有可能存在一定差异。主要以Oracle HotSpot VM为默认虚拟机。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../redission/redission-%E6%96%87%E6%A1%A3/" class="md-footer__link md-footer__link--prev" aria-label="上一页: redisson的中文文档">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                redisson的中文文档
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../JVM%E7%B3%BB%E5%88%97-%E7%AC%AC2%E7%AB%A0-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第02章_类加载子系统">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第02章_类加载子系统
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2023 Disaster
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "header.autohide", "navigation.expand", "navigation.indexes", "navigation.instant", "navigation.prune", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>
